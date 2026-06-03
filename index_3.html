@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NRS 131 — Student Activities</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2a4a;
+    --teal: #0d7377;
+    --seafoam: #14a085;
+    --light-teal: #e8f5f4;
+    --gold: #c9920a;
+    --gold-light: #fff8e6;
+    --soft: #f4f6f9;
+    --text: #1e2d3d;
+    --muted: #5a7080;
+    --white: #ffffff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--soft); color: var(--text); min-height: 100vh; }
+
+  header {
+    background: var(--navy);
+    padding: 2.5rem 2rem 2rem;
+    border-bottom: 4px solid var(--teal);
+  }
+  header .course-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #7ab8c4;
+    margin-bottom: 0.4rem;
+  }
+  header h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 2rem;
+    color: white;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 0.3rem;
+  }
+  header p { color: #a8c4ce; font-size: 0.9rem; }
+
+  main { max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+  .unit {
+    margin-bottom: 2.5rem;
+  }
+  .unit-header {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+  }
+  .unit-header h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.1rem;
+    color: var(--navy);
+  }
+  .unit-header::after {
+    content: '';
+    flex: 1;
+    height: 2px;
+    background: var(--light-teal);
+  }
+  .unit-badge {
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 600;
+    padding: 0.2rem 0.7rem;
+    border-radius: 20px;
+    flex-shrink: 0;
+  }
+
+  .activity-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 0.9rem;
+  }
+
+  .activity-card {
+    background: var(--white);
+    border-radius: 12px;
+    border: 1.5px solid #d8e6ea;
+    padding: 1.1rem 1.2rem;
+    text-decoration: none;
+    color: var(--text);
+    display: flex;
+    align-items: flex-start;
+    gap: 0.9rem;
+    transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+  }
+  .activity-card:hover {
+    border-color: var(--teal);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(13,115,119,0.12);
+  }
+  .card-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+  .icon-teal { background: var(--light-teal); }
+  .icon-gold { background: var(--gold-light); }
+  .icon-navy { background: #e8eef5; }
+  .icon-green { background: #eafaf0; }
+  .icon-crimson { background: #fdf0f2; }
+
+  .card-text h3 {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 0.2rem;
+    line-height: 1.3;
+  }
+  .card-text p {
+    font-size: 0.8rem;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+  .card-tag {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.5rem;
+    border-radius: 20px;
+    margin-top: 0.4rem;
+  }
+  .tag-interactive { background: var(--light-teal); color: var(--teal); }
+  .tag-handout { background: #e8eef5; color: var(--navy); }
+  .tag-game { background: var(--gold-light); color: var(--gold); }
+  .tag-case { background: #eafaf0; color: #1a5c3a; }
+
+  .coming-soon {
+    background: var(--soft);
+    border: 1.5px dashed #c0d0d8;
+    border-radius: 12px;
+    padding: 1.1rem 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    opacity: 0.6;
+  }
+  .coming-soon .card-text h3 { color: var(--muted); }
+
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.8rem;
+    padding: 1.5rem;
+    border-top: 1px solid #d4e6ea;
+    margin-top: 1rem;
+  }
+
+  @media (max-width: 600px) {
+    header h1 { font-size: 1.5rem; }
+    .activity-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="course-label">Columbia Basin College · Nursing</div>
+  <h1>NRS 131 Student Activities</h1>
+  <p>Tricia Muth, MSN, RN, IBCLC · Maternal-Newborn Nursing</p>
+</header>
+
+<main>
+
+  <!-- DAY 8 -->
+  <div class="unit">
+    <div class="unit-header">
+      <span class="unit-badge" style="background:#e8eef5;color:var(--navy)">Day 8</span>
+      <h2>Final Exam Review</h2>
+    </div>
+    <div class="activity-grid">
+      <a class="activity-card" href="NRS131_Day8_Escape_Room.html">
+        <div class="card-icon icon-gold">🔐</div>
+        <div class="card-text">
+          <h3>Clinical Escape Room</h3>
+          <p>EFM · Triage · Newborn · Rapid-fire. 4 rooms, lock codes, group race.</p>
+          <span class="card-tag tag-game">Group game</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- LECTURE 6: BREASTFEEDING -->
+  <div class="unit">
+    <div class="unit-header">
+      <span class="unit-badge" style="background:var(--light-teal);color:var(--teal)">Lecture 6</span>
+      <h2>Breastfeeding</h2>
+    </div>
+    <div class="activity-grid">
+      <a class="activity-card" href="handout1_milk_stages.html">
+        <div class="card-icon icon-teal">🥛</div>
+        <div class="card-text">
+          <h3>Stages of Human Milk</h3>
+          <p>Colostrum · Transitional · Mature · Foremilk vs. Hindmilk</p>
+          <span class="card-tag tag-handout">Handout 1</span>
+        </div>
+      </a>
+      <a class="activity-card" href="handout2_feeding_cues.html">
+        <div class="card-icon icon-teal">👶</div>
+        <div class="card-text">
+          <h3>Feeding Cues & Normal Patterns</h3>
+          <p>Hunger cues · Fullness cues · Stool progression · Adequacy</p>
+          <span class="card-tag tag-handout">Handout 2</span>
+        </div>
+      </a>
+      <a class="activity-card" href="handout3_latch_positioning.html">
+        <div class="card-icon icon-teal">🤱</div>
+        <div class="card-text">
+          <h3>Latch & Positioning</h3>
+          <p>Latch steps · Good vs. poor latch · 5 positions · Nursing assessment</p>
+          <span class="card-tag tag-handout">Handout 3</span>
+        </div>
+      </a>
+      <a class="activity-card" href="handout4_benefits.html">
+        <div class="card-icon icon-teal">❤️</div>
+        <div class="card-text">
+          <h3>Benefits of Breastfeeding</h3>
+          <p>Infant & maternal benefits · AAP/WHO recommendations · Nurse's role</p>
+          <span class="card-tag tag-handout">Handout 4</span>
+        </div>
+      </a>
+      <a class="activity-card" href="case_scenarios.html">
+        <div class="card-icon icon-green">📋</div>
+        <div class="card-text">
+          <h3>Clinical Case Scenarios</h3>
+          <p>4 vignettes — colostrum concerns, latch pain, pumping plan, formula choice</p>
+          <span class="card-tag tag-case">Case study</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- LECTURE 7: POSTPARTUM -->
+  <div class="unit">
+    <div class="unit-header">
+      <span class="unit-badge" style="background:#fdf0f2;color:#8b1a2a">Lecture 7</span>
+      <h2>Postpartum Education</h2>
+    </div>
+    <div class="activity-grid">
+      <a class="activity-card" href="pp_handout1_postbirth_warning_signs.html">
+        <div class="card-icon icon-crimson">⚠️</div>
+        <div class="card-text">
+          <h3>POST-BIRTH Warning Signs</h3>
+          <p>AWHONN mnemonic · All 9 signs · When to call 911 vs. provider</p>
+          <span class="card-tag tag-handout">Handout 1</span>
+        </div>
+      </a>
+      <a class="activity-card" href="pp_handout2_physical_recovery.html">
+        <div class="card-icon icon-navy">🔵</div>
+        <div class="card-text">
+          <h3>Physical Recovery</h3>
+          <p>Fundus · Lochia · Incision care · Elimination · Activity</p>
+          <span class="card-tag tag-handout">Handout 2</span>
+        </div>
+      </a>
+      <a class="activity-card" href="pp_handout3_mood_safesleep.html">
+        <div class="card-icon icon-navy">💜</div>
+        <div class="card-text">
+          <h3>Mood, Safe Sleep & Newborn Safety</h3>
+          <p>Blues vs. PPD · EPDS · Safe sleep · PURPLE crying · SBS</p>
+          <span class="card-tag tag-handout">Handout 3</span>
+        </div>
+      </a>
+      <a class="activity-card" href="pp_case_scenarios.html">
+        <div class="card-icon icon-green">📋</div>
+        <div class="card-text">
+          <h3>Clinical Case Scenarios</h3>
+          <p>4 vignettes — preeclampsia, PPD, DVT, safe sleep</p>
+          <span class="card-tag tag-case">Case study</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- LABOR & DELIVERY -->
+  <div class="unit">
+    <div class="unit-header">
+      <span class="unit-badge" style="background:#e8eef5;color:var(--navy)">Lectures 1 & 2</span>
+      <h2>Labor & Delivery</h2>
+    </div>
+    <div class="activity-grid">
+      <a class="activity-card" href="cardinal_movements_sequencer.html">
+        <div class="card-icon icon-teal">🔄</div>
+        <div class="card-text">
+          <h3>Cardinal Movements Sequencer</h3>
+          <p>Put the 7 cardinal movements of labor in correct order</p>
+          <span class="card-tag tag-interactive">Interactive</span>
+        </div>
+      </a>
+      <a class="activity-card" href="fetal_position_decoder_1.html">
+        <div class="card-icon icon-teal">🧭</div>
+        <div class="card-text">
+          <h3>Fetal Position Decoder</h3>
+          <p>Practice decoding fetal position abbreviations (LOA, ROP, etc.)</p>
+          <span class="card-tag tag-interactive">Interactive</span>
+        </div>
+      </a>
+      <a class="activity-card" href="five_ps_matcher.html">
+        <div class="card-icon icon-teal">5️⃣</div>
+        <div class="card-text">
+          <h3>The 5 Ps Matcher</h3>
+          <p>Match each of the 5 Ps of labor to its clinical description</p>
+          <span class="card-tag tag-interactive">Interactive</span>
+        </div>
+      </a>
+      <a class="activity-card" href="labor_triage_activity.html">
+        <div class="card-icon icon-navy">🏥</div>
+        <div class="card-text">
+          <h3>Labor Triage Scenarios</h3>
+          <p>Work through triage decision-making for common labor presentations</p>
+          <span class="card-tag tag-case">Case study</span>
+        </div>
+      </a>
+      <a class="activity-card" href="pain_management_decision_tree.html">
+        <div class="card-icon icon-navy">🌿</div>
+        <div class="card-text">
+          <h3>Pain Management Decision Tree</h3>
+          <p>Pharmacologic and non-pharmacologic options in labor</p>
+          <span class="card-tag tag-interactive">Interactive</span>
+        </div>
+      </a>
+      <a class="activity-card" href="true_vs_false_labor_card_sort.html">
+        <div class="card-icon icon-navy">🃏</div>
+        <div class="card-text">
+          <h3>True vs. False Labor Card Sort</h3>
+          <p>Sort clinical findings into true labor vs. false labor</p>
+          <span class="card-tag tag-interactive">Interactive</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- PLACEHOLDER FOR FUTURE -->
+  <div class="unit">
+    <div class="unit-header">
+      <span class="unit-badge" style="background:#f0f0f0;color:#999">Coming Soon</span>
+      <h2>More Activities</h2>
+    </div>
+    <div class="activity-grid">
+      <div class="coming-soon">
+        <div class="card-icon icon-navy" style="opacity:0.4">📁</div>
+        <div class="card-text">
+          <h3>Additional lectures</h3>
+          <p>More activities will appear here as the course progresses.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>NRS 131 · Maternal-Newborn Nursing · Tricia Muth, MSN, RN, IBCLC · Columbia Basin College</footer>
+
+</body>
+</html>
