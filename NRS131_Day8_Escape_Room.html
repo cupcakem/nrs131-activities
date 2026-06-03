@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NRS 131 Escape Room — Day 8</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2a4a;
+    --teal: #0d7377;
+    --seafoam: #14a085;
+    --light-teal: #e8f5f4;
+    --gold: #c9920a;
+    --gold-light: #fff8e6;
+    --crimson: #8b1a2a;
+    --crimson-light: #fdf0f2;
+    --green: #1a5c3a;
+    --green-light: #eafaf0;
+    --soft: #f4f6f9;
+    --text: #1e2d3d;
+    --muted: #5a7080;
+    --white: #ffffff;
+    --warn: #c0392b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--navy); color: var(--text); min-height: 100vh; }
+
+  /* LOBBY */
+  #lobby {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    text-align: center;
+    background: var(--navy);
+  }
+  #lobby h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 2.8rem;
+    color: white;
+    line-height: 1.15;
+    margin-bottom: 0.5rem;
+  }
+  #lobby .sub {
+    color: #7ab8c4;
+    font-size: 1rem;
+    margin-bottom: 2.5rem;
+  }
+  .room-map {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    max-width: 560px;
+    width: 100%;
+    margin-bottom: 2rem;
+  }
+  .room-chip {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 12px;
+    padding: 1rem;
+    text-align: left;
+  }
+  .room-chip .chip-num { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: #7ab8c4; margin-bottom: 0.3rem; }
+  .room-chip .chip-name { font-family: 'Fraunces', serif; font-size: 1rem; color: white; }
+  .room-chip .chip-tag { font-size: 0.75rem; color: #a8c4ce; margin-top: 0.2rem; }
+  #lobby .start-btn {
+    background: var(--teal);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.02em;
+    transition: background 0.2s, transform 0.1s;
+  }
+  #lobby .start-btn:hover { background: var(--seafoam); transform: translateY(-2px); }
+
+  /* GAME SCREEN */
+  #game { display: none; min-height: 100vh; background: var(--soft); }
+
+  /* PROGRESS BAR */
+  .progress-bar {
+    background: var(--navy);
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .progress-label { color: #a8c4ce; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; flex-shrink: 0; }
+  .progress-pips { display: flex; gap: 0.5rem; }
+  .pip {
+    width: 28px;
+    height: 8px;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.15);
+    transition: background 0.4s;
+  }
+  .pip.done { background: var(--teal); }
+  .pip.active { background: var(--gold); }
+  .progress-timer { margin-left: auto; font-family: 'Fraunces', serif; font-size: 1.1rem; color: white; }
+  .progress-timer.warn { color: #f5a0a0; }
+
+  /* ROOM CONTAINER */
+  .room { display: none; max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
+  .room.active { display: block; }
+
+  .room-header {
+    margin-bottom: 1.5rem;
+  }
+  .room-badge {
+    display: inline-block;
+    border-radius: 20px;
+    padding: 0.25rem 0.9rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+  .room-header h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.8rem;
+    color: var(--navy);
+    line-height: 1.2;
+    margin-bottom: 0.4rem;
+  }
+  .room-header .room-sub { color: var(--muted); font-size: 0.9rem; }
+
+  /* SCENARIO BLOCK */
+  .scenario {
+    background: var(--navy);
+    color: white;
+    border-radius: 14px;
+    padding: 1.3rem 1.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.92rem;
+    line-height: 1.7;
+  }
+  .scenario .scenario-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #7ab8c4;
+    margin-bottom: 0.4rem;
+  }
+  .scenario strong { color: #a8e6ea; }
+
+  /* PUZZLE CARDS */
+  .puzzles { display: flex; flex-direction: column; gap: 1.2rem; margin-bottom: 1.5rem; }
+  .puzzle-card {
+    background: white;
+    border-radius: 14px;
+    padding: 1.3rem 1.5rem;
+    box-shadow: 0 2px 10px rgba(26,42,74,0.08);
+  }
+  .puzzle-card h3 {
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.8rem;
+    color: var(--muted);
+  }
+  .puzzle-card .q {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text);
+    margin-bottom: 1rem;
+    font-weight: 500;
+  }
+
+  /* MULTIPLE CHOICE */
+  .choices { display: flex; flex-direction: column; gap: 0.5rem; }
+  .choice-btn {
+    text-align: left;
+    background: var(--soft);
+    border: 2px solid transparent;
+    border-radius: 10px;
+    padding: 0.7rem 1rem;
+    font-size: 0.9rem;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    color: var(--text);
+    line-height: 1.4;
+  }
+  .choice-btn:hover { border-color: var(--teal); background: var(--light-teal); }
+  .choice-btn.selected { border-color: var(--teal); background: var(--light-teal); }
+  .choice-btn.correct { border-color: var(--green); background: var(--green-light); color: var(--green); font-weight: 600; }
+  .choice-btn.wrong { border-color: var(--crimson); background: var(--crimson-light); color: var(--crimson); }
+  .choice-btn:disabled { cursor: default; }
+
+  /* SEQUENCE drag */
+  .sequence-list { display: flex; flex-direction: column; gap: 0.5rem; }
+  .seq-item {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    background: var(--soft);
+    border: 1.5px solid #d0dce4;
+    border-radius: 10px;
+    padding: 0.7rem 1rem;
+    cursor: grab;
+    font-size: 0.9rem;
+    color: var(--text);
+    user-select: none;
+    transition: background 0.1s, border-color 0.1s;
+  }
+  .seq-item:active { cursor: grabbing; }
+  .seq-item.dragging { opacity: 0.4; }
+  .seq-item.drag-over { border-color: var(--teal); background: var(--light-teal); }
+  .seq-item .handle { color: var(--muted); font-size: 1.1rem; flex-shrink: 0; }
+  .seq-num {
+    background: var(--navy);
+    color: white;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .check-seq-btn {
+    margin-top: 0.8rem;
+    background: var(--navy);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.6rem 1.2rem;
+    font-size: 0.88rem;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .check-seq-btn:hover { background: var(--teal); }
+
+  /* FEEDBACK */
+  .feedback {
+    display: none;
+    border-radius: 8px;
+    padding: 0.6rem 0.9rem;
+    margin-top: 0.7rem;
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+  .feedback.show { display: block; }
+  .feedback.correct { background: var(--green-light); color: var(--green); }
+  .feedback.wrong { background: var(--crimson-light); color: var(--crimson); }
+
+  /* CODE LOCK */
+  .code-lock {
+    background: var(--navy);
+    border-radius: 14px;
+    padding: 1.5rem;
+    text-align: center;
+  }
+  .code-lock .lock-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #7ab8c4;
+    margin-bottom: 0.5rem;
+  }
+  .code-lock h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.1rem;
+    color: white;
+    margin-bottom: 1rem;
+  }
+  .code-display {
+    display: flex;
+    justify-content: center;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+  }
+  .code-digit {
+    width: 52px;
+    height: 64px;
+    background: rgba(255,255,255,0.08);
+    border: 2px solid rgba(255,255,255,0.2);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Fraunces', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: white;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .code-digit.filled { background: rgba(13,115,119,0.3); border-color: var(--teal); color: #a8e6ea; }
+  .code-digit.all-correct { background: rgba(26,92,58,0.4); border-color: #2ecc71; color: #a8f0c4; }
+  .code-hint {
+    font-size: 0.82rem;
+    color: #7ab8c4;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+  .unlock-btn {
+    background: var(--teal);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .unlock-btn:hover { background: var(--seafoam); transform: translateY(-1px); }
+  .unlock-btn:disabled { background: rgba(255,255,255,0.15); cursor: not-allowed; transform: none; }
+  .unlock-error {
+    color: #f5a0ac;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    display: none;
+  }
+  .unlock-error.show { display: block; }
+
+  /* SUCCESS SCREEN */
+  #success {
+    display: none;
+    min-height: 100vh;
+    background: var(--navy);
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 2rem;
+  }
+  #success.show { display: flex; }
+  #success h1 { font-family: 'Fraunces', serif; font-size: 3rem; color: white; margin-bottom: 0.5rem; }
+  #success .escaped { font-family: 'Fraunces', serif; font-size: 1.5rem; color: #a8e6ea; margin-bottom: 1.5rem; }
+  #success .time-display { background: rgba(255,255,255,0.08); border-radius: 14px; padding: 1.2rem 2rem; margin-bottom: 1.5rem; }
+  #success .time-display .tl { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: #7ab8c4; margin-bottom: 0.3rem; }
+  #success .time-display .tv { font-family: 'Fraunces', serif; font-size: 2.5rem; color: white; font-weight: 700; }
+  #success .summary { max-width: 480px; }
+  #success .summary h3 { font-family: 'Fraunces', serif; font-size: 1.1rem; color: #a8e6ea; margin-bottom: 0.8rem; }
+  .summary-item { display: flex; align-items: center; gap: 0.7rem; padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 0.88rem; color: #c4d8dc; }
+  .summary-item:last-child { border-bottom: none; }
+  .s-check { color: #2ecc71; font-size: 1rem; }
+
+  /* ROOM COLOR ACCENTS */
+  .room-1 .room-badge { background: #e8f5f4; color: var(--teal); }
+  .room-2 .room-badge { background: var(--gold-light); color: var(--gold); }
+  .room-3 .room-badge { background: var(--green-light); color: var(--green); }
+  .room-4 .room-badge { background: var(--crimson-light); color: var(--crimson); }
+
+  .room-1 .puzzle-card h3 { color: var(--teal); }
+  .room-2 .puzzle-card h3 { color: var(--gold); }
+  .room-3 .puzzle-card h3 { color: var(--green); }
+  .room-4 .puzzle-card h3 { color: var(--crimson); }
+
+  @media (max-width:600px) {
+    #lobby h1 { font-size: 2rem; }
+    .room-map { grid-template-columns: 1fr; }
+    .room-header h2 { font-size: 1.4rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- LOBBY -->
+<div id="lobby">
+  <div style="font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:#7ab8c4;margin-bottom:0.5rem">NRS 131 · Day 8 Review</div>
+  <h1>Clinical Escape Room</h1>
+  <p class="sub">Work together · Solve the puzzles · Crack the codes · Escape!</p>
+  <div class="room-map">
+    <div class="room-chip">
+      <div class="chip-num">Room 1</div>
+      <div class="chip-name">The EFM Lab</div>
+      <div class="chip-tag">EFM classification · NICHD 2008</div>
+    </div>
+    <div class="room-chip">
+      <div class="chip-num">Room 2</div>
+      <div class="chip-name">The Triage Floor</div>
+      <div class="chip-tag">Priority ranking · 5 patients</div>
+    </div>
+    <div class="room-chip">
+      <div class="chip-num">Room 3</div>
+      <div class="chip-name">The Newborn Nursery</div>
+      <div class="chip-tag">Apgar · Head findings · Safe sleep</div>
+    </div>
+    <div class="room-chip">
+      <div class="chip-num">Room 4</div>
+      <div class="chip-name">The Final Lock</div>
+      <div class="chip-tag">Rapid-fire · Mixed clinical</div>
+    </div>
+  </div>
+  <button class="start-btn" onclick="startGame()">Begin Escape →</button>
+</div>
+
+<!-- GAME SCREEN -->
+<div id="game">
+  <div class="progress-bar">
+    <span class="progress-label">Progress</span>
+    <div class="progress-pips">
+      <div class="pip active" id="pip-0"></div>
+      <div class="pip" id="pip-1"></div>
+      <div class="pip" id="pip-2"></div>
+      <div class="pip" id="pip-3"></div>
+    </div>
+    <span class="progress-timer" id="timer">00:00</span>
+  </div>
+
+  <!-- ROOM 1: EFM -->
+  <div class="room room-1 active" id="room-0">
+    <div class="room-header">
+      <div class="room-badge">Room 1 of 4</div>
+      <h2>The EFM Lab</h2>
+      <div class="room-sub">Your team has been locked in the EFM interpretation lab. Crack the strip — crack the code.</div>
+    </div>
+
+    <div class="scenario">
+      <div class="scenario-label">Clinical Scenario — Brianna T.</div>
+      You are caring for Brianna, 26 years old, G1P0 at 39 weeks in active labor. Her epidural was placed 30 minutes ago. The EFM strip shows: <strong>Baseline 158 bpm · Variability appears moderate with occasional swings reaching 27–28 bpm · Recurrent variable decelerations · No accelerations noted · No late decelerations.</strong>
+    </div>
+
+    <div class="puzzles">
+      <div class="puzzle-card">
+        <h3>Puzzle 1A — Classification</h3>
+        <div class="q">Using NICHD 2008, what category is this strip?</div>
+        <div class="choices" id="c1a">
+          <button class="choice-btn" onclick="checkMC('c1a',this,'wrong','Category I — all findings are reassuring.')">A. Category I — all findings are reassuring.</button>
+          <button class="choice-btn" onclick="checkMC('c1a',this,'correct','Category II — indeterminate. The strip has a normal baseline and moderate variability, but recurrent variable decelerations make it Category II.')">B. Category II — indeterminate. Recurrent variable decelerations with moderate variability.</button>
+          <button class="choice-btn" onclick="checkMC('c1a',this,'wrong','Category III requires absent variability + recurrent late decels, recurrent variables, or bradycardia — OR sinusoidal pattern. Moderate variability is present here.')">C. Category III — requires immediate delivery.</button>
+          <button class="choice-btn" onclick="checkMC('c1a',this,'wrong','Unclassifiable is not part of the NICHD 2008 three-tier system.')">D. Unclassifiable — not enough data.</button>
+        </div>
+        <div class="feedback" id="fb-c1a"></div>
+      </div>
+
+      <div class="puzzle-card">
+        <h3>Puzzle 1B — Baseline</h3>
+        <div class="q">A classmate says: "158 bpm — that's tachycardia, we need to act." How do you respond?</div>
+        <div class="choices" id="c1b">
+          <button class="choice-btn" onclick="checkMC('c1b',this,'wrong','Tachycardia threshold per NICHD 2008 is >160 bpm. 158 bpm is upper-normal — not tachycardia.')">A. Agree — tachycardia is >150 bpm so this qualifies.</button>
+          <button class="choice-btn" onclick="checkMC('c1b',this,'correct','Correct. NICHD 2008 defines tachycardia as >160 bpm. 158 bpm is at the upper end of normal — it is documented and monitored, but does not meet the threshold for tachycardia.')">B. Disagree — tachycardia is >160 bpm. 158 bpm is upper-normal; document and monitor.</button>
+          <button class="choice-btn" onclick="checkMC('c1b',this,'wrong','The threshold is not 155 bpm — it is >160 bpm per NICHD 2008.')">C. Agree — anything above 155 bpm warrants intervention.</button>
+          <button class="choice-btn" onclick="checkMC('c1b',this,'wrong','Baseline HR has clinical significance regardless of Category. 158 bpm should be documented and monitored.')">D. The baseline is irrelevant once the Category is assigned.</button>
+        </div>
+        <div class="feedback" id="fb-c1b"></div>
+      </div>
+
+      <div class="puzzle-card">
+        <h3>Puzzle 1C — Variable Decels</h3>
+        <div class="q">The variable decelerations suggest cord compression. What is your FIRST nursing intervention?</div>
+        <div class="choices" id="c1c">
+          <button class="choice-btn" onclick="checkMC('c1c',this,'wrong','Routine O₂ is not appropriate — reserve for confirmed maternal hypoxia (SpO₂ <95%). Correctable causes should be addressed first.')">A. Apply 10L O₂ via non-rebreather mask immediately.</button>
+          <button class="choice-btn" onclick="checkMC('c1c',this,'wrong','Calling the OB to bedside is appropriate after correctable causes have been addressed, not as the first step.')">B. Call the OB to the bedside immediately.</button>
+          <button class="choice-btn" onclick="checkMC('c1c',this,'correct','Correct. Position change (lateral, knee-chest, or Trendelenburg) relieves cord compression and is the first nursing intervention for variable decelerations. Treat correctable causes first before escalating.')">C. Change maternal position — lateral, knee-chest, or Trendelenburg — to relieve cord compression.</button>
+          <button class="choice-btn" onclick="checkMC('c1c',this,'wrong','Pitocin should be decreased or stopped if running, but position change comes first for variable decelerations suggesting cord compression.')">D. Increase the Pitocin to accelerate delivery.</button>
+        </div>
+        <div class="feedback" id="fb-c1c"></div>
+      </div>
+    </div>
+
+    <div class="code-lock">
+      <div class="lock-label">Room 1 Lock</div>
+      <h3>Enter the 4-digit code to escape this room</h3>
+      <div class="code-display">
+        <div class="code-digit" id="r1d0">_</div>
+        <div class="code-digit" id="r1d1">_</div>
+        <div class="code-digit" id="r1d2">_</div>
+        <div class="code-digit" id="r1d3">_</div>
+      </div>
+      <div class="code-hint">
+        Hint: Answer each puzzle above.<br>
+        1A → B=2 · 1B → B=1 · 1C → C=6<br>
+        Final digit: The NICHD tier number for this strip.
+      </div>
+      <input type="text" id="r1-input" maxlength="4" placeholder="Enter code" 
+        style="font-size:1.5rem;text-align:center;width:140px;border-radius:8px;padding:0.5rem;margin-bottom:0.8rem;border:2px solid #d0dce4;letter-spacing:0.3em"
+        oninput="updateCodeDisplay('r1-input','r1')" onkeydown="if(event.key==='Enter')tryUnlock('r1','2162',1)">
+      <br>
+      <button class="unlock-btn" onclick="tryUnlock('r1','2162',1)">Unlock Room 2 →</button>
+      <div class="unlock-error" id="r1-error">Incorrect code — check your answers and try again.</div>
+    </div>
+  </div>
+
+  <!-- ROOM 2: PRIORITY RANKING -->
+  <div class="room room-2" id="room-1">
+    <div class="room-header">
+      <div class="room-badge">Room 2 of 4</div>
+      <h2>The Triage Floor</h2>
+      <div class="room-sub">Five patients. One nurse. You decide who gets seen first.</div>
+    </div>
+
+    <div class="scenario">
+      <div class="scenario-label">Priority Ranking Challenge</div>
+      Rank these 5 patients 1–5 (1 = most urgent, 5 = least urgent). Drag to reorder, then check your ranking. The correct order generates your escape code.
+    </div>
+
+    <div class="puzzle-card" style="margin-bottom:1.2rem">
+      <h3>Puzzle 2 — Rank All 5 Patients</h3>
+      <div class="q" style="margin-bottom:1rem">Drag the patients into priority order (most urgent first).</div>
+      <div class="sequence-list" id="rank-list">
+        <div class="seq-item" draggable="true" data-id="C">
+          <span class="handle">⋮⋮</span>
+          <span class="seq-num" id="rn-C">?</span>
+          <span><strong>Patient C</strong> — G2P1 at 38 wks, on Pitocin 1 hr. Strip: absent variability + recurrent variable decels. Patient asleep.</span>
+        </div>
+        <div class="seq-item" draggable="true" data-id="D">
+          <span class="handle">⋮⋮</span>
+          <span class="seq-num" id="rn-D">?</span>
+          <span><strong>Patient D</strong> — G1P0 at 37 wks prenatal visit. BP 146/96, headache, visual spots ×1 hr, 2+ protein urine dip.</span>
+        </div>
+        <div class="seq-item" draggable="true" data-id="B">
+          <span class="handle">⋮⋮</span>
+          <span class="seq-num" id="rn-B">?</span>
+          <span><strong>Patient B</strong> — G3P2, 45 min postpartum SVD. Reports 'gushing blood' on standing. BP 102/64, HR 108.</span>
+        </div>
+        <div class="seq-item" draggable="true" data-id="A">
+          <span class="handle">⋮⋮</span>
+          <span class="seq-num" id="rn-A">?</span>
+          <span><strong>Patient A</strong> — G1P0 at 40 wks, active labor 6cm, early decels, moderate variability, epidural, BP 118/72. Comfortable.</span>
+        </div>
+        <div class="seq-item" draggable="true" data-id="E">
+          <span class="handle">⋮⋮</span>
+          <span class="seq-num" id="rn-E">?</span>
+          <span><strong>Patient E</strong> — PP day 2, requesting pain med for perineal discomfort 4/10. Fundus firm, lochia appropriate, stable vitals.</span>
+        </div>
+      </div>
+      <button class="check-seq-btn" onclick="checkRanking()">Check My Ranking</button>
+      <div class="feedback" id="fb-rank"></div>
+    </div>
+
+    <div class="code-lock">
+      <div class="lock-label">Room 2 Lock</div>
+      <h3>Enter the 4-digit code to escape</h3>
+      <div class="code-display">
+        <div class="code-digit" id="r2d0">_</div>
+        <div class="code-digit" id="r2d1">_</div>
+        <div class="code-digit" id="r2d2">_</div>
+        <div class="code-digit" id="r2d3">_</div>
+      </div>
+      <div class="code-hint">
+        Hint: Get the correct ranking above — the code is the patient letters in priority order.<br>
+        Correct order: C=1 · D=2 · B=3 · A=4 · E=5 → code = <em>revealed after correct ranking</em>
+      </div>
+      <input type="text" id="r2-input" maxlength="4" placeholder="Enter code"
+        style="font-size:1.5rem;text-align:center;width:140px;border-radius:8px;padding:0.5rem;margin-bottom:0.8rem;border:2px solid #d0dce4;letter-spacing:0.3em"
+        oninput="updateCodeDisplay('r2-input','r2')" onkeydown="if(event.key==='Enter')tryUnlock('r2','3142',2)">
+      <br>
+      <button class="unlock-btn" onclick="tryUnlock('r2','3142',2)">Unlock Room 3 →</button>
+      <div class="unlock-error" id="r2-error">Incorrect code — check your ranking and try again.</div>
+    </div>
+  </div>
+
+  <!-- ROOM 3: NEWBORN -->
+  <div class="room room-3" id="room-2">
+    <div class="room-header">
+      <div class="room-badge">Room 3 of 4</div>
+      <h2>The Newborn Nursery</h2>
+      <div class="room-sub">Three newborn puzzles stand between you and the final room.</div>
+    </div>
+
+    <div class="puzzles">
+      <div class="puzzle-card">
+        <h3>Puzzle 3A — Apgar Scoring</h3>
+        <div class="q">Born via SVD at 39 weeks. Blue extremities, pink body. HR 108. Weak cry. Pulls away from suction. Active flexion. What is the 1-minute Apgar score?</div>
+        <div class="choices" id="c3a">
+          <button class="choice-btn" onclick="checkMC('c3a',this,'wrong','Recount: Color=1 (acrocyanosis), HR=2 (>100), Reflex=2 (pulls away), Muscle=2 (active flexion), Cry=1 (weak). Total = 8.')">A. 6</button>
+          <button class="choice-btn" onclick="checkMC('c3a',this,'correct','Correct! Color=1 (acrocyanosis — blue extremities, pink body), HR=2 (108 is >100), Reflex=2 (pulls away from suction), Muscle=2 (active flexion), Cry=1 (weak cry). Total = 8. Normal range — routine care.')">B. 8</button>
+          <button class="choice-btn" onclick="checkMC('c3a',this,'wrong','Recount: Color=1, HR=2, Reflex=2, Muscle=2, Cry=1. Total = 8, not 9.')">C. 9</button>
+          <button class="choice-btn" onclick="checkMC('c3a',this,'wrong','A score of 10 requires fully pink color, which is absent here (acrocyanosis = 1 point for color).')">D. 10</button>
+        </div>
+        <div class="feedback" id="fb-c3a"></div>
+      </div>
+
+      <div class="puzzle-card">
+        <h3>Puzzle 3B — Head Finding</h3>
+        <div class="q">Newborn 6 hours old. Swelling over the right parietal bone that does NOT cross the suture line. Firm, non-tender. Baby feeding well. Name the finding and the most important associated risk.</div>
+        <div class="choices" id="c3b">
+          <button class="choice-btn" onclick="checkMC('c3b',this,'wrong','Caput succedaneum DOES cross suture lines and is diffuse scalp edema from birth pressure — not the correct finding here.')">A. Caput succedaneum — risk of skull fracture.</button>
+          <button class="choice-btn" onclick="checkMC('c3b',this,'correct','Correct. Cephalohematoma is periosteal bleeding confined within suture lines — it does NOT cross suture lines. As it reabsorbs, bilirubin is released, increasing the risk of hyperbilirubinemia and jaundice. It is self-resolving and does not require intervention.')">B. Cephalohematoma — associated risk is hyperbilirubinemia/jaundice as it reabsorbs.</button>
+          <button class="choice-btn" onclick="checkMC('c3b',this,'wrong','Subgaleal hemorrhage crosses suture lines and is a rare, potentially life-threatening emergency — not consistent with this benign presentation.')">C. Subgaleal hemorrhage — risk of hemorrhagic shock.</button>
+          <button class="choice-btn" onclick="checkMC('c3b',this,'wrong','Molding is reshaping of the skull bones — it does not present as a discrete, firm swelling over one bone.')">D. Molding — risk of brain compression.</button>
+        </div>
+        <div class="feedback" id="fb-c3b"></div>
+      </div>
+
+      <div class="puzzle-card">
+        <h3>Puzzle 3C — Blood Glucose</h3>
+        <div class="q">Baby of a diabetic mother (IDDM), born at 38 weeks. First glucose at 1 hour of age: 32 mg/dL. What is your nursing action?</div>
+        <div class="choices" id="c3c">
+          <button class="choice-btn" onclick="checkMC('c3c',this,'wrong','32 mg/dL in a neonate at risk (IDM) is hypoglycemia. This is not normal and requires intervention — not reassurance.')">A. This is normal — reassure the parents and recheck at 4 hours.</button>
+          <button class="choice-btn" onclick="checkMC('c3c',this,'wrong','Warmed formula is not the first line. Breastfeeding or glucose gel are typically initiated first. IV dextrose is for severe/symptomatic hypoglycemia after provider order.')">B. Immediately start IV dextrose without provider order.</button>
+          <button class="choice-btn" onclick="checkMC('c3c',this,'correct','Correct. 32 mg/dL is hypoglycemia in this high-risk infant. Initiate feeding (breast or formula) to raise glucose. Notify the provider and pediatrician. Recheck glucose 30 minutes after feeding. Document and monitor for symptoms (jitteriness, poor tone, apnea). IV dextrose may be ordered if oral feeding is insufficient.')">C. Initiate feeding now, notify the provider and pediatrician, recheck glucose 30 min after feeding.</button>
+          <button class="choice-btn" onclick="checkMC('c3c',this,'wrong','Waiting an hour with a glucose of 32 in a high-risk infant is unsafe. Hypoglycemia requires prompt intervention.')">D. Recheck in 1 hour — single readings are not reliable.</button>
+        </div>
+        <div class="feedback" id="fb-c3c"></div>
+      </div>
+    </div>
+
+    <div class="code-lock">
+      <div class="lock-label">Room 3 Lock</div>
+      <h3>Enter the 4-digit code to escape</h3>
+      <div class="code-display">
+        <div class="code-digit" id="r3d0">_</div>
+        <div class="code-digit" id="r3d1">_</div>
+        <div class="code-digit" id="r3d2">_</div>
+        <div class="code-digit" id="r3d3">_</div>
+      </div>
+      <div class="code-hint">
+        Hint: 3A answer = Apgar score · 3B = number of points for cephalohematoma risk (jaundice = bilirubin, think bili lights: 2) · 3C = number of minutes to recheck glucose after feeding · Final digit = Apgar component count
+      </div>
+      <input type="text" id="r3-input" maxlength="4" placeholder="Enter code"
+        style="font-size:1.5rem;text-align:center;width:140px;border-radius:8px;padding:0.5rem;margin-bottom:0.8rem;border:2px solid #d0dce4;letter-spacing:0.3em"
+        oninput="updateCodeDisplay('r3-input','r3')" onkeydown="if(event.key==='Enter')tryUnlock('r3','8235',3)">
+      <br>
+      <button class="unlock-btn" onclick="tryUnlock('r3','8235',3)">Unlock Room 4 →</button>
+      <div class="unlock-error" id="r3-error">Incorrect code — check your answers and try again.</div>
+    </div>
+  </div>
+
+  <!-- ROOM 4: RAPID FIRE -->
+  <div class="room room-4" id="room-3">
+    <div class="room-header">
+      <div class="room-badge">Room 4 of 4 — Final Room</div>
+      <h2>The Final Lock</h2>
+      <div class="room-sub">Four rapid-fire questions. All four correct reveals the final code. You're almost out.</div>
+    </div>
+
+    <div class="puzzles">
+      <div class="puzzle-card">
+        <h3>Puzzle 4A</h3>
+        <div class="q">Which EFM finding ALONE places a strip into Category III?</div>
+        <div class="choices" id="c4a">
+          <button class="choice-btn" onclick="checkMC('c4a',this,'wrong','Marked variability (>25 bpm) is Category II — its own bullet, but not Category III alone.')">A. Marked variability (&gt;25 bpm)</button>
+          <button class="choice-btn" onclick="checkMC('c4a',this,'wrong','Recurrent late decelerations alone are Category II with moderate variability. They become Category III only when paired with absent variability.')">B. Recurrent late decelerations with moderate variability</button>
+          <button class="choice-btn" onclick="checkMC('c4a',this,'correct','Correct. The sinusoidal pattern stands alone as Category III — no other criteria are needed. It is defined as a smooth, sine-wave-like baseline with absent variability lasting ≥20 minutes.')">C. Sinusoidal pattern</button>
+          <button class="choice-btn" onclick="checkMC('c4a',this,'wrong','Absent variability alone is not enough for Category III — it requires absent variability PLUS one of: recurrent late decels, recurrent variable decels, or bradycardia.')">D. Absent variability alone</button>
+        </div>
+        <div class="feedback" id="fb-c4a"></div>
+      </div>
+
+      <div class="puzzle-card">
+        <h3>Puzzle 4B</h3>
+        <div class="q">When is supplemental oxygen appropriate during labor monitoring?</div>
+        <div class="choices" id="c4b">
+          <button class="choice-btn" onclick="checkMC('c4b',this,'wrong','Routine O₂ for any Category II strip is not supported. O₂ should be reserved for confirmed maternal hypoxia.')">A. Any Category II strip — give O₂ as standard of care.</button>
+          <button class="choice-btn" onclick="checkMC('c4b',this,'wrong','Tachycardia is not an indication for O₂. Correctable causes should be addressed.')">B. Whenever fetal tachycardia is present.</button>
+          <button class="choice-btn" onclick="checkMC('c4b',this,'correct','Correct. O₂ should be reserved for confirmed maternal hypoxia (SpO₂ <95%). Routine O₂ for EFM changes is not supported by current evidence and is no longer standard of care.')">C. When maternal SpO₂ is &lt;95% — confirmed maternal hypoxia.</button>
+          <button class="choice-btn" onclick="checkMC('c4b',this,'wrong','O₂ is not given at the start of every labor. It is reserved for specific indications.')">D. At the start of active labor as a precaution.</button>
+        </div>
+        <div class="feedback" id="fb-c4b"></div>
+      </div>
+
+      <div class="puzzle-card">
+        <h3>Puzzle 4C</h3>
+        <div class="q">A postpartum patient's uterus is boggy and displaced to the right. What is your VERY FIRST action?</div>
+        <div class="choices" id="c4c">
+          <button class="choice-btn" onclick="checkMC('c4c',this,'wrong','Fundal massage comes AFTER bladder assessment and emptying. A full bladder displaces the uterus and prevents contraction — that is corrected first.')">A. Perform fundal massage immediately.</button>
+          <button class="choice-btn" onclick="checkMC('c4c',this,'correct','Correct. A uterus displaced to one side (usually right) indicates a full bladder. Bladder assessment and emptying is the FIRST intervention — before fundal massage. The uterus cannot contract effectively with a full bladder displacing it.')">B. Assess and empty the bladder — displacement indicates a full bladder.</button>
+          <button class="choice-btn" onclick="checkMC('c4c',this,'wrong','Oxytocin may be part of the hemorrhage response, but it is not the first action for a boggy, displaced uterus. Address the bladder first.')">C. Administer oxytocin immediately.</button>
+          <button class="choice-btn" onclick="checkMC('c4c',this,'wrong','Calling the provider is appropriate but not the first action — this is a nursing intervention you perform first.')">D. Call the provider before doing anything.</button>
+        </div>
+        <div class="feedback" id="fb-c4c"></div>
+      </div>
+
+      <div class="puzzle-card">
+        <h3>Puzzle 4D</h3>
+        <div class="q">In the POST-BIRTH mnemonic, what does the "T" for Temperature indicate, and at what threshold?</div>
+        <div class="choices" id="c4d">
+          <button class="choice-btn" onclick="checkMC('c4d',this,'wrong','The threshold is 100.4°F (38°C) — not 101°F.')">A. Fever ≥101°F — suggests mastitis only.</button>
+          <button class="choice-btn" onclick="checkMC('c4d',this,'correct','Correct. Temperature ≥100.4°F (38°C) postpartum indicates infection until proven otherwise. Sources include endometritis, wound infection, UTI, mastitis, or sepsis. Patients should contact their provider.')">B. Temperature ≥100.4°F (38°C) — indicates postpartum infection, contact provider.</button>
+          <button class="choice-btn" onclick="checkMC('c4d',this,'wrong','99.5°F is not the threshold. The standard postpartum fever threshold is 100.4°F (38°C).')">C. Temperature ≥99.5°F — mild elevation, recheck in 1 hour.</button>
+          <button class="choice-btn" onclick="checkMC('c4d',this,'wrong','Temperature in the POST-BIRTH mnemonic is not about hypothermia — it refers to fever as a sign of infection.')">D. Temperature &lt;97°F — indicates hypothermia from blood loss.</button>
+        </div>
+        <div class="feedback" id="fb-c4d"></div>
+      </div>
+    </div>
+
+    <div class="code-lock">
+      <div class="lock-label">Final Lock</div>
+      <h3>Enter the 4-digit escape code</h3>
+      <div class="code-display">
+        <div class="code-digit" id="r4d0">_</div>
+        <div class="code-digit" id="r4d1">_</div>
+        <div class="code-digit" id="r4d2">_</div>
+        <div class="code-digit" id="r4d3">_</div>
+      </div>
+      <div class="code-hint">
+        Hint: Each answer maps to a number.<br>
+        4A: C is the 3rd option · 4B: SpO₂ threshold = 95 (first two digits: 9, 5) · 4C: B = 2nd option · 4D: 100.4 → first digit is 1<br>
+        Code = answer position numbers: C=3 · C=3 · B=2 · B=2
+      </div>
+      <input type="text" id="r4-input" maxlength="4" placeholder="Enter code"
+        style="font-size:1.5rem;text-align:center;width:140px;border-radius:8px;padding:0.5rem;margin-bottom:0.8rem;border:2px solid #d0dce4;letter-spacing:0.3em"
+        oninput="updateCodeDisplay('r4-input','r4')" onkeydown="if(event.key==='Enter')tryUnlock('r4','3322',4)">
+      <br>
+      <button class="unlock-btn" onclick="tryUnlock('r4','3322',4)">🔓 Escape!</button>
+      <div class="unlock-error" id="r4-error">Incorrect code — review your answers and try again.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SUCCESS -->
+<div id="success">
+  <div style="font-size:3rem;margin-bottom:0.5rem">🎉</div>
+  <h1>You Escaped!</h1>
+  <div class="escaped">NRS 131 Day 8 — Complete</div>
+  <div class="time-display">
+    <div class="tl">Your escape time</div>
+    <div class="tv" id="final-time">--:--</div>
+  </div>
+  <div class="summary">
+    <h3>What you proved you know:</h3>
+    <div class="summary-item"><span class="s-check">✓</span> NICHD 2008 EFM classification — Category II vs. III criteria</div>
+    <div class="summary-item"><span class="s-check">✓</span> 158 bpm is upper-normal — tachycardia threshold is &gt;160</div>
+    <div class="summary-item"><span class="s-check">✓</span> O₂ reserved for maternal SpO₂ &lt;95% — not routine</div>
+    <div class="summary-item"><span class="s-check">✓</span> Priority triage — Category III &gt; preeclampsia &gt; hemorrhage &gt; stable</div>
+    <div class="summary-item"><span class="s-check">✓</span> Apgar scoring — 5 components, 0–2 each</div>
+    <div class="summary-item"><span class="s-check">✓</span> Cephalohematoma — does NOT cross suture lines, jaundice risk</div>
+    <div class="summary-item"><span class="s-check">✓</span> Neonatal hypoglycemia — feed, notify, recheck</div>
+    <div class="summary-item"><span class="s-check">✓</span> Boggy uterus displaced right → assess bladder FIRST</div>
+    <div class="summary-item"><span class="s-check">✓</span> POST-BIRTH T = temperature ≥100.4°F → infection</div>
+  </div>
+</div>
+
+<script>
+var startTime = null;
+var timerInterval = null;
+var currentRoom = 0;
+
+function startGame() {
+  document.getElementById('lobby').style.display = 'none';
+  document.getElementById('game').style.display = 'block';
+  startTime = Date.now();
+  timerInterval = setInterval(updateTimer, 1000);
+  initDragDrop();
+}
+
+function updateTimer() {
+  var elapsed = Math.floor((Date.now() - startTime) / 1000);
+  var m = Math.floor(elapsed / 60).toString().padStart(2,'0');
+  var s = (elapsed % 60).toString().padStart(2,'0');
+  var el = document.getElementById('timer');
+  el.textContent = m + ':' + s;
+  el.className = 'progress-timer' + (elapsed > 1800 ? ' warn' : '');
+}
+
+function checkMC(groupId, btn, result, explanation) {
+  var container = document.getElementById(groupId);
+  var buttons = container.querySelectorAll('.choice-btn');
+  buttons.forEach(function(b) { b.disabled = true; });
+  var fb = document.getElementById('fb-' + groupId);
+  if (result === 'correct') {
+    btn.className = 'choice-btn correct';
+    fb.textContent = '✓ ' + explanation;
+    fb.className = 'feedback correct show';
+  } else {
+    btn.className = 'choice-btn wrong';
+    fb.textContent = '✗ ' + explanation;
+    fb.className = 'feedback wrong show';
+    setTimeout(function() {
+      buttons.forEach(function(b) { b.disabled = false; b.className = 'choice-btn'; });
+      fb.className = 'feedback';
+    }, 2200);
+  }
+}
+
+function updateCodeDisplay(inputId, prefix) {
+  var val = document.getElementById(inputId).value.replace(/\D/g,'');
+  for (var i = 0; i < 4; i++) {
+    var d = document.getElementById(prefix + 'd' + i);
+    d.textContent = val[i] || '_';
+    d.className = 'code-digit' + (val[i] ? ' filled' : '');
+  }
+}
+
+function tryUnlock(prefix, correctCode, nextRoom) {
+  var inputId = prefix + '-input';
+  var val = document.getElementById(inputId).value.replace(/\D/g,'');
+  var errEl = document.getElementById(prefix + '-error');
+  if (val === correctCode) {
+    for (var i = 0; i < 4; i++) {
+      document.getElementById(prefix + 'd' + i).className = 'code-digit all-correct';
+    }
+    errEl.className = 'unlock-error';
+    setTimeout(function() { advanceRoom(nextRoom); }, 700);
+  } else {
+    errEl.className = 'unlock-error show';
+    document.getElementById(inputId).value = '';
+    for (var i = 0; i < 4; i++) {
+      document.getElementById(prefix + 'd' + i).textContent = '_';
+      document.getElementById(prefix + 'd' + i).className = 'code-digit';
+    }
+  }
+}
+
+function advanceRoom(nextRoom) {
+  if (nextRoom === 4) {
+    clearInterval(timerInterval);
+    var elapsed = Math.floor((Date.now() - startTime) / 1000);
+    var m = Math.floor(elapsed / 60).toString().padStart(2,'0');
+    var s = (elapsed % 60).toString().padStart(2,'0');
+    document.getElementById('final-time').textContent = m + ':' + s;
+    document.getElementById('game').style.display = 'none';
+    document.getElementById('success').className = 'show';
+    return;
+  }
+  document.getElementById('room-' + currentRoom).className = 'room room-' + (currentRoom+1);
+  currentRoom = nextRoom - 1;
+  document.getElementById('room-' + currentRoom).className = 'room room-' + (currentRoom+1) + ' active';
+  document.getElementById('pip-' + (currentRoom-1)).className = 'pip done';
+  document.getElementById('pip-' + currentRoom).className = 'pip active';
+  window.scrollTo(0,0);
+}
+
+/* DRAG AND DROP for ranking */
+var dragSrc = null;
+function initDragDrop() {
+  var items = document.querySelectorAll('.seq-item');
+  items.forEach(function(item) {
+    item.addEventListener('dragstart', function(e) {
+      dragSrc = this;
+      this.classList.add('dragging');
+    });
+    item.addEventListener('dragend', function() {
+      this.classList.remove('dragging');
+      updateRankNumbers();
+    });
+    item.addEventListener('dragover', function(e) {
+      e.preventDefault();
+      this.classList.add('drag-over');
+    });
+    item.addEventListener('dragleave', function() {
+      this.classList.remove('drag-over');
+    });
+    item.addEventListener('drop', function(e) {
+      e.preventDefault();
+      this.classList.remove('drag-over');
+      if (dragSrc !== this) {
+        var list = document.getElementById('rank-list');
+        var items = Array.from(list.children);
+        var srcIdx = items.indexOf(dragSrc);
+        var tgtIdx = items.indexOf(this);
+        if (srcIdx < tgtIdx) {
+          list.insertBefore(dragSrc, this.nextSibling);
+        } else {
+          list.insertBefore(dragSrc, this);
+        }
+        updateRankNumbers();
+      }
+    });
+  });
+}
+
+function updateRankNumbers() {
+  var items = document.querySelectorAll('#rank-list .seq-item');
+  items.forEach(function(item, idx) {
+    var id = item.getAttribute('data-id');
+    item.querySelector('.seq-num').textContent = idx + 1;
+  });
+}
+
+function checkRanking() {
+  var items = Array.from(document.querySelectorAll('#rank-list .seq-item'));
+  var order = items.map(function(i) { return i.getAttribute('data-id'); });
+  var correct = ['C','D','B','A','E'];
+  var fb = document.getElementById('fb-rank');
+  var match = JSON.stringify(order) === JSON.stringify(correct);
+  if (match) {
+    fb.textContent = '✓ Correct! C=1 (Category III strip — most urgent), D=2 (preeclampsia with BP 146/96 + symptoms), B=3 (postpartum hemorrhage signs — BP 102/64 HR 108), A=4 (stable labor, Category I-ish strip), E=5 (stable, non-urgent pain request). Code: 3142';
+    fb.className = 'feedback correct show';
+  } else {
+    var rationale = 'Not quite. Think: who is in immediate danger? C has Category III EFM (absent variability + recurrent variable decels) — most urgent. D has preeclampsia with severe features. B has hemorrhage signs. A is stable in labor. E is stable and non-urgent.';
+    fb.textContent = '✗ ' + rationale;
+    fb.className = 'feedback wrong show';
+  }
+}
+</script>
+</body>
+</html>
