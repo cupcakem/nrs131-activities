@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mood, Safe Sleep & Newborn Safety — Postpartum Lecture 7</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2a4a; --teal: #0d7377; --seafoam: #14a085;
+    --light-teal: #e8f5f4; --purple: #5c2d91; --purple-light: #f3eeff;
+    --soft: #f4f8f9; --text: #1e2d3d; --muted: #5a7080;
+    --warn: #c0392b; --warn-light: #fdf0ef; --accent: #f0a500;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--soft); color: var(--text); }
+  header { background: var(--navy); color: white; padding: 2rem 2.5rem 1.5rem; border-bottom: 4px solid var(--teal); }
+  header .label { font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: #7ab8c4; margin-bottom: 0.4rem; }
+  header h1 { font-family: 'Fraunces', serif; font-size: 2rem; font-weight: 700; }
+  header p { color: #a8c4ce; font-size: 0.9rem; margin-top: 0.4rem; }
+  main { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
+  section { margin-bottom: 2rem; }
+  .section-title { font-family: 'Fraunces', serif; font-size: 1.2rem; color: var(--navy); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.6rem; }
+  .section-title::after { content: ''; flex: 1; height: 2px; background: var(--light-teal); }
+
+  /* Blues vs PPD compare */
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-bottom: 1.2rem; }
+  .compare-card { background: white; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 10px rgba(26,42,74,0.08); }
+  .compare-header { padding: 1rem 1.2rem; color: white; }
+  .compare-card:nth-child(1) .compare-header { background: var(--teal); }
+  .compare-card:nth-child(2) .compare-header { background: var(--purple); }
+  .compare-header h3 { font-family: 'Fraunces', serif; font-size: 1.1rem; }
+  .compare-header .subtitle { font-size: 0.78rem; opacity: 0.85; margin-top: 0.2rem; }
+  .compare-body { padding: 1.1rem 1.2rem; }
+  .compare-body ul { padding-left: 1.1rem; font-size: 0.87rem; line-height: 1.9; color: var(--muted); }
+  .compare-body .note { font-size: 0.82rem; color: var(--muted); font-style: italic; margin-top: 0.6rem; padding-top: 0.5rem; border-top: 1px solid #eee; }
+
+  /* Warning signs list */
+  .warning-list { background: var(--warn-light); border-radius: 14px; padding: 1.2rem 1.5rem; margin-bottom: 1.2rem; }
+  .warning-list h3 { font-family: 'Fraunces', serif; font-size: 1rem; color: var(--warn); margin-bottom: 0.8rem; }
+  .warning-items { display: grid; grid-template-columns: 1fr 1fr; gap: 0.3rem 1.5rem; }
+  .warning-item { display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.87rem; padding: 0.3rem 0; color: var(--text); }
+  .warning-item::before { content: '⚠'; font-size: 0.8rem; color: var(--warn); margin-top: 0.1em; flex-shrink: 0; }
+
+  /* EPDS info */
+  .epds-card { background: var(--purple-light); border-left: 5px solid var(--purple); border-radius: 0 12px 12px 0; padding: 1.1rem 1.3rem; margin-bottom: 1.5rem; }
+  .epds-card h4 { font-size: 0.95rem; font-weight: 600; color: var(--purple); margin-bottom: 0.4rem; }
+  .epds-card p { font-size: 0.87rem; color: var(--muted); line-height: 1.6; }
+
+  /* Safe sleep grid */
+  .sleep-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+  .sleep-card { background: white; border-radius: 12px; padding: 1.2rem; box-shadow: 0 2px 10px rgba(26,42,74,0.07); }
+  .sleep-card.do { border-top: 4px solid var(--seafoam); }
+  .sleep-card.dont { border-top: 4px solid var(--warn); }
+  .sleep-card h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.7rem; }
+  .sleep-card.do h4 { color: var(--seafoam); }
+  .sleep-card.dont h4 { color: var(--warn); }
+  .sleep-card ul { padding-left: 1.1rem; font-size: 0.85rem; line-height: 1.8; color: var(--muted); }
+
+  /* Shaken baby */
+  .purple-period {
+    background: var(--navy);
+    color: white;
+    border-radius: 14px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .purple-period h3 { font-family: 'Fraunces', serif; font-size: 1.1rem; color: #c8b8f0; margin-bottom: 0.8rem; }
+  .purple-period .purple-acro { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.8rem; }
+  .purple-acro .pa { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 0.5rem 0.8rem; font-size: 0.88rem; }
+  .purple-acro .pa strong { color: #c8b8f0; }
+  .purple-period p { font-size: 0.87rem; color: #a8c4ce; line-height: 1.6; }
+
+  .danger-box { background: var(--warn); color: white; border-radius: 12px; padding: 1.2rem; margin-bottom: 1.5rem; }
+  .danger-box h4 { font-family: 'Fraunces', serif; font-size: 1rem; margin-bottom: 0.5rem; }
+  .danger-box p { font-size: 0.87rem; line-height: 1.6; opacity: 0.95; }
+
+  /* Knowledge check */
+  .check-section { background: white; border-radius: 14px; padding: 1.5rem; box-shadow: 0 2px 12px rgba(26,42,74,0.08); }
+  .check-section h3 { font-family: 'Fraunces', serif; font-size: 1.1rem; color: var(--navy); margin-bottom: 1rem; }
+  .check-q { display: flex; align-items: flex-start; gap: 0.8rem; margin-bottom: 0.9rem; font-size: 0.9rem; line-height: 1.5; }
+  .check-q input[type="checkbox"] { accent-color: var(--teal); width: 17px; height: 17px; margin-top: 0.15em; flex-shrink: 0; }
+  .reveal-btn { margin-top: 0.3rem; background: none; border: 1px solid var(--teal); color: var(--teal); border-radius: 6px; padding: 0.25rem 0.7rem; font-size: 0.8rem; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+  .reveal-btn:hover { background: var(--light-teal); }
+  .answer { display: none; background: var(--light-teal); border-radius: 6px; padding: 0.5rem 0.8rem; margin-top: 0.4rem; font-size: 0.85rem; color: var(--teal); }
+  .answer.visible { display: block; }
+  footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 1.5rem; border-top: 1px solid #d4e6ea; }
+  @media (max-width: 600px) { .compare-grid, .sleep-grid, .warning-items { grid-template-columns: 1fr; } header h1 { font-size: 1.5rem; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="label">Postpartum Education Lecture 7 · Student Handout 3 of 4</div>
+  <h1>Mood, Safe Sleep & Newborn Safety</h1>
+  <p>Postpartum blues vs. PPD · Safe sleep · Period of PURPLE Crying · SBS prevention</p>
+</header>
+<main>
+
+  <section>
+    <div class="section-title">💜 Postpartum Mood — Blues vs. Depression</div>
+    <div class="compare-grid">
+      <div class="compare-card">
+        <div class="compare-header">
+          <h3>Postpartum Blues</h3>
+          <div class="subtitle">Normal · Self-limiting</div>
+        </div>
+        <div class="compare-body">
+          <ul>
+            <li>Peaks days 3–5 postpartum</li>
+            <li>Resolves within 2 weeks</li>
+            <li>Mood swings, tearfulness</li>
+            <li>Crying over commercials</li>
+            <li>Feeling overwhelmed but functional</li>
+            <li>Related to hormonal shifts</li>
+          </ul>
+          <p class="note">Reassurance and support are appropriate. No treatment required if resolving within 2 weeks.</p>
+        </div>
+      </div>
+      <div class="compare-card">
+        <div class="compare-header">
+          <h3>Postpartum Depression</h3>
+          <div class="subtitle">Affects 1 in 7 women · Requires treatment</div>
+        </div>
+        <div class="compare-body">
+          <ul>
+            <li>Can onset 1 week to 1 year postpartum</li>
+            <li>Does not resolve on its own</li>
+            <li>Persistent, pervasive sadness</li>
+            <li>Impairs ability to care for self or baby</li>
+            <li>Requires medical evaluation and treatment</li>
+            <li>Multiple risk factors increase severity</li>
+          </ul>
+          <p class="note">PPD is not a character flaw or weakness — it is a medical condition requiring treatment.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="warning-list">
+      <h3>⚠️ Warning Signs — When Blues Become Something More</h3>
+      <div class="warning-items">
+        <div class="warning-item">Crying excessively, most of the day</div>
+        <div class="warning-item">Significant change in appetite</div>
+        <div class="warning-item">Feeling helpless or hopeless</div>
+        <div class="warning-item">Extreme worry or anxiety</div>
+        <div class="warning-item">Unable to sleep or sleeping all the time</div>
+        <div class="warning-item">Trouble bonding with baby</div>
+        <div class="warning-item">Unable to care for self or baby</div>
+        <div class="warning-item">Panic attacks</div>
+        <div class="warning-item">Fear of harming self or baby</div>
+        <div class="warning-item">Feeling loss of control</div>
+      </div>
+    </div>
+
+    <div class="epds-card">
+      <h4>Edinburgh Postnatal Depression Scale (EPDS)</h4>
+      <p>The EPDS is a validated 10-item self-report tool used to screen for PPD. Score ≥12 indicates high risk and warrants referral for mental health evaluation and counseling. All postpartum patients should be screened — PPD can develop up to one year after delivery. Breastfeeding has been shown to help reduce postpartum depression risk.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">😴 Safe Sleep for Newborns</div>
+    <div class="sleep-grid">
+      <div class="sleep-card do">
+        <h4>✅ DO — Safe Sleep Practices</h4>
+        <ul>
+          <li>Place baby on their <strong>back</strong> for every sleep</li>
+          <li>Use a flat, firm sleep surface (crib, bassinet)</li>
+          <li>Fitted sheet only — nothing else in crib</li>
+          <li>Room-share (same room, different sleep surface) for first 6–12 months (AAP)</li>
+          <li>Keep room at a comfortable temperature</li>
+          <li>Use a pacifier at sleep time (after BF established)</li>
+        </ul>
+      </div>
+      <div class="sleep-card dont">
+        <h4>🚫 DON'T — Unsafe Sleep</h4>
+        <ul>
+          <li>Never bed-share — present in 3 out of 5 SUID deaths; AAP states bed-sharing nearly triples the risk of sudden unexpected infant death (AAP 2022)</li>
+          <li>No sleep positioners, wedges, or anti-roll pillows (FDA warning)</li>
+          <li>No loose bedding, bumpers, stuffed animals, pillows</li>
+          <li>Don't allow baby to sleep in car seat, swing, or carrier</li>
+          <li>No drop-side cribs or cribs with missing parts</li>
+          <li>No soft surfaces (sofa, waterbed, cushion)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">😢 Period of PURPLE Crying</div>
+    <div class="purple-period">
+      <h3>What is the Period of PURPLE Crying?</h3>
+      <div class="purple-acro">
+        <div class="pa"><strong>P</strong>eak of crying</div>
+        <div class="pa"><strong>U</strong>nexpected</div>
+        <div class="pa"><strong>R</strong>esists soothing</div>
+        <div class="pa"><strong>P</strong>ain-like face</div>
+        <div class="pa"><strong>L</strong>ong lasting</div>
+        <div class="pa"><strong>E</strong>vening clustering</div>
+      </div>
+      <p>This is a normal developmental phase beginning around 2 weeks of age, peaking around 2 months, and resolving by 3–5 months. The baby is not sick or in danger. Educating parents about this phase is a primary prevention strategy for Shaken Baby Syndrome — the #1 trigger is inconsolable crying.</p>
+    </div>
+
+    <div class="danger-box">
+      <h4>🚨 Shaken Baby Syndrome — Never Shake a Baby</h4>
+      <p>Shaking causes severe and permanent brain damage or death. There is no "safe" amount of shaking. If a caregiver feels overwhelmed: <strong>put the baby down in a safe place, walk away, and take a break.</strong> Call a trusted person for help. It is always better to let a baby cry safely than to cause permanent harm.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">📞 Sex, Contraception & Follow-Up</div>
+    <div style="background:white;border-radius:14px;padding:1.5rem;box-shadow:0 2px 12px rgba(26,42,74,0.08);">
+      <ul style="padding-left:1.2rem;font-size:0.9rem;line-height:2;color:var(--muted);">
+        <li><strong style="color:var(--navy);">Nothing in the vagina for 6 weeks</strong> — intercourse, tampons, douching</li>
+        <li>Ovulation can resume as early as <strong style="color:var(--navy);">2 weeks</strong> postpartum</li>
+        <li>Pregnancy <strong>can occur</strong> before the first postpartum period — have a contraception plan before discharge</li>
+        <li>If breastfeeding: confirm contraceptive method is compatible (avoid combined estrogen-progestin methods early)</li>
+        <li>Postpartum follow-up visit: within <strong style="color:var(--navy);">6 weeks</strong> — schedule before discharge</li>
+        <li>Remind patients to disclose recent delivery to <strong>any</strong> provider they see within one year</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="check-section">
+    <h3>✔ Knowledge Check</h3>
+    <div class="check-q">
+      <input type="checkbox" id="q1">
+      <div>
+        <label for="q1">A patient on day 4 is crying frequently and says she feels "all over the place emotionally." She is caring for herself and her baby, breastfeeding well, and denies thoughts of harm. How do you respond?</label>
+        <br><button class="reveal-btn" onclick="toggleAnswer('a1')">Show Answer</button>
+        <div class="answer" id="a1">This is consistent with postpartum blues — normal hormonal mood lability that peaks around days 3–5 and resolves within 2 weeks. Validate her feelings, normalize the experience, reassure her this is not PPD, and give clear guidance on what to watch for. Schedule a follow-up and provide EPDS if not already done. Reinforce that she should call if symptoms persist or worsen.</div>
+      </div>
+    </div>
+    <div class="check-q">
+      <input type="checkbox" id="q2">
+      <div>
+        <label for="q2">A father tells you his 6-week-old cries for hours every evening and "nothing works." He looks exhausted and frustrated. What teaching is priority?</label>
+        <br><button class="reveal-btn" onclick="toggleAnswer('a2')">Show Answer</button>
+        <div class="answer" id="a2">Priority teaching is the Period of PURPLE Crying and Shaken Baby Syndrome prevention. Normalize the inconsolable evening crying as a developmental phase. Most importantly: if he feels overwhelmed, put the baby down in a safe place and step away. Shaken Baby Syndrome is triggered by caregiver frustration with crying — this is a critical safety conversation, not just reassurance.</div>
+      </div>
+    </div>
+    <div class="check-q">
+      <input type="checkbox" id="q3">
+      <div>
+        <label for="q3">TRUE or FALSE: A breastfeeding mother cannot get pregnant before her first postpartum period.</label>
+        <br><button class="reveal-btn" onclick="toggleAnswer('a3')">Show Answer</button>
+        <div class="answer" id="a3">FALSE — ovulation can occur as early as 2 weeks postpartum and BEFORE the first menstrual period returns. Breastfeeding suppresses ovulation but is NOT reliable contraception. All patients need a contraception plan before discharge regardless of feeding method.</div>
+      </div>
+    </div>
+  </div>
+</main>
+<footer>NRS 231 · Postpartum Education Lecture 7 · Handout 3 of 4 — Mood, Safe Sleep & Newborn Safety</footer>
+<script>
+function toggleAnswer(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('visible');
+  el.previousElementSibling.textContent = el.classList.contains('visible') ? 'Hide Answer' : 'Show Answer';
+}
+</script>
+</body>
+</html>

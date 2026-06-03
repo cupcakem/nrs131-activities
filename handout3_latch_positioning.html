@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Latch & Positioning — Breastfeeding Lecture 6</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2a4a;
+    --teal: #0d7377;
+    --seafoam: #14a085;
+    --light-teal: #e8f5f4;
+    --accent: #f0a500;
+    --white: #ffffff;
+    --soft: #f4f8f9;
+    --text: #1e2d3d;
+    --muted: #5a7080;
+    --warn: #c0392b;
+    --warn-light: #fdf0ef;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--soft); color: var(--text); }
+  header {
+    background: var(--navy);
+    color: white;
+    padding: 2rem 2.5rem 1.5rem;
+    border-bottom: 4px solid var(--teal);
+  }
+  header .label { font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--seafoam); margin-bottom: 0.4rem; }
+  header h1 { font-family: 'Fraunces', serif; font-size: 2rem; font-weight: 700; }
+  header p { color: #a8c4ce; font-size: 0.9rem; margin-top: 0.4rem; }
+  main { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
+  section { margin-bottom: 2rem; }
+  .section-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1.2rem;
+    color: var(--navy);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .section-title::after { content: ''; flex: 1; height: 2px; background: var(--light-teal); }
+
+  /* Latch steps */
+  .steps-list { display: flex; flex-direction: column; gap: 0.8rem; }
+  .step {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    background: white;
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+    box-shadow: 0 2px 8px rgba(26,42,74,0.07);
+    transition: transform 0.15s;
+  }
+  .step:hover { transform: translateX(3px); }
+  .step-num {
+    background: var(--navy);
+    color: white;
+    font-family: 'Fraunces', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .step-content h4 { font-size: 0.95rem; font-weight: 600; color: var(--navy); margin-bottom: 0.2rem; }
+  .step-content p { font-size: 0.87rem; color: var(--muted); line-height: 1.5; }
+  .step.warn-step { border-left: 4px solid var(--warn); }
+  .step.warn-step .step-num { background: var(--warn); }
+  .step.warn-step .step-content h4 { color: var(--warn); }
+
+  /* Positions grid */
+  .positions-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+  .pos-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(26,42,74,0.07);
+  }
+  .pos-header {
+    background: var(--teal);
+    color: white;
+    padding: 0.8rem 1rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  .pos-card:nth-child(2) .pos-header { background: var(--navy); }
+  .pos-card:nth-child(3) .pos-header { background: #2c6e6e; }
+  .pos-card:nth-child(4) .pos-header { background: #1d4e6e; }
+  .pos-body { padding: 0.9rem 1rem; }
+  .pos-body p { font-size: 0.85rem; color: var(--muted); line-height: 1.5; margin-bottom: 0.4rem; }
+  .pos-tag {
+    display: inline-block;
+    background: var(--light-teal);
+    color: var(--teal);
+    border-radius: 20px;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-top: 0.3rem;
+  }
+  .pos-tag.cs { background: #fff0d4; color: #8a5a00; }
+
+  /* Assessment two-column */
+  .assess-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .assess-card { background: white; border-radius: 12px; padding: 1.2rem; box-shadow: 0 2px 10px rgba(26,42,74,0.07); }
+  .assess-card h4 { font-size: 0.9rem; font-weight: 600; color: var(--navy); margin-bottom: 0.6rem; padding-bottom: 0.4rem; border-bottom: 2px solid var(--light-teal); }
+  .assess-card ul { padding-left: 1.1rem; font-size: 0.87rem; line-height: 1.8; color: var(--muted); }
+
+  /* Good vs poor latch */
+  .latch-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+  .latch-col { border-radius: 12px; padding: 1.2rem; }
+  .latch-col.good { background: #eafaf4; border-left: 4px solid var(--seafoam); }
+  .latch-col.poor { background: var(--warn-light); border-left: 4px solid var(--warn); }
+  .latch-col h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.6rem; }
+  .latch-col.good h4 { color: var(--seafoam); }
+  .latch-col.poor h4 { color: var(--warn); }
+  .latch-col ul { padding-left: 1.1rem; font-size: 0.87rem; line-height: 1.8; color: var(--muted); }
+
+  /* Flip card activity */
+  .flip-area {
+    background: var(--navy);
+    color: white;
+    border-radius: 14px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .flip-area h3 { font-family: 'Fraunces', serif; font-size: 1.1rem; color: var(--accent); margin-bottom: 0.8rem; }
+  .flip-cards { display: flex; flex-wrap: wrap; gap: 0.8rem; }
+  .flip-card {
+    background: white;
+    color: var(--navy);
+    border-radius: 8px;
+    padding: 0.7rem 1rem;
+    font-size: 0.87rem;
+    cursor: pointer;
+    transition: background 0.2s;
+    min-width: 160px;
+    flex: 1;
+    text-align: center;
+  }
+  .flip-card:hover { background: var(--light-teal); }
+  .flip-card .front { font-weight: 600; }
+  .flip-card .back { display: none; color: var(--teal); font-size: 0.82rem; margin-top: 0.3rem; }
+  .flip-card.flipped .back { display: block; }
+  .flip-card.flipped .front { color: var(--muted); font-weight: 400; font-size: 0.78rem; }
+
+  /* Knowledge check */
+  .check-section { background: white; border-radius: 14px; padding: 1.5rem; box-shadow: 0 2px 12px rgba(26,42,74,0.08); }
+  .check-section h3 { font-family: 'Fraunces', serif; font-size: 1.1rem; color: var(--navy); margin-bottom: 1rem; }
+  .check-q { display: flex; align-items: flex-start; gap: 0.8rem; margin-bottom: 0.9rem; font-size: 0.9rem; line-height: 1.5; }
+  .check-q input[type="checkbox"] { accent-color: var(--teal); width: 17px; height: 17px; margin-top: 0.15em; flex-shrink: 0; }
+  .reveal-btn { margin-top: 0.3rem; background: none; border: 1px solid var(--teal); color: var(--teal); border-radius: 6px; padding: 0.25rem 0.7rem; font-size: 0.8rem; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+  .reveal-btn:hover { background: var(--light-teal); }
+  .answer { display: none; background: var(--light-teal); border-radius: 6px; padding: 0.5rem 0.8rem; margin-top: 0.4rem; font-size: 0.85rem; color: var(--teal); }
+  .answer.visible { display: block; }
+
+  footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 1.5rem; border-top: 1px solid #d4e6ea; }
+  @media (max-width: 600px) {
+    .assess-grid, .latch-compare { grid-template-columns: 1fr; }
+    header h1 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="label">Breastfeeding Lecture 6 · Student Handout 3 of 4</div>
+  <h1>Latch & Positioning</h1>
+  <p>Getting a good latch, position options, and breast/nipple assessment</p>
+</header>
+<main>
+
+  <section>
+    <div class="section-title">🎯 Steps to a Good Latch</div>
+    <div class="steps-list">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h4>Unwrap the baby</h4>
+          <p>Remove swaddle so the baby can use their hands and feel skin-to-skin contact. A swaddled baby latches poorly.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h4>Position mom comfortably</h4>
+          <p>Mom must be relaxed with good back support. Arms supported with pillows to prevent fatigue.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h4>Stroke the infant's lip</h4>
+          <p>Gently stroke the lower lip with the nipple. Most babies will automatically open their mouth wide.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <h4>Wait for a WIDE open mouth</h4>
+          <p>Do not force the latch until the mouth is wide open — like a yawn. A small mouth opening leads to a shallow, painful latch.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <h4>Ensure tongue is under the breast</h4>
+          <p>The tongue should be cupped under the nipple and areola. A tongue-tied baby may not be able to do this effectively.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-content">
+          <h4>Bring baby close — tummy to tummy</h4>
+          <p>Baby's entire body should face mom, tummy to tummy. Ear, shoulder, and hip in alignment. Baby comes to the breast, not breast to baby.</p>
+        </div>
+      </div>
+      <div class="step warn-step">
+        <div class="step-num">⚠</div>
+        <div class="step-content">
+          <h4>NO hands on the baby's head!</h4>
+          <p>Never push on the occiput. Apply pressure on the upper back or base of skull only if needed. Pushing the head causes the baby to pull back and arch away.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">7</div>
+        <div class="step-content">
+          <h4>If nipple needs help protruding</h4>
+          <p>Have mom gently rub the nipple with her fingers to help it protrude before attempting latch. This is especially helpful with flat or inverted nipples.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">✅ Good Latch vs. Poor Latch</div>
+    <div class="latch-compare">
+      <div class="latch-col good">
+        <h4>✅ Signs of a Good Latch</h4>
+        <ul>
+          <li>Mouth wide open, lips flanged outward</li>
+          <li>Most of areola in the mouth</li>
+          <li>Chin touching breast</li>
+          <li>Rhythmic sucking with audible swallows</li>
+          <li>No pain (beyond initial latch)</li>
+          <li>Cheeks rounded, not dimpled</li>
+        </ul>
+      </div>
+      <div class="latch-col poor">
+        <h4>⚠️ Signs of a Poor Latch</h4>
+        <ul>
+          <li>Only nipple in mouth (not areola)</li>
+          <li>Clicking or smacking sounds</li>
+          <li>Dimpled cheeks</li>
+          <li>Persistent pain throughout feeding</li>
+          <li>Nipple comes out compressed or creased</li>
+          <li>Baby seems frustrated or falling off</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">🤱 Four Breastfeeding Positions</div>
+    <div class="positions-grid">
+      <div class="pos-card">
+        <div class="pos-header">Cradle Hold</div>
+        <div class="pos-body">
+          <p>Infant's head rests on mother's forearm, tummy-to-tummy. The classic position — works best once latch is established.</p>
+          <span class="pos-tag">Most common</span>
+        </div>
+      </div>
+      <div class="pos-card">
+        <div class="pos-header">Cross-Cradle Hold</div>
+        <div class="pos-body">
+          <p>Opposite hand supports the infant's head, allowing more control. Good for newborns and latch difficulty.</p>
+          <span class="pos-tag">Great for newborns</span>
+        </div>
+      </div>
+      <div class="pos-card">
+        <div class="pos-header">Football Hold</div>
+        <div class="pos-body">
+          <p>Infant tucked under the arm like a football. Keeps baby's weight off abdomen — ideal after cesarean section.</p>
+          <span class="pos-tag cs">✓ C-section friendly</span>
+        </div>
+      </div>
+      <div class="pos-card">
+        <div class="pos-header">Side-Lying Hold</div>
+        <div class="pos-body">
+          <p>Mom and baby lie facing each other. Allows mom to rest during night feedings. Also C-section friendly.</p>
+          <span class="pos-tag cs">✓ C-section friendly</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">🔍 Nursing Assessment of Mom</div>
+    <div class="assess-grid">
+      <div class="assess-card">
+        <h4>Nipple Assessment</h4>
+        <ul>
+          <li>Flat nipples</li>
+          <li>Inverted nipples</li>
+          <li>Nipple injury / cracking</li>
+          <li>Sore vs. painful (expect initial soreness)</li>
+        </ul>
+      </div>
+      <div class="assess-card">
+        <h4>Breast Assessment</h4>
+        <ul>
+          <li>Prior surgeries: augmentation, reduction, mastectomy</li>
+          <li>Size not related to ability to breastfeed</li>
+          <li>Engorgement</li>
+          <li>Plugged milk duct</li>
+          <li>Signs of mastitis</li>
+        </ul>
+      </div>
+      <div class="assess-card">
+        <h4>Relevant History</h4>
+        <ul>
+          <li>Previous breastfeeding experience</li>
+          <li>Medical conditions (HIV, active TB)</li>
+          <li>Cultural beliefs and family support</li>
+          <li>Education level and support system</li>
+        </ul>
+      </div>
+      <div class="assess-card">
+        <h4>Laid-Back / Biological Nurturing</h4>
+        <ul>
+          <li>Mom reclines at ~45 degrees</li>
+          <li>Baby placed tummy-down on mom</li>
+          <li>Gravity helps baby stay latched</li>
+          <li>Instinctive for many newborns</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="flip-area">
+    <h3>🃏 Click Each Card — Position Recall</h3>
+    <div class="flip-cards">
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="front">Cradle Hold</div>
+        <div class="back">Head on forearm, tummy to tummy. Classic hold — best after latch is established.</div>
+      </div>
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="front">Cross-Cradle</div>
+        <div class="back">Opposite hand supports head. More control of baby's head. Best for newborns or latch trouble.</div>
+      </div>
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="front">Football Hold</div>
+        <div class="back">Baby tucked under the arm. Keeps baby off abdomen. C-section friendly.</div>
+      </div>
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="front">Side-Lying</div>
+        <div class="back">Mom and baby lie facing each other. Good for rest, night feeds, and C-section recovery.</div>
+      </div>
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="front">Laid-Back Nursing</div>
+        <div class="back">Mom reclines ~45°, baby lies tummy-down. Gravity-assisted. Instinctive for newborns.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="check-section">
+    <h3>✔ Knowledge Check</h3>
+    <div class="check-q">
+      <input type="checkbox" id="q1">
+      <div>
+        <label for="q1">A patient had a cesarean section 6 hours ago. Which two positions are recommended and why?</label>
+        <br><button class="reveal-btn" onclick="toggleAnswer('a1')">Show Answer</button>
+        <div class="answer" id="a1">Football hold and side-lying position are both C-section friendly because they keep the baby's weight off the abdominal incision, reducing pain and discomfort for the mother.</div>
+      </div>
+    </div>
+    <div class="check-q">
+      <input type="checkbox" id="q2">
+      <div>
+        <label for="q2">Why should you never place your hand on the back of the baby's head during latching?</label>
+        <br><button class="reveal-btn" onclick="toggleAnswer('a2')">Show Answer</button>
+        <div class="answer" id="a2">Pushing on the occiput causes the baby to arch away and resist the breast. Pressure should be applied on the upper back if needed. This is a very common latch mistake.</div>
+      </div>
+    </div>
+    <div class="check-q">
+      <input type="checkbox" id="q3">
+      <div>
+        <label for="q3">A patient has inverted nipples. How does this affect breastfeeding and what can the nurse do?</label>
+        <br><button class="reveal-btn" onclick="toggleAnswer('a3')">Show Answer</button>
+        <div class="answer" id="a3">Inverted nipples make initial latching more challenging. The nurse can teach the mother to gently roll the nipple between her fingers to promote protrusion before latching. Nipple shields may also be considered. Breastfeeding is still possible.</div>
+      </div>
+    </div>
+    <div class="check-q">
+      <input type="checkbox" id="q4">
+      <div>
+        <label for="q4">Name 3 signs that indicate the baby has a good latch.</label>
+        <br><button class="reveal-btn" onclick="toggleAnswer('a4')">Show Answer</button>
+        <div class="answer" id="a4">Any 3 of: wide open mouth with lips flanged out, most of the areola in the mouth, chin touching the breast, audible swallowing, no persistent pain, cheeks rounded not dimpled.</div>
+      </div>
+    </div>
+  </div>
+</main>
+<footer>NRS 231 · Breastfeeding Lecture 6 · Handout 3 of 4 — Latch & Positioning</footer>
+<script>
+function toggleAnswer(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('visible');
+  el.previousElementSibling.textContent = el.classList.contains('visible') ? 'Hide Answer' : 'Show Answer';
+}
+</script>
+</body>
+</html>

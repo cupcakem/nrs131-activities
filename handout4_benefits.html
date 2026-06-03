@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Benefits of Breastfeeding — Breastfeeding Lecture 6</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2a4a;
+    --teal: #0d7377;
+    --seafoam: #14a085;
+    --light-teal: #e8f5f4;
+    --accent: #f0a500;
+    --white: #ffffff;
+    --soft: #f4f8f9;
+    --text: #1e2d3d;
+    --muted: #5a7080;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--soft); color: var(--text); }
+  header {
+    background: var(--navy);
+    color: white;
+    padding: 2rem 2.5rem 1.5rem;
+    border-bottom: 4px solid var(--teal);
+  }
+  header .label { font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--seafoam); margin-bottom: 0.4rem; }
+  header h1 { font-family: 'Fraunces', serif; font-size: 2rem; font-weight: 700; }
+  header p { color: #a8c4ce; font-size: 0.9rem; margin-top: 0.4rem; }
+  main { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
+  section { margin-bottom: 2rem; }
+  .section-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1.2rem;
+    color: var(--navy);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .section-title::after { content: ''; flex: 1; height: 2px; background: var(--light-teal); }
+
+  /* Quote */
+  .quote-block {
+    background: var(--navy);
+    color: white;
+    border-radius: 14px;
+    padding: 1.8rem 2rem;
+    margin-bottom: 2rem;
+    position: relative;
+  }
+  .quote-block::before {
+    content: '"';
+    font-family: 'Fraunces', serif;
+    font-size: 5rem;
+    color: var(--teal);
+    position: absolute;
+    top: -0.5rem;
+    left: 1rem;
+    line-height: 1;
+    opacity: 0.5;
+  }
+  .quote-block p {
+    font-family: 'Fraunces', serif;
+    font-size: 1rem;
+    line-height: 1.7;
+    font-style: italic;
+    color: #d4eaee;
+    padding-left: 1.5rem;
+  }
+  .quote-block cite {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--accent);
+    margin-top: 0.8rem;
+    padding-left: 1.5rem;
+    font-style: normal;
+  }
+
+  /* Benefits grid */
+  .benefits-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .benefit-panel { background: white; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 12px rgba(26,42,74,0.08); }
+  .benefit-panel-header { padding: 1rem 1.3rem; color: white; display: flex; align-items: center; gap: 0.6rem; }
+  .benefit-panel:nth-child(1) .benefit-panel-header { background: var(--navy); }
+  .benefit-panel:nth-child(2) .benefit-panel-header { background: var(--teal); }
+  .benefit-panel-header h3 { font-family: 'Fraunces', serif; font-size: 1.1rem; }
+  .benefit-list { padding: 1rem 1.3rem; }
+  .benefit-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--light-teal);
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+  .benefit-item:last-child { border-bottom: none; }
+  .benefit-item .icon { font-size: 1rem; margin-top: 0.05em; flex-shrink: 0; }
+
+  /* WHO / AAP */
+  .org-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .org-card { background: white; border-radius: 12px; padding: 1.2rem; box-shadow: 0 2px 10px rgba(26,42,74,0.07); }
+  .org-card .org-name {
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--seafoam);
+    margin-bottom: 0.4rem;
+  }
+  .org-card h4 { font-family: 'Fraunces', serif; font-size: 1rem; color: var(--navy); margin-bottom: 0.5rem; }
+  .org-card p { font-size: 0.87rem; color: var(--muted); line-height: 1.6; }
+  .rec-tag {
+    display: inline-block;
+    background: var(--light-teal);
+    color: var(--teal);
+    border-radius: 20px;
+    padding: 0.2rem 0.7rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    margin-top: 0.6rem;
+  }
+
+  /* Advocacy table */
+  .advocacy-box {
+    background: white;
+    border-radius: 14px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 12px rgba(26,42,74,0.08);
+  }
+  .advocacy-box h3 { font-family: 'Fraunces', serif; font-size: 1.1rem; color: var(--navy); margin-bottom: 1rem; }
+  .advocacy-row {
+    display: flex;
+    gap: 1rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--light-teal);
+    font-size: 0.9rem;
+    align-items: flex-start;
+  }
+  .advocacy-row:last-child { border-bottom: none; }
+  .advocacy-row .ar-label {
+    font-weight: 600;
+    color: var(--navy);
+    min-width: 160px;
+    flex-shrink: 0;
+  }
+  .advocacy-row .ar-desc { color: var(--muted); line-height: 1.5; }
+
+  /* Interactive check */
+  .check-section { background: white; border-radius: 14px; padding: 1.5rem; box-shadow: 0 2px 12px rgba(26,42,74,0.08); }
+  .check-section h3 { font-family: 'Fraunces', serif; font-size: 1.1rem; color: var(--navy); margin-bottom: 1rem; }
+  .check-q { display: flex; align-items: flex-start; gap: 0.8rem; margin-bottom: 0.9rem; font-size: 0.9rem; line-height: 1.5; }
+  .check-q input[type="checkbox"] { accent-color: var(--teal); width: 17px; height: 17px; margin-top: 0.15em; flex-shrink: 0; }
+  .reveal-btn { margin-top: 0.3rem; background: none; border: 1px solid var(--teal); color: var(--teal); border-radius: 6px; padding: 0.25rem 0.7rem; font-size: 0.8rem; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+  .reveal-btn:hover { background: var(--light-teal); }
+  .answer { display: none; background: var(--light-teal); border-radius: 6px; padding: 0.5rem 0.8rem; margin-top: 0.4rem; font-size: 0.85rem; color: var(--teal); }
+  .answer.visible { display: block; }
+
+  /* Reflection */
+  .reflect-box {
+    background: #fff9ed;
+    border-left: 5px solid var(--accent);
+    border-radius: 0 10px 10px 0;
+    padding: 1.2rem 1.5rem;
+    margin-top: 2rem;
+  }
+  .reflect-box h3 { font-family: 'Fraunces', serif; font-size: 1rem; color: #8a5a00; margin-bottom: 0.5rem; }
+  .reflect-box p { font-size: 0.88rem; color: #7a5020; line-height: 1.7; }
+
+  footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 1.5rem; border-top: 1px solid #d4e6ea; }
+  @media (max-width: 600px) {
+    .benefits-grid, .org-cards { grid-template-columns: 1fr; }
+    header h1 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="label">Breastfeeding Lecture 6 · Student Handout 4 of 4</div>
+  <h1>Benefits of Breastfeeding</h1>
+  <p>Infant benefits, maternal benefits, and the nurse's role in support</p>
+</header>
+<main>
+
+  <div class="quote-block">
+    <p>Breastfeeding provides unmatched health benefits for babies and mothers. It is the clinical gold standard for infant feeding and nutrition, with breast milk uniquely tailored to meet the health needs of a growing baby.</p>
+    <cite>— Dr. Ruth Petersen, Director, CDC Division of Nutrition, Physical Activity, and Obesity</cite>
+  </div>
+
+  <section>
+    <div class="section-title">🌟 Health Benefits — Who Benefits?</div>
+    <div class="benefits-grid">
+      <div class="benefit-panel">
+        <div class="benefit-panel-header">
+          <span>👶</span>
+          <h3>Benefits for Infants</h3>
+        </div>
+        <div class="benefit-list">
+          <div class="benefit-item"><span class="icon">🫁</span><span>Reduced risk of <strong>asthma</strong></span></div>
+          <div class="benefit-item"><span class="icon">⚖️</span><span>Reduced risk of <strong>obesity</strong></span></div>
+          <div class="benefit-item"><span class="icon">🩸</span><span>Reduced risk of <strong>Type 1 diabetes</strong></span></div>
+          <div class="benefit-item"><span class="icon">😮‍💨</span><span>Reduced severe <strong>lower respiratory disease</strong></span></div>
+          <div class="benefit-item"><span class="icon">👂</span><span>Reduced <strong>acute otitis media</strong> (ear infections)</span></div>
+          <div class="benefit-item"><span class="icon">💤</span><span>Reduced risk of <strong>SIDS</strong></span></div>
+          <div class="benefit-item"><span class="icon">🦠</span><span>Reduced <strong>GI infections</strong> (diarrhea/vomiting)</span></div>
+          <div class="benefit-item"><span class="icon">🏥</span><span>Reduced <strong>NEC</strong> in preterm infants</span></div>
+        </div>
+      </div>
+      <div class="benefit-panel">
+        <div class="benefit-panel-header">
+          <span>🧑</span>
+          <h3>Benefits for Mothers</h3>
+        </div>
+        <div class="benefit-list">
+          <div class="benefit-item"><span class="icon">❤️</span><span>Lowered risk of <strong>high blood pressure</strong></span></div>
+          <div class="benefit-item"><span class="icon">🩸</span><span>Lowered risk of <strong>Type 2 diabetes</strong></span></div>
+          <div class="benefit-item"><span class="icon">🎗️</span><span>Lowered risk of <strong>ovarian cancer</strong></span></div>
+          <div class="benefit-item"><span class="icon">🎀</span><span>Lowered risk of <strong>breast cancer</strong></span></div>
+          <div class="benefit-item"><span class="icon">🤝</span><span>Promotes <strong>mother-infant bonding</strong></span></div>
+          <div class="benefit-item"><span class="icon">💰</span><span><strong>Cost savings</strong> vs. formula feeding</span></div>
+          <div class="benefit-item"><span class="icon">🏠</span><span>Convenient — always available, right temperature</span></div>
+          <div class="benefit-item"><span class="icon">🔄</span><span>Helps uterus return to normal size (oxytocin)</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">🌍 Organizational Recommendations</div>
+    <div class="org-cards">
+      <div class="org-card">
+        <div class="org-name">American Academy of Pediatrics (AAP)</div>
+        <h4>Exclusive BF for ~6 Months</h4>
+        <p>The AAP recommends exclusive breastfeeding for approximately 6 months, then continued breastfeeding with complementary foods for 2 years or beyond as mutually desired.</p>
+        <span class="rec-tag">Updated 2022 statement</span>
+      </div>
+      <div class="org-card">
+        <div class="org-name">World Health Organization (WHO)</div>
+        <h4>Consistent with AAP</h4>
+        <p>WHO recommendations are consistent with AAP — exclusive breastfeeding for 6 months, continued with complementary foods up to 2 years or beyond.</p>
+        <span class="rec-tag">Global standard</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">👩‍⚕️ The Nurse's Role in Breastfeeding Support</div>
+    <div class="advocacy-box">
+      <h3>Supporting the Breastfeeding Dyad</h3>
+      <div class="advocacy-row">
+        <div class="ar-label">Golden Hour</div>
+        <div class="ar-desc">Facilitate uninterrupted skin-to-skin contact in the first hour after birth. Minimize unnecessary interventions. This is when the first latch most naturally occurs.</div>
+      </div>
+      <div class="advocacy-row">
+        <div class="ar-label">Anticipatory Guidance</div>
+        <div class="ar-desc">Teach parents what to expect before it happens — small colostrum volumes, feeding frequency, engorgement, normal weight loss — so they don't panic or supplement unnecessarily.</div>
+      </div>
+      <div class="advocacy-row">
+        <div class="ar-label">Cultural Humility</div>
+        <div class="ar-desc">Assess cultural beliefs, family support, and prior experiences. Never assume breastfeeding is the goal — explore the mother's wishes and support her informed decision.</div>
+      </div>
+      <div class="advocacy-row">
+        <div class="ar-label">Non-Judgmental Support</div>
+        <div class="ar-desc">Some mothers cannot or choose not to breastfeed. The nurse's role is to provide accurate information and support the mother's well-being — not shame or pressure.</div>
+      </div>
+      <div class="advocacy-row">
+        <div class="ar-label">IBCLC Referral</div>
+        <div class="ar-desc">Know when to refer to a lactation consultant (IBCLC). Complex latch issues, history of breast surgery, tongue-tie, premature infants, and persistent pain warrant specialist support.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="check-section">
+    <h3>✔ Knowledge Check</h3>
+    <div class="check-q">
+      <input type="checkbox" id="q1">
+      <div>
+        <label for="q1">What does the AAP currently recommend for duration of exclusive breastfeeding?</label>
+        <br><button class="reveal-btn" onclick="toggleAnswer('a1')">Show Answer</button>
+        <div class="answer" id="a1">Exclusive breastfeeding for approximately 6 months, then continued breastfeeding with complementary foods for 2 years or beyond, as long as mutually desired by mother and child.</div>
+      </div>
+    </div>
+    <div class="check-q">
+      <input type="checkbox" id="q2">
+      <div>
+        <label for="q2">Name 3 health benefits of breastfeeding for the infant and 2 for the mother.</label>
+        <br><button class="reveal-btn" onclick="toggleAnswer('a2')">Show Answer</button>
+        <div class="answer" id="a2">Infant (any 3): reduced asthma, obesity, Type 1 diabetes, lower respiratory disease, ear infections, SIDS, GI infections, NEC in preterm infants. Mother (any 2): reduced hypertension, Type 2 diabetes, ovarian cancer, breast cancer.</div>
+      </div>
+    </div>
+    <div class="check-q">
+      <input type="checkbox" id="q3">
+      <div>
+        <label for="q3">A mother says she doesn't want to breastfeed. What is the nurse's appropriate response?</label>
+        <br><button class="reveal-btn" onclick="toggleAnswer('a3')">Show Answer</button>
+        <div class="answer" id="a3">Respect the mother's decision. Provide non-judgmental support, ask if she would like information about formula feeding, and assist with lactation suppression as needed. The nurse's role is to support the mother's informed choice — not to pressure or shame her.</div>
+      </div>
+    </div>
+    <div class="check-q">
+      <input type="checkbox" id="q4">
+      <div>
+        <label for="q4">What is the "Golden Hour" and why is it significant for breastfeeding?</label>
+        <br><button class="reveal-btn" onclick="toggleAnswer('a4')">Show Answer</button>
+        <div class="answer" id="a4">The Golden Hour is the first hour after birth, ideally with uninterrupted skin-to-skin contact between mother and infant. This is when the first latch most naturally and successfully occurs, driven by the newborn's instinctive behaviors during the quiet alert phase.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="reflect-box">
+    <h3>💭 End-of-Lecture Reflection</h3>
+    <p>Think about a patient you may care for who has mixed feelings about breastfeeding. How would you start that conversation? What language would you use? How do evidence-based recommendations align with respect for patient autonomy? Write 2–3 sentences for discussion.</p>
+  </div>
+
+</main>
+<footer>NRS 231 · Breastfeeding Lecture 6 · Handout 4 of 4 — Benefits of Breastfeeding</footer>
+<script>
+function toggleAnswer(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('visible');
+  el.previousElementSibling.textContent = el.classList.contains('visible') ? 'Hide Answer' : 'Show Answer';
+}
+</script>
+</body>
+</html>

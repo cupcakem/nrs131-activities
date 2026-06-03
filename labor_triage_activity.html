@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Labor Triage: When Do We Go?</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f7f4ef;
+    --surface: #ffffff;
+    --text: #1a1a1a;
+    --text-muted: #6b6b6b;
+    --border: rgba(0,0,0,0.10);
+    --go-now-bg: #fff0ee;
+    --go-now-text: #7a1f10;
+    --go-now-accent: #c0392b;
+    --go-soon-bg: #fff8ec;
+    --go-soon-text: #6b3a00;
+    --go-soon-accent: #d4850a;
+    --stay-bg: #edf7f3;
+    --stay-text: #0d4a30;
+    --stay-accent: #1a8a5a;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 2rem 1rem 4rem;
+  }
+
+  header {
+    text-align: center;
+    max-width: 720px;
+    margin: 0 auto 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  header .eyebrow {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+  }
+
+  header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 400;
+    line-height: 1.15;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+  }
+
+  header p {
+    font-size: 15px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .legend {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 1.25rem;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .scenarios {
+    max-width: 720px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.5rem 1.75rem;
+    transition: box-shadow 0.2s;
+  }
+
+  .card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+  }
+
+  .scenario-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 3px;
+  }
+
+  .patient-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: var(--text);
+  }
+
+  .scenario-body {
+    font-size: 15px;
+    color: #444;
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+  }
+
+  .btn-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .opt-btn {
+    padding: 8px 18px;
+    border-radius: 999px;
+    border: 1.5px solid;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+    background: transparent;
+  }
+
+  .opt-btn:active { transform: scale(0.97); }
+
+  .opt-btn.go-now { border-color: var(--go-now-accent); color: var(--go-now-accent); }
+  .opt-btn.go-now:hover, .opt-btn.go-now.selected { background: var(--go-now-bg); }
+
+  .opt-btn.go-soon { border-color: var(--go-soon-accent); color: var(--go-soon-accent); }
+  .opt-btn.go-soon:hover, .opt-btn.go-soon.selected { background: var(--go-soon-bg); }
+
+  .opt-btn.stay-home { border-color: var(--stay-accent); color: var(--stay-accent); }
+  .opt-btn.stay-home:hover, .opt-btn.stay-home.selected { background: var(--stay-bg); }
+
+  .reveal-btn {
+    margin-left: auto;
+    padding: 8px 18px;
+    border-radius: 999px;
+    border: 1.5px solid var(--border);
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .reveal-btn:hover { background: var(--bg); color: var(--text); }
+
+  .answer-box {
+    display: none;
+    margin-top: 1rem;
+    padding: 1rem 1.25rem;
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 1.7;
+    border-left: 3px solid;
+  }
+
+  .answer-box.go-now-ans {
+    background: var(--go-now-bg);
+    color: var(--go-now-text);
+    border-color: var(--go-now-accent);
+  }
+
+  .answer-box.go-soon-ans {
+    background: var(--go-soon-bg);
+    color: var(--go-soon-text);
+    border-color: var(--go-soon-accent);
+  }
+
+  .answer-box.stay-ans {
+    background: var(--stay-bg);
+    color: var(--stay-text);
+    border-color: var(--stay-accent);
+  }
+
+  .answer-verdict {
+    font-weight: 500;
+    font-size: 15px;
+    margin-bottom: 6px;
+  }
+
+  footer {
+    text-align: center;
+    margin-top: 3rem;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">In-class activity — Stages of Labor</div>
+  <h1>When do we go?</h1>
+  <p>Read each scenario aloud. Discuss as a class, then reveal the answer.</p>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#c0392b"></div> Go now</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#d4850a"></div> Go soon</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#1a8a5a"></div> Stay home for now</div>
+  </div>
+</header>
+
+<div class="scenarios" id="scenarios"></div>
+
+<footer>Stages of Labor — Lecture 2 &nbsp;·&nbsp; L&amp;D Nursing</footer>
+
+<script>
+const scenarios = [
+  {
+    num: 1,
+    name: "Maria, G2P1, 38 weeks",
+    body: "Calls L&D triage at 2am. Contractions every 12–15 minutes, lasting 30 seconds. Mild discomfort — she can talk through them easily. No bleeding, no fluid leaking. Baby moving normally. Lives 5 minutes from the hospital.",
+    answer: "stay",
+    verdict: "Stay home for now",
+    rationale: "Irregular contractions every 12–15 min with mild intensity suggest latent phase or false labor. No red-flag symptoms are present. She should rest, walk, hydrate, and call back when contractions reach the 5-1-1 rule: every 5 minutes, lasting 1 minute, for 1 hour — or sooner if anything changes."
+  },
+  {
+    num: 2,
+    name: "Destiny, G1P0, 39 weeks",
+    body: "Reports a 'big gush' of fluid 20 minutes ago. Fluid is clear and odorless. No contractions yet. Fetal movement is normal. She's unsure whether she may have just urinated.",
+    answer: "go-now",
+    verdict: "Go now",
+    rationale: "Suspected membrane rupture requires immediate evaluation to rule out cord prolapse and assess infection risk. Even without contractions, ruptured membranes are on the hospital go-list. Cord prolapse is rare but a true emergency — do not wait."
+  },
+  {
+    num: 3,
+    name: "Anika, G3P2, 37 weeks",
+    body: "Contractions every 6–7 minutes, lasting 45 seconds, moderate intensity. She mentions her last two labors were very fast. She lives 45 minutes from the hospital. No other concerning symptoms.",
+    answer: "go-soon",
+    verdict: "Go soon — head in now",
+    rationale: "Multiparity + history of fast labors + a 45-minute drive is a significant precipitous birth risk. Even though contractions haven't quite reached 5-1-1, her history and distance from the hospital warrant leaving early. Distance is a key factor in the triage decision."
+  },
+  {
+    num: 4,
+    name: "Keisha, G1P0, 36 weeks",
+    body: "Reports a persistent headache, swelling in her face and hands since yesterday, and 'seeing spots' when she stands up. Contractions are irregular and mild. Her BP at her last OB visit was 138/90.",
+    answer: "go-now",
+    verdict: "Go now",
+    rationale: "These are classic warning signs of preeclampsia: headache, facial and hand edema, visual disturbances, and previously elevated BP. These indicators are on the go-list regardless of contraction status. This is not a watch-and-wait situation."
+  },
+  {
+    num: 5,
+    name: "Priya, G2P1, 40 weeks",
+    body: "Contractions every 4–5 minutes, lasting 60 seconds, strong intensity for the past 2 hours. Brownish-pink mucus discharge present. She is calm and breathing well through contractions. Lives 10 minutes away.",
+    answer: "go-now",
+    verdict: "Go now",
+    rationale: "Active labor pattern: contractions meeting the 5-1-1 rule, bloody show present, strong intensity, sustained for 2 hours. This is textbook 'time to come in.' Even with 10 minutes of proximity, there's no reason to delay."
+  },
+  {
+    num: 6,
+    name: "Tamara, G1P0, 38 weeks",
+    body: "Has not felt the baby move since last night — approximately 14 hours ago. No contractions, no fluid leaking, no bleeding. She tried drinking cold water and lying on her side, but still no movement felt.",
+    answer: "go-now",
+    verdict: "Go now",
+    rationale: "Absent fetal movement for 14 hours is a red-flag emergency regardless of contraction status. Decreased or absent fetal movement requires immediate evaluation — non-stress test or biophysical profile — to assess fetal wellbeing. Do not advise her to wait."
+  }
+];
+
+const ansClass = { "go-now": "go-now-ans", "go-soon": "go-soon-ans", "stay": "stay-ans" };
+const container = document.getElementById('scenarios');
+
+scenarios.forEach(s => {
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.innerHTML = `
+    <div class="card-header">
+      <div>
+        <div class="scenario-label">Scenario ${s.num}</div>
+        <div class="patient-name">${s.name}</div>
+      </div>
+    </div>
+    <div class="scenario-body">${s.body}</div>
+    <div class="btn-row">
+      <button class="opt-btn go-now" onclick="pick(this, '${s.answer}', 'go-now')">Go now</button>
+      <button class="opt-btn go-soon" onclick="pick(this, '${s.answer}', 'go-soon')">Go soon</button>
+      <button class="opt-btn stay-home" onclick="pick(this, '${s.answer}', 'stay')">Stay home for now</button>
+      <button class="reveal-btn" onclick="reveal(this, ${s.num})">Reveal answer</button>
+    </div>
+    <div class="answer-box ${ansClass[s.answer]}" id="ans-${s.num}">
+      <div class="answer-verdict">${s.verdict}</div>
+      ${s.rationale}
+    </div>
+  `;
+  container.appendChild(card);
+});
+
+function pick(btn, correct, chosen) {
+  const row = btn.closest('.btn-row');
+  row.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+function reveal(btn, num) {
+  const box = document.getElementById('ans-' + num);
+  const showing = box.style.display === 'block';
+  box.style.display = showing ? 'none' : 'block';
+  btn.textContent = showing ? 'Reveal answer' : 'Hide answer';
+}
+</script>
+</body>
+</html>

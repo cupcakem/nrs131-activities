@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Physical Recovery — Postpartum Lecture 7</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2a4a; --teal: #0d7377; --seafoam: #14a085;
+    --light-teal: #e8f5f4; --accent: #f0a500; --soft: #f4f8f9;
+    --text: #1e2d3d; --muted: #5a7080; --white: #fff;
+    --warn: #c0392b; --warn-light: #fdf0ef;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--soft); color: var(--text); }
+  header { background: var(--navy); color: white; padding: 2rem 2.5rem 1.5rem; border-bottom: 4px solid var(--teal); }
+  header .label { font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: #7ab8c4; margin-bottom: 0.4rem; }
+  header h1 { font-family: 'Fraunces', serif; font-size: 2rem; font-weight: 700; }
+  header p { color: #a8c4ce; font-size: 0.9rem; margin-top: 0.4rem; }
+  main { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
+  section { margin-bottom: 2rem; }
+  .section-title { font-family: 'Fraunces', serif; font-size: 1.2rem; color: var(--navy); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.6rem; }
+  .section-title::after { content: ''; flex: 1; height: 2px; background: var(--light-teal); }
+
+  /* Involution timeline */
+  .involution-track {
+    background: white;
+    border-radius: 14px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 12px rgba(26,42,74,0.08);
+    margin-bottom: 1.5rem;
+  }
+  .involution-track h3 { font-family: 'Fraunces', serif; font-size: 1rem; color: var(--navy); margin-bottom: 1rem; }
+  .timeline { display: flex; gap: 0; overflow-x: auto; }
+  .tl-step {
+    flex: 1;
+    min-width: 80px;
+    text-align: center;
+    padding: 0.7rem 0.5rem;
+    border-right: 1px solid #e0eef0;
+    position: relative;
+  }
+  .tl-step:last-child { border-right: none; }
+  .tl-day { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.3rem; }
+  .tl-loc { font-weight: 700; font-size: 1rem; color: var(--navy); }
+  .tl-note { font-size: 0.72rem; color: var(--muted); margin-top: 0.3rem; line-height: 1.3; }
+  .tl-step.highlight { background: var(--light-teal); border-radius: 8px; }
+
+  /* Normal vs abnormal */
+  .nva-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .nva-card { border-radius: 12px; padding: 1.2rem; }
+  .nva-card.normal { background: #eafaf4; border-left: 4px solid var(--seafoam); }
+  .nva-card.abnormal { background: var(--warn-light); border-left: 4px solid var(--warn); }
+  .nva-card h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.6rem; }
+  .nva-card.normal h4 { color: var(--seafoam); }
+  .nva-card.abnormal h4 { color: var(--warn); }
+  .nva-card ul { padding-left: 1.1rem; font-size: 0.87rem; line-height: 1.9; color: var(--muted); }
+
+  /* Lochia color strip */
+  .lochia-strip {
+    display: flex;
+    gap: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(26,42,74,0.1);
+    margin-bottom: 1.2rem;
+  }
+  .loch-phase { flex: 1; padding: 1.1rem 0.8rem; text-align: center; color: white; }
+  .loch-phase:nth-child(1) { background: #8b1a2a; }
+  .loch-phase:nth-child(2) { background: #b86830; }
+  .loch-phase:nth-child(3) { background: #8a7f6a; }
+  .loch-phase h4 { font-weight: 700; font-size: 0.9rem; margin-bottom: 0.3rem; }
+  .loch-phase .timing { font-size: 0.72rem; opacity: 0.85; margin-bottom: 0.4rem; }
+  .loch-phase .desc { font-size: 0.78rem; opacity: 0.9; line-height: 1.4; }
+
+  /* Info cards */
+  .info-card { background: white; border-radius: 14px; padding: 1.5rem; box-shadow: 0 2px 12px rgba(26,42,74,0.08); margin-bottom: 1.2rem; }
+  .info-card h3 { font-family: 'Fraunces', serif; font-size: 1rem; color: var(--navy); margin-bottom: 0.8rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--light-teal); }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .sub-card { background: var(--soft); border-radius: 10px; padding: 1rem; }
+  .sub-card h4 { font-size: 0.88rem; font-weight: 600; color: var(--navy); margin-bottom: 0.5rem; }
+  .sub-card ul { padding-left: 1.1rem; font-size: 0.85rem; line-height: 1.8; color: var(--muted); }
+  .warn-note { background: var(--warn-light); border-left: 4px solid var(--warn); border-radius: 0 8px 8px 0; padding: 0.7rem 1rem; margin-top: 0.8rem; font-size: 0.85rem; color: #7a1a14; }
+  .teach-note { background: var(--light-teal); border-left: 4px solid var(--teal); border-radius: 0 8px 8px 0; padding: 0.7rem 1rem; margin-top: 0.8rem; font-size: 0.85rem; color: var(--teal); }
+
+  /* Knowledge check */
+  .check-section { background: white; border-radius: 14px; padding: 1.5rem; box-shadow: 0 2px 12px rgba(26,42,74,0.08); }
+  .check-section h3 { font-family: 'Fraunces', serif; font-size: 1.1rem; color: var(--navy); margin-bottom: 1rem; }
+  .check-q { display: flex; align-items: flex-start; gap: 0.8rem; margin-bottom: 0.9rem; font-size: 0.9rem; line-height: 1.5; }
+  .check-q input[type="checkbox"] { accent-color: var(--teal); width: 17px; height: 17px; margin-top: 0.15em; flex-shrink: 0; }
+  .reveal-btn { margin-top: 0.3rem; background: none; border: 1px solid var(--teal); color: var(--teal); border-radius: 6px; padding: 0.25rem 0.7rem; font-size: 0.8rem; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+  .reveal-btn:hover { background: var(--light-teal); }
+  .answer { display: none; background: var(--light-teal); border-radius: 6px; padding: 0.5rem 0.8rem; margin-top: 0.4rem; font-size: 0.85rem; color: var(--teal); }
+  .answer.visible { display: block; }
+  footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 1.5rem; border-top: 1px solid #d4e6ea; }
+  @media (max-width: 600px) { .nva-grid, .two-col { grid-template-columns: 1fr; } header h1 { font-size: 1.5rem; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="label">Postpartum Education Lecture 7 · Student Handout 2 of 4</div>
+  <h1>Physical Recovery</h1>
+  <p>Fundus · Lochia · Incision · Elimination · Activity</p>
+</header>
+<main>
+
+  <section>
+    <div class="section-title">🔵 Uterine Involution — Fundus</div>
+    <div class="involution-track">
+      <h3>Expected Fundal Height Progression</h3>
+      <div class="timeline">
+        <div class="tl-step highlight">
+          <div class="tl-day">Delivery</div>
+          <div class="tl-loc">U/U</div>
+          <div class="tl-note">At umbilicus</div>
+        </div>
+        <div class="tl-step">
+          <div class="tl-day">Day 1</div>
+          <div class="tl-loc">U/U or 1↓</div>
+          <div class="tl-note">Firm, midline</div>
+        </div>
+        <div class="tl-step">
+          <div class="tl-day">Day 2</div>
+          <div class="tl-loc">2 cm ↓</div>
+          <div class="tl-note">~2 fb below</div>
+        </div>
+        <div class="tl-step">
+          <div class="tl-day">Day 3</div>
+          <div class="tl-loc">3 cm ↓</div>
+          <div class="tl-note"></div>
+        </div>
+        <div class="tl-step">
+          <div class="tl-day">Day 5</div>
+          <div class="tl-loc">5 cm ↓</div>
+          <div class="tl-note">Midpoint</div>
+        </div>
+        <div class="tl-step">
+          <div class="tl-day">Day 9</div>
+          <div class="tl-loc">~Pubis</div>
+          <div class="tl-note">Nearly gone</div>
+        </div>
+        <div class="tl-step highlight">
+          <div class="tl-day">Week 6</div>
+          <div class="tl-loc">Non-palpable</div>
+          <div class="tl-note">Involution complete</div>
+        </div>
+      </div>
+    </div>
+    <div class="nva-grid">
+      <div class="nva-card normal">
+        <h4>✅ Normal</h4>
+        <ul>
+          <li>Firm, round, midline</li>
+          <li>Descends ~1 cm/day</li>
+          <li>Non-palpable by ~day 10</li>
+          <li>Afterpains — especially with breastfeeding</li>
+        </ul>
+      </div>
+      <div class="nva-card abnormal">
+        <h4>⚠️ Abnormal — Report</h4>
+        <ul>
+          <li>Boggy (soft, not firm)</li>
+          <li>Deviated to one side (bladder distension)</li>
+          <li>Not descending as expected</li>
+          <li>Fundus rising (subinvolution)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="teach-note">⚠️ Avoid knee-chest position until at least 3rd postpartum week — the still-open uterus can allow air entry and risk air embolism.</div>
+  </section>
+
+  <section>
+    <div class="section-title">🩸 Lochia</div>
+    <div class="lochia-strip">
+      <div class="loch-phase">
+        <h4>Lochia Rubra</h4>
+        <div class="timing">Days 1–3</div>
+        <div class="desc">Dark red, fleshy odor. Bloody with decidua, mucus, fetal lanugo.</div>
+      </div>
+      <div class="loch-phase">
+        <h4>Lochia Serosa</h4>
+        <div class="timing">Days 4–10</div>
+        <div class="desc">Pink to brownish. Thinner. Serosanguineous with leukocytes.</div>
+      </div>
+      <div class="loch-phase">
+        <h4>Lochia Alba</h4>
+        <div class="timing">Day 10 – Week 6</div>
+        <div class="desc">Yellowish-white. Mostly leukocytes and mucus. Decreasing.</div>
+      </div>
+    </div>
+    <div class="nva-grid">
+      <div class="nva-card normal">
+        <h4>✅ Normal Lochia</h4>
+        <ul>
+          <li>Progresses through the three stages</li>
+          <li>Fleshy (not foul) odor</li>
+          <li>Amount decreases over time</li>
+          <li>May increase briefly with activity</li>
+        </ul>
+      </div>
+      <div class="nva-card abnormal">
+        <h4>⚠️ Abnormal — Report</h4>
+        <ul>
+          <li>Soaks &gt;1 pad/hour</li>
+          <li>Clots ≥ egg-sized</li>
+          <li>Foul or offensive odor</li>
+          <li>Returns to rubra after serosa/alba</li>
+          <li>Absent lochia (may indicate retained products)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">🔪 C-Section Incision Care</div>
+    <div class="info-card">
+      <h3>Patient Teaching Points</h3>
+      <div class="two-col">
+        <div class="sub-card">
+          <h4>✅ Do</h4>
+          <ul>
+            <li>Shower as normal — pat dry</li>
+            <li>Let Steri-strips fall off naturally</li>
+            <li>Monitor daily for changes</li>
+            <li>Lift nothing heavier than the baby</li>
+            <li>Use pillow to splint when coughing/laughing</li>
+          </ul>
+        </div>
+        <div class="sub-card">
+          <h4>🚫 Don't</h4>
+          <ul>
+            <li>Apply creams or powders to incision</li>
+            <li>Remove Steri-strips manually</li>
+            <li>Lift the baby in the car seat</li>
+            <li>Submerge in bath or pool until healed</li>
+            <li>Ignore increasing pain at site</li>
+          </ul>
+        </div>
+      </div>
+      <div class="warn-note">⚠️ "Not the baby in the car seat" — a common oversight. The car seat + baby together is far heavier than the baby alone and can stress the incision and abdominal muscles significantly.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">🚿 Elimination</div>
+    <div class="info-card">
+      <h3>Urination</h3>
+      <div class="two-col">
+        <div class="sub-card">
+          <h4>Before Discharge</h4>
+          <ul>
+            <li>Patient must void without difficulty</li>
+            <li>Assess for urinary retention</li>
+            <li>First void may be uncomfortable</li>
+            <li>Peribottle for comfort</li>
+          </ul>
+        </div>
+        <div class="sub-card">
+          <h4>Reducing UTI Risk</h4>
+          <ul>
+            <li>8 × 8 oz glasses of water daily</li>
+            <li>Empty bladder frequently</li>
+            <li>Wipe front to back</li>
+            <li>Wash hands frequently</li>
+          </ul>
+        </div>
+      </div>
+      <div class="teach-note">Teach S/S of UTI: burning, frequency, urgency, cloudy or foul-smelling urine, pelvic pain. Postpartum women are at increased risk due to perineal trauma, urinary catheterization, and decreased sensation.</div>
+    </div>
+    <div class="info-card">
+      <h3>Bowel Function</h3>
+      <div class="two-col">
+        <div class="sub-card">
+          <h4>Expected</h4>
+          <ul>
+            <li>First BM by day 2–3</li>
+            <li>Hemorrhoids common</li>
+            <li>Stool softeners routinely offered</li>
+            <li>Fear of BM with perineal repair is normal</li>
+          </ul>
+        </div>
+        <div class="sub-card">
+          <h4>Interventions</h4>
+          <ul>
+            <li>Adequate hydration</li>
+            <li>High fiber diet</li>
+            <li>Early ambulation</li>
+            <li>Witch hazel pads for hemorrhoids</li>
+            <li>Sitz baths for comfort</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">⚖️ Weight, Fatigue & Activity</div>
+    <div class="info-card">
+      <h3>Expected Weight Loss & Recovery Timeline</h3>
+      <div class="two-col">
+        <div class="sub-card">
+          <h4>Weight Loss Pattern</h4>
+          <ul>
+            <li>~10–12 lbs immediately after birth</li>
+            <li>~5 more lbs in first week (fluid)</li>
+            <li>Back to pre-pregnancy weight by 6–8 weeks (varies)</li>
+            <li>Target: no more than 1–2 lbs/week loss</li>
+          </ul>
+        </div>
+        <div class="sub-card">
+          <h4>Fatigue Management</h4>
+          <ul>
+            <li>6 weeks for recovery — protect that time</li>
+            <li>Sleep when the baby sleeps</li>
+            <li>Limit visitors or put them to work</li>
+            <li>Accept help with meals and housework</li>
+            <li>Energy depletion from delivery + sleep deprivation is cumulative</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="check-section">
+    <h3>✔ Knowledge Check</h3>
+    <div class="check-q">
+      <input type="checkbox" id="q1">
+      <div>
+        <label for="q1">On day 3 postpartum, you palpate the fundus at 3 cm below the umbilicus, firm and midline. Is this finding expected?</label>
+        <br><button class="reveal-btn" onclick="toggleAnswer('a1')">Show Answer</button>
+        <div class="answer" id="a1">Yes — expected. The fundus descends approximately 1 cm per day. By day 3, a fundal height of 3 cm below the umbilicus is within normal limits. Firm and midline are reassuring findings.</div>
+      </div>
+    </div>
+    <div class="check-q">
+      <input type="checkbox" id="q2">
+      <div>
+        <label for="q2">A patient calls on day 12 postpartum saying her vaginal discharge returned to bright red. She was in lochia alba. What does this suggest and what do you advise?</label>
+        <br><button class="reveal-btn" onclick="toggleAnswer('a2')">Show Answer</button>
+        <div class="answer" id="a2">Return to rubra after serosa or alba is abnormal. It may indicate subinvolution, retained placental fragments, or excessive activity. Advise her to rest and call the provider immediately for evaluation. If she is soaking a pad per hour or has clots, go to the ED.</div>
+      </div>
+    </div>
+    <div class="check-q">
+      <input type="checkbox" id="q3">
+      <div>
+        <label for="q3">Why is the knee-chest position contraindicated in the first 3 weeks postpartum?</label>
+        <br><button class="reveal-btn" onclick="toggleAnswer('a3')">Show Answer</button>
+        <div class="answer" id="a3">The cervical os is still open in the early postpartum period. The knee-chest position can allow air to enter the uterus, creating a risk for air embolism — a potentially fatal complication.</div>
+      </div>
+    </div>
+  </div>
+</main>
+<footer>NRS 231 · Postpartum Education Lecture 7 · Handout 2 of 4 — Physical Recovery</footer>
+<script>
+function toggleAnswer(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('visible');
+  el.previousElementSibling.textContent = el.classList.contains('visible') ? 'Hide Answer' : 'Show Answer';
+}
+</script>
+</body>
+</html>

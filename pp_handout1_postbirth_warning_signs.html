@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>POST-BIRTH Warning Signs — Postpartum Lecture 7</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2a4a;
+    --crimson: #8b1a2a;
+    --crimson-light: #fdf0f2;
+    --amber: #b85c00;
+    --amber-light: #fff4e0;
+    --teal: #0d7377;
+    --light-teal: #e8f5f4;
+    --soft: #f4f6f9;
+    --text: #1e2d3d;
+    --muted: #5a7080;
+    --white: #ffffff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--soft); color: var(--text); }
+  header {
+    background: var(--crimson);
+    color: white;
+    padding: 2rem 2.5rem 1.5rem;
+    border-bottom: 4px solid #c0392b;
+  }
+  header .label { font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: #f5a0ac; margin-bottom: 0.4rem; }
+  header h1 { font-family: 'Fraunces', serif; font-size: 2rem; font-weight: 700; line-height: 1.2; }
+  header p { color: #f5c0c8; font-size: 0.9rem; margin-top: 0.4rem; }
+  main { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
+
+  .urgency-banner {
+    background: var(--crimson);
+    color: white;
+    border-radius: 12px;
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .urgency-banner .icon { font-size: 1.8rem; flex-shrink: 0; }
+  .urgency-banner p { font-size: 0.92rem; line-height: 1.6; }
+  .urgency-banner strong { color: #ffd0d6; }
+
+  .mnemonic-intro {
+    background: var(--navy);
+    color: white;
+    border-radius: 14px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  .mnemonic-intro h2 { font-family: 'Fraunces', serif; font-size: 1.3rem; margin-bottom: 0.5rem; }
+  .mnemonic-intro p { font-size: 0.88rem; color: #a8c4ce; margin-bottom: 1rem; }
+  .mnemonic-letters {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .m-letter {
+    background: var(--crimson);
+    color: white;
+    border-radius: 8px;
+    padding: 0.5rem 0.8rem;
+    font-family: 'Fraunces', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    min-width: 44px;
+    text-align: center;
+    line-height: 1.1;
+  }
+  .m-letter span { display: block; font-family: 'DM Sans', sans-serif; font-size: 0.55rem; font-weight: 400; opacity: 0.8; margin-top: 0.2rem; letter-spacing: 0.02em; }
+
+  .signs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.2rem;
+    margin-bottom: 2rem;
+  }
+  .sign-card {
+    background: white;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(26,42,74,0.08);
+    transition: transform 0.15s;
+  }
+  .sign-card:hover { transform: translateY(-2px); }
+  .sign-header {
+    background: var(--crimson);
+    color: white;
+    padding: 0.8rem 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+  }
+  .sign-letter {
+    font-family: 'Fraunces', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    opacity: 0.85;
+    line-height: 1;
+    min-width: 28px;
+  }
+  .sign-header-text h3 { font-size: 0.95rem; font-weight: 600; }
+  .sign-header-text .cause { font-size: 0.72rem; opacity: 0.8; margin-top: 0.1rem; }
+  .sign-body { padding: 1rem 1.2rem; }
+  .sign-body p { font-size: 0.87rem; line-height: 1.6; color: var(--text); margin-bottom: 0.5rem; }
+  .sign-body .teach { font-size: 0.82rem; color: var(--muted); font-style: italic; border-top: 1px solid #f0e0e2; padding-top: 0.5rem; margin-top: 0.3rem; }
+  .action-tag {
+    display: inline-block;
+    background: var(--crimson-light);
+    color: var(--crimson);
+    border-radius: 20px;
+    padding: 0.15rem 0.6rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    margin-top: 0.4rem;
+  }
+
+  /* Action box */
+  .action-box {
+    background: var(--navy);
+    color: white;
+    border-radius: 14px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .action-box h3 { font-family: 'Fraunces', serif; font-size: 1.1rem; color: #ffd0d6; margin-bottom: 1rem; }
+  .action-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+  .action-step { background: rgba(255,255,255,0.08); border-radius: 10px; padding: 1rem; }
+  .action-step .step-num { font-family: 'Fraunces', serif; font-size: 1.4rem; color: #f5a0ac; font-weight: 700; }
+  .action-step h4 { font-size: 0.9rem; font-weight: 600; margin: 0.2rem 0; }
+  .action-step p { font-size: 0.82rem; color: #a8c4ce; line-height: 1.5; }
+
+  /* Knowledge check */
+  .check-section { background: white; border-radius: 14px; padding: 1.5rem; box-shadow: 0 2px 12px rgba(26,42,74,0.08); }
+  .check-section h3 { font-family: 'Fraunces', serif; font-size: 1.1rem; color: var(--navy); margin-bottom: 1rem; }
+  .check-q { display: flex; align-items: flex-start; gap: 0.8rem; margin-bottom: 0.9rem; font-size: 0.9rem; line-height: 1.5; }
+  .check-q input[type="checkbox"] { accent-color: var(--crimson); width: 17px; height: 17px; margin-top: 0.15em; flex-shrink: 0; }
+  .reveal-btn { margin-top: 0.3rem; background: none; border: 1px solid var(--crimson); color: var(--crimson); border-radius: 6px; padding: 0.25rem 0.7rem; font-size: 0.8rem; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+  .reveal-btn:hover { background: var(--crimson-light); }
+  .answer { display: none; background: var(--crimson-light); border-radius: 6px; padding: 0.5rem 0.8rem; margin-top: 0.4rem; font-size: 0.85rem; color: var(--crimson); }
+  .answer.visible { display: block; }
+
+  footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 1.5rem; border-top: 1px solid #e0d0d2; margin-top: 1rem; }
+  @media (max-width: 600px) { header h1 { font-size: 1.5rem; } .mnemonic-letters { gap: 0.3rem; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="label">Postpartum Education Lecture 7 · Student Handout 1 of 4</div>
+  <h1>POST-BIRTH Warning Signs</h1>
+  <p>AWHONN Evidence-Based Discharge Education · Know When to Call 911</p>
+</header>
+<main>
+
+  <div class="urgency-banner">
+    <div class="icon">⚠️</div>
+    <p>Most women recover without complications — but <strong>any woman can have a life-threatening postpartum complication.</strong> The leading causes of preventable maternal death include hemorrhage, VTE/PE, preeclampsia, cardiac disease, and infection. Teaching patients to recognize warning signs and act immediately saves lives.</p>
+  </div>
+
+  <div class="mnemonic-intro">
+    <h2>The POST-BIRTH Mnemonic</h2>
+    <p>AWHONN's standardized discharge education tool — 9 warning signs tied to leading causes of maternal mortality</p>
+    <div class="mnemonic-letters">
+      <div class="m-letter">P<span>Pain in chest</span></div>
+      <div class="m-letter">O<span>Obstructed breathing</span></div>
+      <div class="m-letter">S<span>Seizures</span></div>
+      <div class="m-letter">T<span>Thoughts of harm</span></div>
+      <div class="m-letter">B<span>Bleeding</span></div>
+      <div class="m-letter">I<span>Incision</span></div>
+      <div class="m-letter">R<span>Red swollen leg</span></div>
+      <div class="m-letter">T<span>Temperature</span></div>
+      <div class="m-letter">H<span>Headache</span></div>
+    </div>
+  </div>
+
+  <div class="signs-grid">
+    <div class="sign-card">
+      <div class="sign-header">
+        <div class="sign-letter">P</div>
+        <div class="sign-header-text">
+          <h3>Pain in the Chest</h3>
+          <div class="cause">→ Cardiac disease · Pulmonary embolism</div>
+        </div>
+      </div>
+      <div class="sign-body">
+        <p>Chest pain or discomfort is <strong>never normal</strong> postpartum. May indicate PE (clot in lung) or peripartum cardiomyopathy. Cardiac disease accounts for 33% of all pregnancy-related deaths.</p>
+        <p>Associated symptoms: heart palpitations, feeling faint, discomfort that spreads to arm or jaw.</p>
+        <span class="action-tag">🚨 Call 911 immediately</span>
+        <p class="teach">Patient teaching: "It is not normal to have chest pain or pressure after having a baby. Do not wait — call 911."</p>
+      </div>
+    </div>
+
+    <div class="sign-card">
+      <div class="sign-header">
+        <div class="sign-letter">O</div>
+        <div class="sign-header-text">
+          <h3>Obstructed Breathing</h3>
+          <div class="cause">→ Pulmonary embolism · Cardiac disease</div>
+        </div>
+      </div>
+      <div class="sign-body">
+        <p>Shortness of breath, shallow rapid respirations, or chest pain that worsens with coughing are <strong>not normal</strong> postpartum. PE is a leading cause of preventable maternal death — in most cases, SOB was not evaluated appropriately.</p>
+        <p>30% of PE patients have no prior evidence of DVT.</p>
+        <span class="action-tag">🚨 Call 911 immediately</span>
+        <p class="teach">Patient teaching: "If you feel like you can't catch your breath or it hurts to breathe — call 911, do not drive yourself."</p>
+      </div>
+    </div>
+
+    <div class="sign-card">
+      <div class="sign-header">
+        <div class="sign-letter">S</div>
+        <div class="sign-header-text">
+          <h3>Seizures</h3>
+          <div class="cause">→ Eclampsia · Postpartum preeclampsia</div>
+        </div>
+      </div>
+      <div class="sign-body">
+        <p>Eclamptic seizures can occur <strong>up to 6 weeks postpartum</strong>. 26% occur beyond 48 hours post-delivery. 78% of postpartum eclampsia patients had no prior diagnosis of pregnancy-related hypertension.</p>
+        <p>Seizure is always an emergency regardless of known hypertension history.</p>
+        <span class="action-tag">🚨 Call 911 immediately</span>
+        <p class="teach">Patient teaching: "A seizure after having a baby is an emergency. Call 911 — do not try to drive to the hospital."</p>
+      </div>
+    </div>
+
+    <div class="sign-card">
+      <div class="sign-header">
+        <div class="sign-letter">T</div>
+        <div class="sign-header-text">
+          <h3>Thoughts of Harming Self or Baby</h3>
+          <div class="cause">→ Postpartum depression · Postpartum psychosis</div>
+        </div>
+      </div>
+      <div class="sign-body">
+        <p>Postpartum depression affects <strong>1 in 7 women</strong>. Postpartum psychosis, while rare, is a psychiatric emergency. Any thoughts of harming self or baby require <strong>immediate evaluation</strong>.</p>
+        <p>PPD can onset as early as 1 week and up to 1 year postpartum. Use Edinburgh Postnatal Depression Scale — score ≥12 indicates high risk.</p>
+        <span class="action-tag">🚨 Seek immediate help</span>
+        <p class="teach">Patient teaching: "These feelings are not your fault and you are not a bad mother. Please tell someone — your provider, a family member, or call 988."</p>
+      </div>
+    </div>
+
+    <div class="sign-card">
+      <div class="sign-header">
+        <div class="sign-letter">B</div>
+        <div class="sign-header-text">
+          <h3>Bleeding</h3>
+          <div class="cause">→ Postpartum hemorrhage · Uterine atony</div>
+        </div>
+      </div>
+      <div class="sign-body">
+        <p>PPH accounts for 12–13% of all maternal deaths. <strong>Excess bleeding = any of the following:</strong></p>
+        <p>▸ Soaks through more than 1 pad per hour<br>▸ Clots the size of an egg or larger<br>▸ Bright red bleeding that does not slow</p>
+        <p>Normal lochia: rubra (days 1–3) → serosa (days 4–10) → alba (days 10+). Foul-smelling lochia suggests infection.</p>
+        <span class="action-tag">📞 Call provider / 911 if no response</span>
+        <p class="teach">Patient teaching: "Some bleeding is normal — but soaking a pad every hour or passing large clots is not. Call immediately."</p>
+      </div>
+    </div>
+
+    <div class="sign-card">
+      <div class="sign-header">
+        <div class="sign-letter">I</div>
+        <div class="sign-header-text">
+          <h3>Incision Not Healing</h3>
+          <div class="cause">→ Wound infection · Dehiscence</div>
+        </div>
+      </div>
+      <div class="sign-body">
+        <p>Applies to C-section incision or episiotomy/perineal repair. Warning signs include:</p>
+        <p>▸ Redness, warmth, swelling, or drainage<br>▸ Incision opening or pulling apart<br>▸ Odor from the wound<br>▸ Increasing pain at the site</p>
+        <p>Some serous drainage is expected; purulent, foul-smelling drainage is not.</p>
+        <span class="action-tag">📞 Call provider</span>
+        <p class="teach">Patient teaching: "Your incision should look better each day — not worse. Increasing redness or any drainage with odor means call your provider."</p>
+      </div>
+    </div>
+
+    <div class="sign-card">
+      <div class="sign-header">
+        <div class="sign-letter">R</div>
+        <div class="sign-header-text">
+          <h3>Red, Swollen, Painful Leg</h3>
+          <div class="cause">→ Deep Vein Thrombosis (DVT)</div>
+        </div>
+      </div>
+      <div class="sign-body">
+        <p>VTE accounts for <strong>9% of maternal deaths</strong>; at least half of VTE deaths had a strong chance of being prevented. Warning signs of DVT:</p>
+        <p>▸ Calf pain, redness, warmth, or swelling<br>▸ More swelling in one leg than the other<br>▸ Pain that is not improving</p>
+        <p>Leg pain is <strong>NOT</strong> a normal side effect of childbirth — even with an epidural.</p>
+        <span class="action-tag">📞 Call provider immediately</span>
+        <p class="teach">Patient teaching: "If one leg is more swollen, red, or painful than the other — do not massage it. Call your provider or go to the ED."</p>
+      </div>
+    </div>
+
+    <div class="sign-card">
+      <div class="sign-header">
+        <div class="sign-letter">T</div>
+        <div class="sign-header-text">
+          <h3>Temperature ≥ 100.4°F (38°C)</h3>
+          <div class="cause">→ Infection · Endometritis · Mastitis</div>
+        </div>
+      </div>
+      <div class="sign-body">
+        <p>Fever postpartum indicates infection until proven otherwise. Sources include endometritis, wound infection, UTI, mastitis, or sepsis.</p>
+        <p>Associated symptoms: chills, body aches, flu-like symptoms, foul-smelling vaginal discharge, increased wound redness or drainage.</p>
+        <span class="action-tag">📞 Call provider</span>
+        <p class="teach">Patient teaching: "A temperature of 100.4°F or higher after leaving the hospital is not normal. Take your temperature if you feel chilled or have body aches — and call your provider."</p>
+      </div>
+    </div>
+
+    <div class="sign-card">
+      <div class="sign-header">
+        <div class="sign-letter">H</div>
+        <div class="sign-header-text">
+          <h3>Headache Unrelieved by Medication</h3>
+          <div class="cause">→ Postpartum preeclampsia · Stroke</div>
+        </div>
+      </div>
+      <div class="sign-body">
+        <p>A severe headache that doesn't improve with medication, or any headache with vision changes, is a <strong>red flag for postpartum preeclampsia</strong>. Systolic BP ≥160 is linked to cerebral hemorrhage.</p>
+        <p>Additional warning signs: seeing spots or flashing lights, swelling of hands or face, RUQ pain, confusion.</p>
+        <span class="action-tag">🚨 Call provider / 911 if no response</span>
+        <p class="teach">Patient teaching: "A bad headache that Tylenol doesn't touch — especially with blurry vision — is a medical emergency. Call your provider now."</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="action-box">
+    <h3>📋 What to Tell Every Patient at Discharge</h3>
+    <div class="action-steps">
+      <div class="action-step">
+        <div class="step-num">1</div>
+        <h4>Call your provider first</h4>
+        <p>For most warning signs — call your OB or midwife. If no answer within a few minutes, go to the ED or call 911.</p>
+      </div>
+      <div class="action-step">
+        <div class="step-num">2</div>
+        <h4>Call 911 immediately for</h4>
+        <p>Chest pain, difficulty breathing, seizure, or thoughts of harming self or baby. Do not drive yourself.</p>
+      </div>
+      <div class="action-step">
+        <div class="step-num">3</div>
+        <h4>Tell them you just had a baby</h4>
+        <p>Always disclose your delivery date when seeking any medical care within one year of delivery — including the ED.</p>
+      </div>
+      <div class="action-step">
+        <div class="step-num">4</div>
+        <h4>Post the handout somewhere visible</h4>
+        <p>AWHONN recommends placing the POST-BIRTH "Save Your Life" handout on the refrigerator or somewhere easily accessible.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="check-section">
+    <h3>✔ Knowledge Check</h3>
+    <div class="check-q">
+      <input type="checkbox" id="q1">
+      <div>
+        <label for="q1">A patient calls at day 5 postpartum saying she has a bad headache that Tylenol isn't touching. She also notices some "floaters" in her vision. What is your priority action?</label>
+        <br><button class="reveal-btn" onclick="toggleAnswer('a1')">Show Answer</button>
+        <div class="answer" id="a1">This is a postpartum preeclampsia emergency. Severe unrelieved headache + visual changes = call 911 or go to the ED immediately. Do not wait for a callback window. Blood pressure must be assessed urgently — systolic ≥160 requires treatment within 60 minutes to prevent stroke.</div>
+      </div>
+    </div>
+    <div class="check-q">
+      <input type="checkbox" id="q2">
+      <div>
+        <label for="q2">TRUE or FALSE: Leg pain after delivery is a normal side effect of labor, especially if the patient had an epidural.</label>
+        <br><button class="reveal-btn" onclick="toggleAnswer('a2')">Show Answer</button>
+        <div class="answer" id="a2">FALSE — leg pain is NOT normal postpartum regardless of epidural use. Calf pain, redness, swelling, or warmth — especially asymmetric (one leg worse than the other) — must be evaluated for DVT. VTE accounts for 9% of maternal deaths and is largely preventable.</div>
+      </div>
+    </div>
+    <div class="check-q">
+      <input type="checkbox" id="q3">
+      <div>
+        <label for="q3">A patient had no history of hypertension during pregnancy. She is day 10 postpartum and has a seizure at home. Her family calls 911. Is postpartum eclampsia still possible?</label>
+        <br><button class="reveal-btn" onclick="toggleAnswer('a3')">Show Answer</button>
+        <div class="answer" id="a3">Yes. 78% of postpartum eclampsia patients had no prior diagnosis of pregnancy-related hypertension. Eclamptic seizures can occur up to 6 weeks postpartum. Eclampsia should be on the differential for any postpartum seizure regardless of prior BP history.</div>
+      </div>
+    </div>
+    <div class="check-q">
+      <input type="checkbox" id="q4">
+      <div>
+        <label for="q4">What is the bleeding threshold that defines a warning sign requiring the patient to contact her provider?</label>
+        <br><button class="reveal-btn" onclick="toggleAnswer('a4')">Show Answer</button>
+        <div class="answer" id="a4">Soaking more than 1 pad per hour OR passing clots the size of an egg or larger. Either finding warrants contacting the provider immediately. If the provider is unreachable, go to the ED or call 911.</div>
+      </div>
+    </div>
+  </div>
+</main>
+<footer>NRS 231 · Postpartum Education Lecture 7 · Handout 1 of 4 — POST-BIRTH Warning Signs (AWHONN)</footer>
+<script>
+function toggleAnswer(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('visible');
+  el.previousElementSibling.textContent = el.classList.contains('visible') ? 'Hide Answer' : 'Show Answer';
+}
+</script>
+</body>
+</html>

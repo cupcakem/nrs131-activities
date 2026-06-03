@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pain Management Decision Tree</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f7f4ef;
+    --surface: #ffffff;
+    --text: #1a1a1a;
+    --text-muted: #6b6b6b;
+    --border: rgba(0,0,0,0.10);
+    --border-med: rgba(0,0,0,0.18);
+    --hover-bg: #e8e4de;
+    --correct-bg: #edf7f3;
+    --correct-text: #0d4a30;
+    --correct-border: #1a8a5a;
+    --wrong-bg: #fff0ee;
+    --wrong-text: #7a1f10;
+    --wrong-border: #c0392b;
+    --partial-bg: #fff8ec;
+    --partial-text: #412402;
+    --partial-border: #d4850a;
+    --selected-bg: #E6F1FB;
+    --selected-border: #185FA5;
+    --selected-text: #0C447C;
+    --dot-done: #1a8a5a;
+    --dot-active: #185FA5;
+    --dot-empty: rgba(0,0,0,0.18);
+    --tag-phase-bg: #E6F1FB;
+    --tag-phase-text: #0C447C;
+    --tag-flag-bg: #FAEEDA;
+    --tag-flag-text: #412402;
+    --tag-pref-bg: #edf7f3;
+    --tag-pref-text: #04342C;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  header {
+    text-align: center;
+    max-width: 760px;
+    margin: 0 auto 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .eyebrow {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+  }
+
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 400;
+    line-height: 1.15;
+    margin-bottom: 0.6rem;
+  }
+
+  header p {
+    font-size: 15px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .main {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  .progress-row {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 1.75rem;
+  }
+
+  .prog-dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--dot-empty);
+    transition: background 0.2s;
+  }
+
+  .prog-dot.done   { background: var(--dot-done); }
+  .prog-dot.active { background: var(--dot-active); }
+
+  .sc-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.75rem 2rem;
+  }
+
+  .sc-eyebrow {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  .sc-patient {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+
+  .sc-desc {
+    font-size: 15px;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 1.1rem;
+  }
+
+  .tags-row {
+    display: flex;
+    gap: 7px;
+    flex-wrap: wrap;
+    margin-bottom: 1.4rem;
+  }
+
+  .tag {
+    padding: 4px 11px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .tag.phase { background: var(--tag-phase-bg); color: var(--tag-phase-text); }
+  .tag.flag  { background: var(--tag-flag-bg);  color: var(--tag-flag-text); }
+  .tag.pref  { background: var(--tag-pref-bg);  color: var(--tag-pref-text); }
+
+  .options-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+  }
+
+  .options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 1.4rem;
+  }
+
+  .opt-card {
+    padding: 13px 15px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border-med);
+    background: var(--surface);
+    cursor: pointer;
+    transition: background 0.12s, border-color 0.12s;
+  }
+
+  .opt-card:hover { background: var(--hover-bg); }
+
+  .opt-card.selected {
+    border-color: var(--selected-border);
+    background: var(--selected-bg);
+  }
+
+  .opt-card.selected .opt-name { color: var(--selected-text); }
+
+  .opt-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 4px;
+    line-height: 1.4;
+  }
+
+  .opt-sub {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.45;
+  }
+
+  .action-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    padding: 9px 22px;
+    border-radius: 999px;
+    border: 1.5px solid var(--border-med);
+    background: var(--surface);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .btn:hover { background: var(--hover-bg); }
+
+  .btn.primary {
+    background: #1a1a1a;
+    color: #fff;
+    border-color: #1a1a1a;
+  }
+
+  .btn.primary:hover { background: #333; }
+
+  .feedback {
+    display: none;
+    margin-top: 1rem;
+    padding: 1rem 1.25rem;
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 1.7;
+    border-left: 3px solid;
+  }
+
+  .feedback.correct {
+    background: var(--correct-bg);
+    color: var(--correct-text);
+    border-color: var(--correct-border);
+  }
+
+  .feedback.wrong {
+    background: var(--wrong-bg);
+    color: var(--wrong-text);
+    border-color: var(--wrong-border);
+  }
+
+  .feedback.partial {
+    background: var(--partial-bg);
+    color: var(--partial-text);
+    border-color: var(--partial-border);
+  }
+
+  .fb-verdict {
+    font-weight: 500;
+    font-size: 15px;
+    margin-bottom: 6px;
+  }
+
+  .nav-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 1rem;
+  }
+
+  .final-card {
+    text-align: center;
+    padding: 3rem 2rem;
+  }
+
+  .final-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2rem;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+  }
+
+  .final-sub {
+    font-size: 15px;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+  }
+
+  footer {
+    text-align: center;
+    margin-top: 3rem;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 540px) {
+    .options-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">In-class activity — Mechanics of Labor &amp; Delivery</div>
+  <h1>Pain management decisions</h1>
+  <p>Read each patient scenario and choose the most appropriate pain management approach.</p>
+</header>
+
+<div class="main">
+  <div class="progress-row" id="progress"></div>
+  <div id="scenario-area"></div>
+</div>
+
+<footer>Mechanics of L&amp;D — Lecture 1 &nbsp;·&nbsp; L&amp;D Nursing</footer>
+
+<script>
+const scenarios = [
+  {
+    q: 1,
+    patient: "Jordan, G1P0, 38 weeks — latent phase",
+    desc: "Jordan is 2 cm dilated, contractions every 10 minutes, lasting 35 seconds. She rates her pain 4/10. She tells you she wants to avoid medication as long as possible and has been practicing breathing techniques with her partner.",
+    tags: [
+      { label: "Latent phase", type: "phase" },
+      { label: "Pain 4/10", type: "flag" },
+      { label: "Prefers non-pharm", type: "pref" },
+    ],
+    options: [
+      { id: "A", name: "Epidural analgesia", sub: "Most effective; requires IV, monitoring, catheter" },
+      { id: "B", name: "Hydrotherapy + birth ball", sub: "Warm water, movement, positioning" },
+      { id: "C", name: "IV opioid (e.g. fentanyl)", sub: "Partial relief; sedation side effects" },
+      { id: "D", name: "Breathing techniques + counterpressure", sub: "Non-pharm; supports patient's birth plan" },
+    ],
+    best: ["B", "D"],
+    explanation: "Jordan is in early latent phase with mild pain and a clear preference for non-pharmacological support. Breathing techniques, counterpressure, hydrotherapy, and birth ball use are all appropriate and align with her birth plan. Epidurals and opioids are premature at 2 cm with pain only 4/10 — save those options for when she needs them."
+  },
+  {
+    q: 2,
+    patient: "Amara, G2P1, 39 weeks — active phase",
+    desc: "Amara is 6 cm dilated, contractions every 3–4 minutes, strong intensity. She rates pain 8/10 and is having difficulty maintaining focus between contractions. She has no contraindications and asks 'Is it too late for an epidural?'",
+    tags: [
+      { label: "Active phase", type: "phase" },
+      { label: "Pain 8/10", type: "flag" },
+      { label: "Requesting epidural", type: "pref" },
+    ],
+    options: [
+      { id: "A", name: "Epidural analgesia", sub: "Most effective; customizable dose; requires monitoring" },
+      { id: "B", name: "Nitrous oxide", sub: "Partial relief; patient-controlled; fast onset" },
+      { id: "C", name: "Tell her it's too late", sub: "Epidurals can be placed through transition" },
+      { id: "D", name: "IV opioid only", sub: "Partial relief; neonatal respiratory depression risk near delivery" },
+    ],
+    best: ["A"],
+    explanation: "It is NOT too late — epidurals can be placed up through the transition phase. Amara is 6 cm with significant pain and is actively requesting one. This is an appropriate time. Nitrous oxide is a reasonable adjunct but won't provide the relief she's asking for. IV opioids carry increasing risk of neonatal respiratory depression as delivery approaches. Always correct hypotension before epidural placement."
+  },
+  {
+    q: 3,
+    patient: "Priya, G1P0, 40 weeks — active phase",
+    desc: "Priya is 5 cm dilated. Her platelet count from this morning's labs is 68,000/mcL. She is requesting an epidural for pain relief. Her contractions are 4 minutes apart, moderate intensity, pain 6/10.",
+    tags: [
+      { label: "Active phase", type: "phase" },
+      { label: "Platelets 68k — low", type: "flag" },
+      { label: "Requesting epidural", type: "pref" },
+    ],
+    options: [
+      { id: "A", name: "Place epidural as requested", sub: "Patient preference; 5 cm is appropriate timing" },
+      { id: "B", name: "Stop — notify provider first", sub: "Thrombocytopenia is a contraindication" },
+      { id: "C", name: "Offer IV opioids instead", sub: "Safer alternative; discuss risks with provider" },
+      { id: "D", name: "Non-pharm measures only", sub: "No systemic or neuraxial risk" },
+    ],
+    best: ["B"],
+    explanation: "Thrombocytopenia is a contraindication to epidural analgesia — low platelets increase the risk of epidural hematoma, which can cause permanent neurological damage. A platelet count of 68,000 is well below the typical safe threshold (usually ~80–100k). Stop and notify the provider immediately. Non-pharm measures and IV opioids (with provider order) are the safer path. Never place an epidural without addressing a critically low platelet count."
+  },
+  {
+    q: 4,
+    patient: "Destiny, G3P2, 39 weeks — second stage",
+    desc: "Destiny is fully dilated (10 cm) and pushing. She does not have an epidural. She is pushing effectively but reports significant perineal burning and pressure as the baby crowns. She is not requesting additional medication.",
+    tags: [
+      { label: "Second stage", type: "phase" },
+      { label: "Crowning", type: "flag" },
+      { label: "No epidural in place", type: "pref" },
+    ],
+    options: [
+      { id: "A", name: "Place epidural now", sub: "Not appropriate — fully dilated and actively pushing" },
+      { id: "B", name: "Warm perineal compresses", sub: "Promotes relaxation; may reduce lacerations" },
+      { id: "C", name: "Coach 'blow away the contraction' breathing", sub: "Slows crowning; reduces perineal trauma" },
+      { id: "D", name: "Pudendal block (by provider)", sub: "Local anesthesia for perineum; no contraction relief" },
+    ],
+    best: ["B", "C"],
+    explanation: "At crowning, warm perineal compresses and coached breathing are the first-line nursing interventions. They promote perineal relaxation, slow the birth of the head, and reduce lacerations — all without medication. Epidurals are not placed during second stage pushing. A pudendal block is a provider-placed option for perineal anesthesia, but it wouldn't be the nurse's first action here and isn't needed if she's managing well."
+  },
+  {
+    q: 5,
+    patient: "Rosa, G1P0, 38 weeks — active phase",
+    desc: "Rosa is 5 cm dilated with a fever of 38.9°C (102°F). She is septic per provider assessment. She is in severe pain, rating 9/10, and requesting an epidural. Her BP is 88/54.",
+    tags: [
+      { label: "Active phase", type: "phase" },
+      { label: "Sepsis confirmed", type: "flag" },
+      { label: "BP 88/54 — hypotensive", type: "flag" },
+    ],
+    options: [
+      { id: "A", name: "Place epidural immediately", sub: "Patient in severe pain and requesting it" },
+      { id: "B", name: "Correct hypotension first, then reassess", sub: "BP must be stabilized before any epidural" },
+      { id: "C", name: "Epidural contraindicated — notify provider", sub: "Sepsis + hypotension are both contraindications" },
+      { id: "D", name: "IV opioids + fluid resuscitation", sub: "Partial relief while treating underlying cause" },
+    ],
+    best: ["C"],
+    explanation: "Two absolute contraindications are present: sepsis and hypotension. Sepsis is an absolute contraindication to epidural analgesia — there is risk of introducing infection into the epidural space, which could cause meningitis or epidural abscess. Hypotension at 88/54 must also be corrected before epidural placement. Notify the provider immediately. IV analgesia with fluid resuscitation and treatment of the underlying infection take priority. The patient's pain is real and urgent, but placing an epidural here could cause catastrophic harm."
+  },
+];
+
+let current = 0;
+let selected = null;
+let answered = false;
+
+function renderProgress() {
+  const prog = document.getElementById('progress');
+  prog.innerHTML = '';
+  scenarios.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'prog-dot' + (i < current ? ' done' : i === current ? ' active' : '');
+    prog.appendChild(d);
+  });
+}
+
+function renderScenario() {
+  selected = null;
+  answered = false;
+  const s = scenarios[current];
+  const area = document.getElementById('scenario-area');
+
+  const tagsHtml = s.tags.map(t =>
+    `<span class="tag ${t.type}">${t.label}</span>`
+  ).join('');
+
+  const optsHtml = s.options.map(o => `
+    <div class="opt-card" id="opt-${o.id}" onclick="selectOpt('${o.id}')">
+      <div class="opt-name">${o.id}. ${o.name}</div>
+      <div class="opt-sub">${o.sub}</div>
+    </div>`).join('');
+
+  area.innerHTML = `
+    <div class="sc-card">
+      <div class="sc-eyebrow">Scenario ${s.q} of ${scenarios.length}</div>
+      <div class="sc-patient">${s.patient}</div>
+      <div class="sc-desc">${s.desc}</div>
+      <div class="tags-row">${tagsHtml}</div>
+      <div class="options-label">What is the most appropriate pain management approach?</div>
+      <div class="options-grid">${optsHtml}</div>
+      <div class="action-row">
+        <button class="btn primary" onclick="checkAnswer()">Check answer</button>
+        <button class="btn" onclick="clearSel()">Clear</button>
+      </div>
+      <div class="feedback" id="feedback"></div>
+      <div class="nav-row">
+        ${current < scenarios.length - 1
+          ? `<button class="btn primary" onclick="nextQ()">Next scenario</button>`
+          : `<button class="btn primary" onclick="showFinal()">Finish</button>`}
+      </div>
+    </div>`;
+
+  renderProgress();
+}
+
+function selectOpt(id) {
+  if (answered) return;
+  selected = id;
+  document.querySelectorAll('.opt-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('opt-' + id).classList.add('selected');
+}
+
+function clearSel() {
+  if (answered) return;
+  selected = null;
+  document.querySelectorAll('.opt-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('feedback').style.display = 'none';
+}
+
+function checkAnswer() {
+  const fb = document.getElementById('feedback');
+  if (!selected) {
+    fb.className = 'feedback wrong';
+    fb.style.display = 'block';
+    fb.innerHTML = '<div class="fb-verdict">Select an option first.</div>';
+    return;
+  }
+  const s = scenarios[current];
+  answered = true;
+  const correct = s.best.includes(selected);
+  fb.className = 'feedback ' + (correct ? 'correct' : 'wrong');
+  fb.style.display = 'block';
+  const bestStr = s.best.length > 1 ? s.best.join(' or ') : s.best[0];
+  fb.innerHTML = `<div class="fb-verdict">${correct ? 'Good thinking! Best answer: ' + bestStr : 'Not quite — best answer: ' + bestStr}</div>${s.explanation}`;
+}
+
+function nextQ() { current++; renderScenario(); }
+
+function showFinal() {
+  document.getElementById('scenario-area').innerHTML = `
+    <div class="sc-card final-card">
+      <div class="final-title">All done!</div>
+      <div class="final-sub">Key takeaway: always check for contraindications — thrombocytopenia, sepsis, hypotension, and patient refusal — before reaching for pharmacological options.</div>
+      <button class="btn primary" onclick="current=0; renderScenario()">Start over</button>
+    </div>`;
+  renderProgress();
+}
+
+renderScenario();
+</script>
+</body>
+</html>

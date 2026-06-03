@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stages of Human Milk — Breastfeeding Lecture 6</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2a4a;
+    --teal: #0d7377;
+    --seafoam: #14a085;
+    --light-teal: #e8f5f4;
+    --accent: #f0a500;
+    --white: #ffffff;
+    --soft: #f4f8f9;
+    --text: #1e2d3d;
+    --muted: #5a7080;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--soft);
+    color: var(--text);
+    min-height: 100vh;
+  }
+  header {
+    background: var(--navy);
+    color: white;
+    padding: 2rem 2.5rem 1.5rem;
+    border-bottom: 4px solid var(--teal);
+  }
+  header .label {
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--seafoam);
+    margin-bottom: 0.4rem;
+  }
+  header h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  header p {
+    color: #a8c4ce;
+    font-size: 0.9rem;
+    margin-top: 0.4rem;
+  }
+  main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 3rem;
+  }
+  .intro-card {
+    background: white;
+    border-left: 5px solid var(--teal);
+    border-radius: 0 10px 10px 0;
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 2rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+  .stage-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+  .stage-card {
+    background: white;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(26,42,74,0.08);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .stage-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 24px rgba(26,42,74,0.14);
+  }
+  .stage-header {
+    padding: 1.2rem 1.5rem;
+    color: white;
+  }
+  .stage-card:nth-child(1) .stage-header { background: var(--navy); }
+  .stage-card:nth-child(2) .stage-header { background: var(--teal); }
+  .stage-card:nth-child(3) .stage-header { background: var(--seafoam); }
+  .stage-header .stage-num {
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.75;
+    margin-bottom: 0.2rem;
+  }
+  .stage-header h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+  }
+  .stage-header .timing {
+    font-size: 0.82rem;
+    opacity: 0.85;
+    margin-top: 0.2rem;
+  }
+  .stage-body {
+    padding: 1.2rem 1.5rem;
+  }
+  .fact-row {
+    display: flex;
+    gap: 0.6rem;
+    margin-bottom: 0.7rem;
+    align-items: flex-start;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  .fact-row .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    margin-top: 0.45em;
+    flex-shrink: 0;
+  }
+  .stage-card:nth-child(1) .dot { background: var(--navy); }
+  .stage-card:nth-child(2) .dot { background: var(--teal); }
+  .stage-card:nth-child(3) .dot { background: var(--seafoam); }
+  .highlight-box {
+    background: var(--light-teal);
+    border-radius: 8px;
+    padding: 0.8rem 1rem;
+    margin-top: 0.8rem;
+    font-size: 0.85rem;
+    color: var(--teal);
+    font-weight: 500;
+  }
+  .forehind {
+    background: white;
+    border-radius: 14px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 12px rgba(26,42,74,0.08);
+    margin-bottom: 2rem;
+  }
+  .forehind h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.2rem;
+    color: var(--navy);
+    margin-bottom: 1rem;
+    border-bottom: 2px solid var(--light-teal);
+    padding-bottom: 0.5rem;
+  }
+  .forehind-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  .forehind-item {
+    border-radius: 10px;
+    padding: 1rem;
+  }
+  .forehind-item.fore { background: #eaf4ff; border-left: 4px solid #4a9fd4; }
+  .forehind-item.hind { background: #fff4e0; border-left: 4px solid var(--accent); }
+  .forehind-item h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    color: var(--navy);
+  }
+  .forehind-item p { font-size: 0.87rem; line-height: 1.5; color: var(--muted); }
+  .activity-box {
+    background: var(--navy);
+    color: white;
+    border-radius: 14px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .activity-box h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.1rem;
+    color: var(--accent);
+    margin-bottom: 0.8rem;
+  }
+  .activity-box ol {
+    padding-left: 1.2rem;
+    font-size: 0.9rem;
+    line-height: 1.8;
+    color: #c8dde4;
+  }
+  .check-section {
+    background: white;
+    border-radius: 14px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 12px rgba(26,42,74,0.08);
+  }
+  .check-section h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.1rem;
+    color: var(--navy);
+    margin-bottom: 1rem;
+  }
+  .check-q {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.8rem;
+    margin-bottom: 0.8rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--text);
+  }
+  .check-q input[type="checkbox"] {
+    accent-color: var(--teal);
+    width: 17px;
+    height: 17px;
+    margin-top: 0.15em;
+    flex-shrink: 0;
+  }
+  .reveal-btn {
+    margin-top: 0.3rem;
+    background: none;
+    border: 1px solid var(--teal);
+    color: var(--teal);
+    border-radius: 6px;
+    padding: 0.25rem 0.7rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: background 0.15s;
+  }
+  .reveal-btn:hover { background: var(--light-teal); }
+  .answer {
+    display: none;
+    background: var(--light-teal);
+    border-radius: 6px;
+    padding: 0.5rem 0.8rem;
+    margin-top: 0.4rem;
+    font-size: 0.85rem;
+    color: var(--teal);
+  }
+  .answer.visible { display: block; }
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.8rem;
+    padding: 1.5rem;
+    border-top: 1px solid #d4e6ea;
+  }
+  @media (max-width: 600px) {
+    .forehind-grid { grid-template-columns: 1fr; }
+    header h1 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="label">Breastfeeding Lecture 6 · Student Handout 1 of 4</div>
+  <h1>Stages of Human Milk</h1>
+  <p>Colostrum → Transitional → Mature Milk</p>
+</header>
+<main>
+  <div class="intro-card">
+    Human milk is not static — it changes dramatically in the first weeks postpartum to meet the exact developmental needs of the newborn at each stage. Understanding these stages helps nurses provide accurate anticipatory guidance to new parents.
+  </div>
+
+  <div class="stage-grid">
+    <div class="stage-card">
+      <div class="stage-header">
+        <div class="stage-num">Stage 1</div>
+        <h2>Colostrum</h2>
+        <div class="timing">Days 1–5 postpartum</div>
+      </div>
+      <div class="stage-body">
+        <div class="fact-row"><div class="dot"></div><span><strong>Appearance:</strong> Thick, yellow/golden</span></div>
+        <div class="fact-row"><div class="dot"></div><span><strong>Volume:</strong> Small — 2 to 20 mL per feeding</span></div>
+        <div class="fact-row"><div class="dot"></div><span><strong>Composition:</strong> High protein, lower fat and sugar compared to mature milk</span></div>
+        <div class="fact-row"><div class="dot"></div><span><strong>High in antibodies</strong> — first immune protection for newborn</span></div>
+        <div class="fact-row"><div class="dot"></div><span><strong>Establishes healthy gut microbiome</strong></span></div>
+        <div class="highlight-box">⚠️ Small volume is NORMAL and expected — reassure parents before they supplement prematurely.</div>
+      </div>
+    </div>
+    <div class="stage-card">
+      <div class="stage-header">
+        <div class="stage-num">Stage 2</div>
+        <h2>Transitional Milk</h2>
+        <div class="timing">~Days 5 through 2 weeks</div>
+      </div>
+      <div class="stage-body">
+        <div class="fact-row"><div class="dot"></div><span><strong>Appearance:</strong> Pale yellow</span></div>
+        <div class="fact-row"><div class="dot"></div><span><strong>Volume:</strong> Increasing significantly</span></div>
+        <div class="fact-row"><div class="dot"></div><span>Protein level <strong>drops</strong></span></div>
+        <div class="fact-row"><div class="dot"></div><span>Fat, lactose, and calories <strong>increase</strong></span></div>
+        <div class="fact-row"><div class="dot"></div><span>Fluid volume increases to meet growing demand</span></div>
+        <div class="highlight-box">🔄 The "milk coming in" parents refer to — significant breast fullness/engorgement often occurs here.</div>
+      </div>
+    </div>
+    <div class="stage-card">
+      <div class="stage-header">
+        <div class="stage-num">Stage 3</div>
+        <h2>Mature Milk</h2>
+        <div class="timing">~2 weeks onward</div>
+      </div>
+      <div class="stage-body">
+        <div class="fact-row"><div class="dot"></div><span><strong>Appearance:</strong> Whiter, thinner</span></div>
+        <div class="fact-row"><div class="dot"></div><span>Composition stabilizes for sustained infant growth</span></div>
+        <div class="fact-row"><div class="dot"></div><span>Contains <strong>foremilk</strong> and <strong>hindmilk</strong></span></div>
+        <div class="fact-row"><div class="dot"></div><span>No water supplementation needed — foremilk satisfies thirst</span></div>
+        <div class="highlight-box">✅ At this stage supply-and-demand regulation is fully established.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="forehind">
+    <h3>Foremilk vs. Hindmilk — Within a Single Feeding</h3>
+    <div class="forehind-grid">
+      <div class="forehind-item fore">
+        <h4>🥛 Foremilk</h4>
+        <p>Released at the <strong>start</strong> of a feeding. Thinner, higher water content. Satisfies the infant's initial thirst — no extra water needed.</p>
+      </div>
+      <div class="forehind-item hind">
+        <h4>🧈 Hindmilk</h4>
+        <p>Released as the breast becomes <strong>emptier</strong> during the feeding. Higher fat content. Promotes satiety, healthy weight gain, and brain development.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="activity-box">
+    <h3>📋 Sorting Activity</h3>
+    <ol>
+      <li>Without looking at your notes, list 3 characteristics of colostrum.</li>
+      <li>What changes when milk transitions from colostrum to transitional milk?</li>
+      <li>A parent tells you: "My milk looks watery and thin — something must be wrong." What do you say?</li>
+      <li>Why is hindmilk important? What happens if a baby always switches breasts too early?</li>
+    </ol>
+  </div>
+
+  <div class="check-section">
+    <h3>✔ Knowledge Check</h3>
+    <div class="check-q">
+      <input type="checkbox" id="q1">
+      <div>
+        <label for="q1">Colostrum is low in volume — 2–20 mL per feeding is abnormal and supplementation should be started.</label>
+        <br><button class="reveal-btn" onclick="toggleAnswer('a1')">Show Answer</button>
+        <div class="answer" id="a1">FALSE — small volume is completely normal and expected. Parents should be prepared for this in advance to prevent unnecessary formula supplementation.</div>
+      </div>
+    </div>
+    <div class="check-q">
+      <input type="checkbox" id="q2">
+      <div>
+        <label for="q2">Foremilk is higher in fat than hindmilk.</label>
+        <br><button class="reveal-btn" onclick="toggleAnswer('a2')">Show Answer</button>
+        <div class="answer" id="a2">FALSE — hindmilk is higher in fat. Foremilk is more watery and quenches thirst; hindmilk provides calories and promotes weight gain.</div>
+      </div>
+    </div>
+    <div class="check-q">
+      <input type="checkbox" id="q3">
+      <div>
+        <label for="q3">Transitional milk appears between colostrum and mature milk, roughly days 5 through 2 weeks.</label>
+        <br><button class="reveal-btn" onclick="toggleAnswer('a3')">Show Answer</button>
+        <div class="answer" id="a3">TRUE — transitional milk bridges the two stages and is when many parents notice significant breast fullness as volume increases.</div>
+      </div>
+    </div>
+    <div class="check-q">
+      <input type="checkbox" id="q4">
+      <div>
+        <label for="q4">A breastfed baby does not need water supplementation because foremilk provides adequate hydration.</label>
+        <br><button class="reveal-btn" onclick="toggleAnswer('a4')">Show Answer</button>
+        <div class="answer" id="a4">TRUE — the watery foremilk adequately satisfies the infant's thirst. Water supplementation is unnecessary and can interfere with feeding patterns.</div>
+      </div>
+    </div>
+  </div>
+</main>
+<footer>NRS 231 · Breastfeeding Lecture 6 · Handout 1 of 4 — Stages of Human Milk</footer>
+<script>
+function toggleAnswer(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('visible');
+  const btn = el.previousElementSibling;
+  btn.textContent = el.classList.contains('visible') ? 'Hide Answer' : 'Show Answer';
+}
+</script>
+</body>
+</html>

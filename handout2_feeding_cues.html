@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feeding Cues & Normal Feeding — Breastfeeding Lecture 6</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2a4a;
+    --teal: #0d7377;
+    --seafoam: #14a085;
+    --light-teal: #e8f5f4;
+    --accent: #f0a500;
+    --white: #ffffff;
+    --soft: #f4f8f9;
+    --text: #1e2d3d;
+    --muted: #5a7080;
+    --warn: #c0392b;
+    --warn-light: #fdf0ef;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--soft); color: var(--text); }
+  header {
+    background: var(--navy);
+    color: white;
+    padding: 2rem 2.5rem 1.5rem;
+    border-bottom: 4px solid var(--teal);
+  }
+  header .label { font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--seafoam); margin-bottom: 0.4rem; }
+  header h1 { font-family: 'Fraunces', serif; font-size: 2rem; font-weight: 700; line-height: 1.2; }
+  header p { color: #a8c4ce; font-size: 0.9rem; margin-top: 0.4rem; }
+  main { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
+  section { margin-bottom: 2rem; }
+  .section-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1.2rem;
+    color: var(--navy);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 2px;
+    background: var(--light-teal);
+  }
+
+  /* Feed frequency card */
+  .freq-card {
+    background: white;
+    border-radius: 14px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 12px rgba(26,42,74,0.08);
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .freq-stat {
+    background: var(--navy);
+    color: white;
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    text-align: center;
+    min-width: 130px;
+  }
+  .freq-stat .num { font-family: 'Fraunces', serif; font-size: 2.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+  .freq-stat .label { font-size: 0.8rem; color: #a8c4ce; margin-top: 0.3rem; }
+  .freq-notes { flex: 1; min-width: 200px; }
+  .freq-notes ul { padding-left: 1.2rem; line-height: 2; font-size: 0.9rem; color: var(--muted); }
+  .freq-notes strong { color: var(--navy); }
+  .watchbaby {
+    background: var(--teal);
+    color: white;
+    border-radius: 10px;
+    padding: 0.8rem 1.2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: 'Fraunces', serif;
+    letter-spacing: 0.04em;
+    text-align: center;
+    margin-top: 0.8rem;
+  }
+
+  /* Cue cards */
+  .cue-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+  }
+  .cue-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.2rem 1rem;
+    box-shadow: 0 2px 10px rgba(26,42,74,0.07);
+    text-align: center;
+    transition: transform 0.15s;
+    cursor: default;
+  }
+  .cue-card:hover { transform: translateY(-2px); }
+  .cue-card .emoji { font-size: 2rem; margin-bottom: 0.5rem; }
+  .cue-card h4 { font-size: 0.95rem; font-weight: 600; color: var(--navy); margin-bottom: 0.3rem; }
+  .cue-card p { font-size: 0.82rem; color: var(--muted); line-height: 1.4; }
+  .cue-card.late { border: 2px solid var(--warn); }
+  .cue-card.late h4 { color: var(--warn); }
+
+  /* Alert box */
+  .alert-box {
+    background: var(--warn-light);
+    border-left: 5px solid var(--warn);
+    border-radius: 0 10px 10px 0;
+    padding: 1rem 1.2rem;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #7a1a14;
+    margin-bottom: 1.5rem;
+  }
+  .alert-box strong { color: var(--warn); }
+
+  /* Stool progression */
+  .stool-track {
+    display: flex;
+    gap: 0;
+    background: white;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(26,42,74,0.08);
+  }
+  .stool-step { flex: 1; padding: 1.2rem 1rem; text-align: center; }
+  .stool-step:nth-child(1) { background: #2d2d2d; color: white; }
+  .stool-step:nth-child(2) { background: #7a6a2a; color: white; }
+  .stool-step:nth-child(3) { background: #c8a826; color: white; }
+  .stool-step h4 { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.4rem; }
+  .stool-step .swatch { width: 30px; height: 30px; border-radius: 50%; margin: 0.5rem auto; border: 2px solid rgba(255,255,255,0.4); }
+  .stool-step:nth-child(1) .swatch { background: #111; }
+  .stool-step:nth-child(2) .swatch { background: #5a4a1a; }
+  .stool-step:nth-child(3) .swatch { background: #e8c828; }
+  .stool-step p { font-size: 0.8rem; opacity: 0.85; line-height: 1.4; }
+
+  /* Fullness cues table */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .col-card { background: white; border-radius: 12px; padding: 1.2rem; box-shadow: 0 2px 10px rgba(26,42,74,0.07); }
+  .col-card h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.4rem; }
+  .col-card.hunger h4 { color: var(--teal); }
+  .col-card.fullness h4 { color: var(--navy); }
+  .col-card ul { padding-left: 1.1rem; font-size: 0.87rem; line-height: 1.8; color: var(--muted); }
+
+  /* Adequacy section */
+  .adequacy-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; }
+  .adeq-card { background: white; border-radius: 12px; padding: 1.2rem; box-shadow: 0 2px 10px rgba(26,42,74,0.07); border-top: 4px solid var(--seafoam); }
+  .adeq-card h4 { font-size: 0.9rem; font-weight: 600; color: var(--navy); margin-bottom: 0.5rem; }
+  .adeq-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.5; }
+
+  /* Knowledge check */
+  .check-section { background: white; border-radius: 14px; padding: 1.5rem; box-shadow: 0 2px 12px rgba(26,42,74,0.08); }
+  .check-section h3 { font-family: 'Fraunces', serif; font-size: 1.1rem; color: var(--navy); margin-bottom: 1rem; }
+  .check-q { display: flex; align-items: flex-start; gap: 0.8rem; margin-bottom: 0.9rem; font-size: 0.9rem; line-height: 1.5; }
+  .check-q input[type="checkbox"] { accent-color: var(--teal); width: 17px; height: 17px; margin-top: 0.15em; flex-shrink: 0; }
+  .reveal-btn { margin-top: 0.3rem; background: none; border: 1px solid var(--teal); color: var(--teal); border-radius: 6px; padding: 0.25rem 0.7rem; font-size: 0.8rem; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background 0.15s; }
+  .reveal-btn:hover { background: var(--light-teal); }
+  .answer { display: none; background: var(--light-teal); border-radius: 6px; padding: 0.5rem 0.8rem; margin-top: 0.4rem; font-size: 0.85rem; color: var(--teal); }
+  .answer.visible { display: block; }
+  footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 1.5rem; border-top: 1px solid #d4e6ea; }
+  @media (max-width: 600px) {
+    .two-col { grid-template-columns: 1fr; }
+    .stool-track { flex-direction: column; }
+    header h1 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="label">Breastfeeding Lecture 6 · Student Handout 2 of 4</div>
+  <h1>Feeding Cues & Normal Patterns</h1>
+  <p>Recognizing hunger, fullness, and adequate intake</p>
+</header>
+<main>
+
+  <section>
+    <div class="section-title">⏱ Normal Feeding Frequency</div>
+    <div class="freq-card">
+      <div class="freq-stat">
+        <div class="num">8–12</div>
+        <div class="label">feedings per 24 hrs</div>
+      </div>
+      <div class="freq-notes">
+        <ul>
+          <li>Feed <strong>on demand</strong> — not on a schedule</li>
+          <li><strong>Avoid watching the clock</strong></li>
+          <li>Cluster feeding is <strong>normal</strong>, especially evenings</li>
+          <li>Newborns have tiny stomachs — frequent feeds are physiologic</li>
+        </ul>
+        <div class="watchbaby">👁 WATCH THE BABY — not the clock</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">🍼 Hunger Cues — Early to Late</div>
+    <div class="alert-box">
+      <strong>Key teaching point:</strong> Crying is a <em>late</em> feeding cue. By the time the baby is crying, they are already stressed and upset — comfort the baby first, then attempt to latch.
+    </div>
+    <div class="cue-grid">
+      <div class="cue-card">
+        <div class="emoji">👅</div>
+        <h4>Licking Lips</h4>
+        <p>Early cue — baby is beginning to feel hunger</p>
+      </div>
+      <div class="cue-card">
+        <div class="emoji">↔️</div>
+        <h4>Rooting</h4>
+        <p>Turning head side to side, opening mouth, searching for the nipple</p>
+      </div>
+      <div class="cue-card">
+        <div class="emoji">✊</div>
+        <h4>Hand to Mouth</h4>
+        <p>Bringing fist or fingers to mouth — a clear mid-stage cue</p>
+      </div>
+      <div class="cue-card late">
+        <div class="emoji">😭</div>
+        <h4>Crying — LATE CUE</h4>
+        <p>Comfort the baby first. Attempting to latch a crying baby is very difficult.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">😌 Fullness Cues vs. Hunger Cues</div>
+    <div class="two-col">
+      <div class="col-card hunger">
+        <h4>🍽 Hunger Cues</h4>
+        <ul>
+          <li>Rooting / turning head</li>
+          <li>Licking lips / smacking</li>
+          <li>Hand to mouth</li>
+          <li>Increased alertness</li>
+          <li>Fussiness (escalating)</li>
+          <li>Crying (late)</li>
+        </ul>
+      </div>
+      <div class="col-card fullness">
+        <h4>✅ Fullness / Satiety Cues</h4>
+        <ul>
+          <li>Releases breast / turns away</li>
+          <li>Relaxed hands and arms</li>
+          <li>Decreased sucking</li>
+          <li>Falls asleep at breast</li>
+          <li>Appears content, relaxed</li>
+          <li>No longer rooting</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">💩 Stool Progression — Signs of Adequate Intake</div>
+    <div class="stool-track">
+      <div class="stool-step">
+        <h4>Meconium</h4>
+        <div class="swatch"></div>
+        <p>Days 1–2<br>Black and sticky<br>Sterile; first bowel output</p>
+      </div>
+      <div class="stool-step">
+        <h4>Transitional</h4>
+        <div class="swatch"></div>
+        <p>Days 3–4<br>Brown to greenish-brown<br>Milk is transitioning</p>
+      </div>
+      <div class="stool-step">
+        <h4>Mature</h4>
+        <div class="swatch"></div>
+        <p>Day 5+<br>Mustard yellow, "seedy"<br>Sign milk is in!</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">📊 Assessing for Adequate Intake</div>
+    <div class="adequacy-grid">
+      <div class="adeq-card">
+        <h4>👶 Weight</h4>
+        <p>Up to 7–10% weight loss in first few days is expected. Should return to birth weight by 10–14 days.</p>
+      </div>
+      <div class="adeq-card">
+        <h4>💧 Wet Diapers</h4>
+        <p>Expect 6+ wet diapers/day by day 4–5. Pale yellow urine is a good sign.</p>
+      </div>
+      <div class="adeq-card">
+        <h4>💩 Stool Output</h4>
+        <p>Transition from meconium to yellow seedy stool by day 4–5 confirms milk transfer.</p>
+      </div>
+      <div class="adeq-card">
+        <h4>😊 Baby's Behavior</h4>
+        <p>Waking for feeds, appearing satisfied after feeding, good skin color and tone.</p>
+      </div>
+      <div class="adeq-card">
+        <h4>🔊 Swallowing</h4>
+        <p>Audible swallowing during feeding is a reliable indicator of milk transfer.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="check-section">
+    <h3>✔ Knowledge Check</h3>
+    <div class="check-q">
+      <input type="checkbox" id="q1">
+      <div>
+        <label for="q1">A new parent says their baby feeds every hour in the evening. You should advise them to put the baby on a 2–3 hour schedule to build better habits.</label>
+        <br><button class="reveal-btn" onclick="toggleAnswer('a1')">Show Answer</button>
+        <div class="answer" id="a1">FALSE — evening cluster feeding is normal newborn behavior. Feeding on demand (8–12 times/24 hrs) is correct guidance. Schedules can decrease supply and lead to inadequate intake.</div>
+      </div>
+    </div>
+    <div class="check-q">
+      <input type="checkbox" id="q2">
+      <div>
+        <label for="q2">Crying is a late hunger cue, and you should comfort the baby before attempting to latch.</label>
+        <br><button class="reveal-btn" onclick="toggleAnswer('a2')">Show Answer</button>
+        <div class="answer" id="a2">TRUE — a crying baby is already stressed. Comfort first, then latch. Attempting to latch a crying, inconsolable baby is frustrating for both mom and baby.</div>
+      </div>
+    </div>
+    <div class="check-q">
+      <input type="checkbox" id="q3">
+      <div>
+        <label for="q3">By day 5, a breastfed infant should have mustard-yellow, seedy stools — what does this confirm?</label>
+        <br><button class="reveal-btn" onclick="toggleAnswer('a3')">Show Answer</button>
+        <div class="answer" id="a3">Mature milk has come in and is being transferred successfully. This stool pattern is one of the key signs of adequate breastfeeding intake.</div>
+      </div>
+    </div>
+    <div class="check-q">
+      <input type="checkbox" id="q4">
+      <div>
+        <label for="q4">List 2 fullness cues you would teach a new parent to watch for after a feeding.</label>
+        <br><button class="reveal-btn" onclick="toggleAnswer('a4')">Show Answer</button>
+        <div class="answer" id="a4">Any 2 of: releases breast or turns away, relaxed hands/arms, decreased sucking, falls asleep at breast, appears content, no longer rooting.</div>
+      </div>
+    </div>
+  </div>
+</main>
+<footer>NRS 231 · Breastfeeding Lecture 6 · Handout 2 of 4 — Feeding Cues & Normal Patterns</footer>
+<script>
+function toggleAnswer(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('visible');
+  el.previousElementSibling.textContent = el.classList.contains('visible') ? 'Hide Answer' : 'Show Answer';
+}
+</script>
+</body>
+</html>

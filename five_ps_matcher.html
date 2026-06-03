@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The 5 Ps of Labor — Card Sort</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f7f4ef;
+    --surface: #ffffff;
+    --text: #1a1a1a;
+    --text-muted: #6b6b6b;
+    --border: rgba(0,0,0,0.10);
+    --border-dash: rgba(0,0,0,0.18);
+    --pool-bg: #f0ede8;
+    --hover-bg: #e8e4de;
+    --correct-bg: #edf7f3;
+    --correct-text: #0d4a30;
+    --correct-border: #1a8a5a;
+    --wrong-bg: #fff0ee;
+    --wrong-text: #7a1f10;
+    --wrong-border: #c0392b;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  header {
+    text-align: center;
+    max-width: 960px;
+    margin: 0 auto 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .eyebrow {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+  }
+
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 400;
+    line-height: 1.15;
+    margin-bottom: 0.6rem;
+  }
+
+  header p {
+    font-size: 15px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .main { max-width: 960px; margin: 0 auto; }
+
+  .pool-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+
+  .pool {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-height: 72px;
+    padding: 12px;
+    border-radius: 14px;
+    border: 2px dashed var(--border-dash);
+    background: var(--pool-bg);
+    margin-bottom: 1.75rem;
+    transition: background 0.15s;
+  }
+
+  .pool.drag-over { background: var(--hover-bg); }
+
+  .ps-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin-bottom: 1.5rem;
+  }
+
+  .p-zone-wrap {}
+
+  .p-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .p-letter {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+
+  .p-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .p-zone {
+    border-radius: 12px;
+    border: 2px dashed var(--border-dash);
+    min-height: 160px;
+    padding: 8px;
+    transition: background 0.15s;
+  }
+
+  .p-zone.drag-over { background: var(--hover-bg); }
+
+  .chips-col {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-height: 120px;
+  }
+
+  .chip {
+    padding: 9px 11px;
+    border-radius: 9px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--text);
+    cursor: grab;
+    user-select: none;
+    line-height: 1.45;
+    transition: opacity 0.15s, transform 0.1s;
+  }
+
+  .chip:hover { border-color: rgba(0,0,0,0.2); }
+  .chip:active { cursor: grabbing; opacity: 0.75; transform: scale(0.98); }
+
+  .chip.correct {
+    border-color: var(--correct-border);
+    background: var(--correct-bg);
+    color: var(--correct-text);
+  }
+
+  .chip.wrong {
+    border-color: var(--wrong-border);
+    background: var(--wrong-bg);
+    color: var(--wrong-text);
+  }
+
+  .action-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    padding: 9px 22px;
+    border-radius: 999px;
+    border: 1.5px solid var(--border-dash);
+    background: var(--surface);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .btn:hover { background: var(--hover-bg); }
+
+  .btn.primary {
+    background: #1a1a1a;
+    color: #fff;
+    border-color: #1a1a1a;
+  }
+
+  .btn.primary:hover { background: #333; }
+
+  .score-msg {
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+
+  .score-msg strong {
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  footer {
+    text-align: center;
+    margin-top: 3rem;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 700px) {
+    .ps-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 440px) {
+    .ps-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">In-class activity — Mechanics of Labor &amp; Delivery</div>
+  <h1>The 5 Ps of labor</h1>
+  <p>Drag each description into the correct P column, then check your answers.</p>
+</header>
+
+<div class="main">
+  <div class="pool-label">Descriptions to sort</div>
+  <div class="pool" id="pool"></div>
+  <div class="ps-grid" id="ps-grid"></div>
+  <div class="action-row">
+    <button class="btn primary" onclick="checkAll()">Check answers</button>
+    <button class="btn" onclick="resetAll()">Reset &amp; shuffle</button>
+    <div class="score-msg" id="score"></div>
+  </div>
+</div>
+
+<footer>Mechanics of L&amp;D — Lecture 1 &nbsp;·&nbsp; L&amp;D Nursing</footer>
+
+<script>
+const ps = [
+  { id: "passenger", letter: "P1", label: "Passenger",  bg: "#E6F1FB", textColor: "#0C447C", borderColor: "#185FA5" },
+  { id: "passage",   letter: "P2", label: "Passage",    bg: "#edf7f3", textColor: "#0d4a30", borderColor: "#1a8a5a" },
+  { id: "powers",    letter: "P3", label: "Powers",     bg: "#FAEEDA", textColor: "#412402", borderColor: "#d4850a" },
+  { id: "position",  letter: "P4", label: "Position",   bg: "#FBEAF0", textColor: "#4B1528", borderColor: "#993556" },
+  { id: "psyche",    letter: "P5", label: "Psyche",     bg: "#EEEDFE", textColor: "#26215C", borderColor: "#534AB7" },
+];
+
+const chips = [
+  { id: 1,  text: "Fetal lie, presentation, and position",                    p: "passenger" },
+  { id: 2,  text: "Size and shape of the maternal pelvis",                    p: "passage"   },
+  { id: 3,  text: "Involuntary uterine contractions (primary power)",         p: "powers"    },
+  { id: 4,  text: "Maternal emotional state and anxiety level",               p: "psyche"    },
+  { id: 5,  text: "Fetal attitude — degree of head flexion",                  p: "passenger" },
+  { id: 6,  text: "Voluntary bearing-down effort (secondary power)",          p: "powers"    },
+  { id: 7,  text: "True vs false pelvis; ischial spines",                     p: "passage"   },
+  { id: 8,  text: "Upright, side-lying, hands-and-knees, squatting",          p: "position"  },
+  { id: 9,  text: "Support person presence and cultural factors",             p: "psyche"    },
+  { id: 10, text: "Number of fetuses and placental location",                 p: "passenger" },
+  { id: 11, text: "Cervical effacement and dilation (soft tissues)",          p: "passage"   },
+  { id: 12, text: "Ferguson reflex — urge to bear down",                      p: "powers"    },
+  { id: 13, text: "Pelvic type: gynecoid, android, anthropoid, platypelloid", p: "passage"   },
+  { id: 14, text: "Mother's position affects fetal descent and rotation",     p: "position"  },
+  { id: 15, text: "Fear-tension-pain cycle",                                  p: "psyche"    },
+];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+let dragging = null;
+
+function makeChip(chip) {
+  const el = document.createElement('div');
+  el.className = 'chip';
+  el.textContent = chip.text;
+  el.dataset.p = chip.p;
+  el.dataset.id = chip.id;
+  el.draggable = true;
+  el.addEventListener('dragstart', e => { dragging = el; e.dataTransfer.effectAllowed = 'move'; });
+  el.addEventListener('dragend', () => { dragging = null; });
+  return el;
+}
+
+function setupZone(zone, colId) {
+  const col = document.getElementById(colId);
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+  zone.addEventListener('drop', e => {
+    e.preventDefault();
+    zone.classList.remove('drag-over');
+    if (!dragging) return;
+    dragging.classList.remove('correct', 'wrong');
+    col.appendChild(dragging);
+    document.getElementById('score').textContent = '';
+  });
+}
+
+function setupPool() {
+  const pool = document.getElementById('pool');
+  pool.addEventListener('dragover', e => { e.preventDefault(); pool.classList.add('drag-over'); });
+  pool.addEventListener('dragleave', () => pool.classList.remove('drag-over'));
+  pool.addEventListener('drop', e => {
+    e.preventDefault();
+    pool.classList.remove('drag-over');
+    if (!dragging) return;
+    dragging.classList.remove('correct', 'wrong');
+    pool.appendChild(dragging);
+    document.getElementById('score').textContent = '';
+  });
+}
+
+function checkAll() {
+  let correct = 0, placed = 0;
+  document.querySelectorAll('.chip').forEach(chip => {
+    if (document.getElementById('pool').contains(chip)) return;
+    placed++;
+    const right = chip.parentElement.id === 'col-' + chip.dataset.p;
+    chip.classList.remove('correct', 'wrong');
+    chip.classList.add(right ? 'correct' : 'wrong');
+    if (right) correct++;
+  });
+  const msg = document.getElementById('score');
+  if (placed === 0) { msg.textContent = 'Drag some cards first!'; return; }
+  msg.innerHTML = placed < chips.length
+    ? `<strong>${correct}/${placed}</strong> correct — ${chips.length - placed} still in pool`
+    : `<strong>${correct}/${chips.length}</strong> correct`;
+}
+
+function resetAll() {
+  ps.forEach(p => { document.getElementById('col-' + p.id).innerHTML = ''; });
+  document.getElementById('score').textContent = '';
+  const pool = document.getElementById('pool');
+  pool.innerHTML = '';
+  shuffle(chips).forEach(c => pool.appendChild(makeChip(c)));
+}
+
+function buildGrid() {
+  const grid = document.getElementById('ps-grid');
+  ps.forEach(p => {
+    const wrap = document.createElement('div');
+    wrap.className = 'p-zone-wrap';
+    wrap.innerHTML = `
+      <div class="p-header">
+        <div class="p-letter" style="background:${p.bg};color:${p.textColor}">${p.letter}</div>
+        <span class="p-label">${p.label}</span>
+      </div>
+      <div class="p-zone" id="zone-${p.id}" style="border-color:${p.borderColor}40">
+        <div class="chips-col" id="col-${p.id}"></div>
+      </div>`;
+    grid.appendChild(wrap);
+    setupZone(wrap.querySelector('.p-zone'), 'col-' + p.id);
+  });
+}
+
+setupPool();
+buildGrid();
+resetAll();
+</script>
+</body>
+</html>

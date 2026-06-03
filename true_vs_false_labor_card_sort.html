@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>True vs False Labor — Card Sort</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f7f4ef;
+    --surface: #ffffff;
+    --text: #1a1a1a;
+    --text-muted: #6b6b6b;
+    --border: rgba(0,0,0,0.10);
+    --border-dash: rgba(0,0,0,0.18);
+    --pool-bg: #f0ede8;
+    --hover-bg: #e8e4de;
+    --true-accent: #1a8a5a;
+    --true-bg: #edf7f3;
+    --true-text: #0d4a30;
+    --true-border: #1a8a5a;
+    --false-accent: #d4850a;
+    --false-bg: #fff8ec;
+    --false-text: #6b3a00;
+    --false-border: #d4850a;
+    --wrong-bg: #fff0ee;
+    --wrong-text: #7a1f10;
+    --wrong-border: #c0392b;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  header {
+    text-align: center;
+    max-width: 860px;
+    margin: 0 auto 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .eyebrow {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+  }
+
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 400;
+    line-height: 1.15;
+    margin-bottom: 0.6rem;
+  }
+
+  header p {
+    font-size: 15px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .legend {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 1.25rem;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .main {
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  .pool-label {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+
+  .pool {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-height: 72px;
+    padding: 12px;
+    border-radius: 14px;
+    border: 2px dashed var(--border-dash);
+    background: var(--pool-bg);
+    margin-bottom: 1.75rem;
+    transition: background 0.15s;
+  }
+
+  .pool.drag-over { background: var(--hover-bg); }
+
+  .columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 1.5rem;
+  }
+
+  .col-wrap {}
+
+  .col-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+
+  .col-dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .col-zone {
+    border-radius: 14px;
+    border: 2px dashed var(--border-dash);
+    min-height: 240px;
+    padding: 12px;
+    transition: background 0.15s;
+  }
+
+  .col-zone.drag-over { background: var(--hover-bg); }
+
+  .cards-in-col {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    min-height: 180px;
+  }
+
+  .card-chip {
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    cursor: grab;
+    user-select: none;
+    line-height: 1.45;
+    transition: opacity 0.15s, transform 0.1s;
+  }
+
+  .card-chip:hover { border-color: rgba(0,0,0,0.2); }
+  .card-chip:active { cursor: grabbing; opacity: 0.75; transform: scale(0.98); }
+
+  .card-chip.correct {
+    border-color: var(--true-border);
+    background: var(--true-bg);
+    color: var(--true-text);
+  }
+
+  .card-chip.wrong {
+    border-color: var(--wrong-border);
+    background: var(--wrong-bg);
+    color: var(--wrong-text);
+  }
+
+  .action-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    padding: 9px 22px;
+    border-radius: 999px;
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .btn:hover { background: var(--hover-bg); }
+
+  .btn.primary {
+    background: #1a1a1a;
+    color: #fff;
+    border-color: #1a1a1a;
+  }
+
+  .btn.primary:hover { background: #333; }
+
+  .score-msg {
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+
+  .score-msg strong {
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  footer {
+    text-align: center;
+    margin-top: 3rem;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 560px) {
+    .columns { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">In-class activity — Stages of Labor</div>
+  <h1>True vs false labor</h1>
+  <p>Drag each card into the correct column, then check your answers.</p>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#1a8a5a"></div> True labor</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#d4850a"></div> False labor</div>
+  </div>
+</header>
+
+<div class="main">
+  <div class="pool-label">Cards to sort</div>
+  <div class="pool" id="pool"></div>
+
+  <div class="columns">
+    <div class="col-wrap">
+      <div class="col-header">
+        <div class="col-dot" style="background:#1a8a5a"></div>
+        True labor
+      </div>
+      <div class="col-zone" id="zone-true">
+        <div class="cards-in-col" id="col-true"></div>
+      </div>
+    </div>
+    <div class="col-wrap">
+      <div class="col-header">
+        <div class="col-dot" style="background:#d4850a"></div>
+        False labor
+      </div>
+      <div class="col-zone" id="zone-false">
+        <div class="cards-in-col" id="col-false"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="action-row">
+    <button class="btn primary" onclick="checkAnswers()">Check answers</button>
+    <button class="btn" onclick="resetAll()">Reset &amp; shuffle</button>
+    <div class="score-msg" id="score-msg"></div>
+  </div>
+</div>
+
+<footer>Stages of Labor — Lecture 2 &nbsp;·&nbsp; L&amp;D Nursing</footer>
+
+<script>
+const items = [
+  { id: 1,  text: "Contractions are regular and don't stop with rest",      answer: "true"  },
+  { id: 2,  text: "Contractions are irregular and stop with walking or rest", answer: "false" },
+  { id: 3,  text: "Contractions progressively closer together and stronger", answer: "true"  },
+  { id: 4,  text: "Contractions stay the same intensity over time",          answer: "false" },
+  { id: 5,  text: "Cervix dilates and effaces with each contraction",        answer: "true"  },
+  { id: 6,  text: "No cervical change noted on exam",                        answer: "false" },
+  { id: 7,  text: "Pain starts in the lower back and radiates to the abdomen", answer: "true" },
+  { id: 8,  text: "Discomfort felt only in the front of the abdomen",        answer: "false" },
+  { id: 9,  text: "Bloody show — pink or bloody mucus discharge",            answer: "true"  },
+  { id: 10, text: "Contractions ease with a warm bath or hydration",         answer: "false" },
+  { id: 11, text: "Fetal station progressively descends",                    answer: "true"  },
+  { id: 12, text: "Sedation or sleep slows or stops contractions",           answer: "false" },
+  { id: 13, text: "Pain intensity increases as labor progresses",            answer: "true"  },
+  { id: 14, text: "No change in vaginal discharge",                          answer: "false" },
+];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+let dragging = null;
+
+function makeChip(item) {
+  const chip = document.createElement('div');
+  chip.className = 'card-chip';
+  chip.textContent = item.text;
+  chip.dataset.id = item.id;
+  chip.dataset.answer = item.answer;
+  chip.draggable = true;
+  chip.addEventListener('dragstart', e => {
+    dragging = chip;
+    e.dataTransfer.effectAllowed = 'move';
+  });
+  chip.addEventListener('dragend', () => { dragging = null; });
+  return chip;
+}
+
+function setupDropZone(zoneId, colId) {
+  const zone = document.getElementById(zoneId);
+  const col  = document.getElementById(colId);
+  zone.addEventListener('dragover',  e => { e.preventDefault(); zone.classList.add('drag-over'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+  zone.addEventListener('drop', e => {
+    e.preventDefault();
+    zone.classList.remove('drag-over');
+    if (dragging) {
+      dragging.classList.remove('correct', 'wrong');
+      col.appendChild(dragging);
+      document.getElementById('score-msg').textContent = '';
+    }
+  });
+}
+
+function setupPool() {
+  const pool = document.getElementById('pool');
+  pool.addEventListener('dragover',  e => { e.preventDefault(); pool.classList.add('drag-over'); });
+  pool.addEventListener('dragleave', () => pool.classList.remove('drag-over'));
+  pool.addEventListener('drop', e => {
+    e.preventDefault();
+    pool.classList.remove('drag-over');
+    if (dragging) {
+      dragging.classList.remove('correct', 'wrong');
+      pool.appendChild(dragging);
+      document.getElementById('score-msg').textContent = '';
+    }
+  });
+}
+
+function checkAnswers() {
+  const all = document.querySelectorAll('.card-chip');
+  let correct = 0, placed = 0;
+  all.forEach(chip => {
+    const inTrue  = document.getElementById('col-true').contains(chip);
+    const inFalse = document.getElementById('col-false').contains(chip);
+    if (!inTrue && !inFalse) return;
+    placed++;
+    const right = (inTrue && chip.dataset.answer === 'true') ||
+                  (inFalse && chip.dataset.answer === 'false');
+    chip.classList.remove('correct', 'wrong');
+    chip.classList.add(right ? 'correct' : 'wrong');
+    if (right) correct++;
+  });
+  const msg = document.getElementById('score-msg');
+  if (placed === 0) { msg.innerHTML = 'Drag some cards first!'; return; }
+  if (placed < items.length) {
+    msg.innerHTML = `<strong>${correct}/${placed}</strong> correct so far — ${items.length - placed} card(s) still in the pool`;
+  } else {
+    msg.innerHTML = `<strong>${correct}/${items.length}</strong> correct`;
+  }
+}
+
+function resetAll() {
+  document.getElementById('col-true').innerHTML  = '';
+  document.getElementById('col-false').innerHTML = '';
+  document.getElementById('score-msg').textContent = '';
+  const pool = document.getElementById('pool');
+  pool.innerHTML = '';
+  shuffle(items).forEach(item => pool.appendChild(makeChip(item)));
+}
+
+setupDropZone('zone-true',  'col-true');
+setupDropZone('zone-false', 'col-false');
+setupPool();
+resetAll();
+</script>
+</body>
+</html>

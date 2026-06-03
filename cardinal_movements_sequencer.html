@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cardinal Movements — Sequence Activity</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f7f4ef;
+    --surface: #ffffff;
+    --text: #1a1a1a;
+    --text-muted: #6b6b6b;
+    --border: rgba(0,0,0,0.10);
+    --border-dash: rgba(0,0,0,0.18);
+    --pool-bg: #f0ede8;
+    --hover-bg: #e8e4de;
+    --correct-bg: #edf7f3;
+    --correct-text: #0d4a30;
+    --correct-border: #1a8a5a;
+    --correct-sub: #1a8a5a;
+    --wrong-bg: #fff0ee;
+    --wrong-text: #7a1f10;
+    --wrong-border: #c0392b;
+    --wrong-sub: #c0392b;
+    --num-color: #6b6b6b;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  header {
+    text-align: center;
+    max-width: 860px;
+    margin: 0 auto 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .eyebrow {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+  }
+
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 400;
+    line-height: 1.15;
+    margin-bottom: 0.6rem;
+  }
+
+  header p {
+    font-size: 15px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .main {
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  .col-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 1.5rem;
+    align-items: start;
+  }
+
+  .bank {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    min-height: 380px;
+    padding: 12px;
+    border-radius: 14px;
+    border: 2px dashed var(--border-dash);
+    background: var(--pool-bg);
+    transition: background 0.15s;
+  }
+
+  .bank.drag-over { background: var(--hover-bg); }
+
+  .sequence {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .seq-slot {
+    display: flex;
+    align-items: stretch;
+    min-height: 56px;
+  }
+
+  .seq-num {
+    width: 34px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--num-color);
+  }
+
+  .drop-zone {
+    flex: 1;
+    border-radius: 10px;
+    border: 2px dashed var(--border-dash);
+    background: var(--pool-bg);
+    display: flex;
+    align-items: center;
+    padding: 6px 8px;
+    min-height: 52px;
+    margin-bottom: 7px;
+    transition: background 0.15s, border-color 0.15s;
+  }
+
+  .drop-zone.drag-over {
+    background: var(--hover-bg);
+    border-color: rgba(0,0,0,0.3);
+  }
+
+  .drop-zone.has-card {
+    border-style: solid;
+    border-color: var(--border);
+    background: var(--surface);
+  }
+
+  .move-card {
+    padding: 10px 12px;
+    border-radius: 9px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    cursor: grab;
+    user-select: none;
+    line-height: 1.4;
+    width: 100%;
+    transition: opacity 0.15s, transform 0.1s;
+  }
+
+  .move-card:hover { border-color: rgba(0,0,0,0.2); }
+  .move-card:active { cursor: grabbing; opacity: 0.75; transform: scale(0.98); }
+
+  .move-card .name { font-weight: 500; }
+  .move-card .sub  { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+  .move-card.correct { border-color: var(--correct-border); background: var(--correct-bg); color: var(--correct-text); }
+  .move-card.correct .sub { color: var(--correct-sub); }
+  .move-card.wrong   { border-color: var(--wrong-border);   background: var(--wrong-bg);   color: var(--wrong-text); }
+  .move-card.wrong .sub   { color: var(--wrong-sub); }
+
+  .action-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    padding: 9px 22px;
+    border-radius: 999px;
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .btn:hover { background: var(--hover-bg); }
+
+  .btn.primary {
+    background: #1a1a1a;
+    color: #fff;
+    border-color: #1a1a1a;
+  }
+
+  .btn.primary:hover { background: #333; }
+
+  .score-msg {
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+
+  .score-msg strong {
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  footer {
+    text-align: center;
+    margin-top: 3rem;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 580px) {
+    .two-col { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">In-class activity — Stages of Labor</div>
+  <h1>Cardinal movements</h1>
+  <p>Drag each movement from the bank into the numbered slots in the correct order, then check your answer.</p>
+</header>
+
+<div class="main">
+  <div class="two-col">
+    <div>
+      <div class="col-label">Movement bank</div>
+      <div class="bank" id="bank"></div>
+    </div>
+    <div>
+      <div class="col-label">Correct sequence</div>
+      <div class="sequence" id="sequence"></div>
+    </div>
+  </div>
+
+  <div class="action-row">
+    <button class="btn primary" onclick="checkSeq()">Check order</button>
+    <button class="btn" onclick="resetSeq()">Reset &amp; shuffle</button>
+    <div class="score-msg" id="score-msg"></div>
+  </div>
+</div>
+
+<footer>Stages of Labor — Lecture 2 &nbsp;·&nbsp; L&amp;D Nursing</footer>
+
+<script>
+const movements = [
+  { id: 1, name: "Engagement",                      desc: "Fetal head enters the pelvic inlet",                     order: 1 },
+  { id: 2, name: "Descent",                         desc: "Head moves progressively down through the pelvis",       order: 2 },
+  { id: 3, name: "Flexion",                         desc: "Chin tucks to chest — smallest diameter presents",       order: 3 },
+  { id: 4, name: "Internal rotation",               desc: "Head rotates to align with the pelvic outlet",           order: 4 },
+  { id: 5, name: "Extension",                       desc: "Head extends as it passes under the pubic arch",         order: 5 },
+  { id: 6, name: "External rotation (restitution)", desc: "Head rotates back to align with the shoulders",          order: 6 },
+  { id: 7, name: "Expulsion",                       desc: "Delivery of the shoulders and rest of the body",         order: 7 },
+];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+let dragging = null;
+
+function makeCard(m) {
+  const card = document.createElement('div');
+  card.className = 'move-card';
+  card.dataset.order = m.order;
+  card.draggable = true;
+  card.innerHTML = `<div class="name">${m.name}</div><div class="sub">${m.desc}</div>`;
+  card.addEventListener('dragstart', e => {
+    dragging = card;
+    e.dataTransfer.effectAllowed = 'move';
+  });
+  card.addEventListener('dragend', () => { dragging = null; });
+  return card;
+}
+
+function setupDropZone(zone) {
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+  zone.addEventListener('drop', e => {
+    e.preventDefault();
+    zone.classList.remove('drag-over');
+    if (!dragging) return;
+    const existing = zone.querySelector('.move-card');
+    if (existing) {
+      existing.classList.remove('correct', 'wrong');
+      document.getElementById('bank').appendChild(existing);
+    }
+    const fromZone = dragging.parentElement;
+    if (fromZone && fromZone.classList.contains('drop-zone')) {
+      fromZone.classList.remove('has-card');
+    }
+    dragging.classList.remove('correct', 'wrong');
+    zone.appendChild(dragging);
+    zone.classList.add('has-card');
+    document.getElementById('score-msg').textContent = '';
+  });
+}
+
+function setupBank() {
+  const bank = document.getElementById('bank');
+  bank.addEventListener('dragover', e => { e.preventDefault(); bank.classList.add('drag-over'); });
+  bank.addEventListener('dragleave', () => bank.classList.remove('drag-over'));
+  bank.addEventListener('drop', e => {
+    e.preventDefault();
+    bank.classList.remove('drag-over');
+    if (!dragging) return;
+    const fromZone = dragging.parentElement;
+    if (fromZone && fromZone.classList.contains('drop-zone')) {
+      fromZone.classList.remove('has-card');
+    }
+    dragging.classList.remove('correct', 'wrong');
+    bank.appendChild(dragging);
+    document.getElementById('score-msg').textContent = '';
+  });
+}
+
+function checkSeq() {
+  let correct = 0, filled = 0;
+  document.querySelectorAll('.drop-zone').forEach((zone, i) => {
+    const card = zone.querySelector('.move-card');
+    if (!card) return;
+    filled++;
+    const right = parseInt(card.dataset.order) === i + 1;
+    card.classList.remove('correct', 'wrong');
+    card.classList.add(right ? 'correct' : 'wrong');
+    if (right) correct++;
+  });
+  const msg = document.getElementById('score-msg');
+  if (filled === 0) { msg.textContent = 'Place some cards first!'; return; }
+  if (filled < 7) {
+    msg.innerHTML = `<strong>${correct}/${filled}</strong> correct — ${7 - filled} slot(s) still empty`;
+  } else {
+    msg.innerHTML = correct === 7
+      ? `<strong>7/7</strong> — perfect order!`
+      : `<strong>${correct}/7</strong> correct`;
+  }
+}
+
+function resetSeq() {
+  const bank = document.getElementById('bank');
+  const seq  = document.getElementById('sequence');
+  bank.innerHTML = '';
+  seq.innerHTML  = '';
+  document.getElementById('score-msg').textContent = '';
+
+  for (let i = 1; i <= 7; i++) {
+    const slot = document.createElement('div');
+    slot.className = 'seq-slot';
+    const num = document.createElement('div');
+    num.className = 'seq-num';
+    num.textContent = i;
+    const zone = document.createElement('div');
+    zone.className = 'drop-zone';
+    zone.dataset.slot = i;
+    setupDropZone(zone);
+    slot.appendChild(num);
+    slot.appendChild(zone);
+    seq.appendChild(slot);
+  }
+
+  shuffle(movements).forEach(m => bank.appendChild(makeCard(m)));
+}
+
+setupBank();
+resetSeq();
+</script>
+</body>
+</html>
