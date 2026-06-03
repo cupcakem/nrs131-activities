@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clinical Case Scenarios — Breastfeeding Lecture 6</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2a4a;
+    --teal: #0d7377;
+    --seafoam: #14a085;
+    --light-teal: #e8f5f4;
+    --accent: #f0a500;
+    --soft: #f4f8f9;
+    --text: #1e2d3d;
+    --muted: #5a7080;
+    --warn: #c0392b;
+    --warn-light: #fdf0ef;
+    --c1: #1a3a5c;
+    --c2: #0d5f6e;
+    --c3: #1a4a3a;
+    --c4: #4a2a1a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--soft); color: var(--text); }
+
+  header {
+    background: var(--navy);
+    color: white;
+    padding: 2rem 2.5rem 1.5rem;
+    border-bottom: 4px solid var(--teal);
+  }
+  header .label { font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--seafoam); margin-bottom: 0.4rem; }
+  header h1 { font-family: 'Fraunces', serif; font-size: 2rem; font-weight: 700; }
+  header p { color: #a8c4ce; font-size: 0.9rem; margin-top: 0.4rem; }
+
+  .instructions {
+    max-width: 900px;
+    margin: 2rem auto 0;
+    padding: 0 1.5rem;
+  }
+  .instr-card {
+    background: white;
+    border-left: 5px solid var(--accent);
+    border-radius: 0 10px 10px 0;
+    padding: 1rem 1.3rem;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+  .instr-card strong { color: var(--navy); }
+
+  main { max-width: 900px; margin: 0 auto; padding: 1.5rem; }
+
+  .case {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 3px 16px rgba(26,42,74,0.1);
+    margin-bottom: 2rem;
+  }
+  .case-header {
+    padding: 1.2rem 1.5rem;
+    color: white;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .case:nth-child(1) .case-header { background: var(--c1); }
+  .case:nth-child(2) .case-header { background: var(--c2); }
+  .case:nth-child(3) .case-header { background: var(--c3); }
+  .case:nth-child(4) .case-header { background: var(--c4); }
+  .case-num {
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Fraunces', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .case-title-area { flex: 1; }
+  .case-title-area .case-tag {
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-bottom: 0.2rem;
+  }
+  .case-title-area h2 { font-family: 'Fraunces', serif; font-size: 1.2rem; font-weight: 700; }
+
+  .case-body { padding: 1.5rem; }
+
+  .scenario-box {
+    background: var(--soft);
+    border-radius: 10px;
+    padding: 1.1rem 1.3rem;
+    margin-bottom: 1.3rem;
+    font-size: 0.92rem;
+    line-height: 1.7;
+    border-left: 4px solid #b0c8d0;
+    color: var(--text);
+  }
+  .scenario-box strong { color: var(--navy); }
+
+  .questions h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 0.95rem;
+    color: var(--navy);
+    margin-bottom: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .question-item {
+    display: flex;
+    gap: 0.8rem;
+    margin-bottom: 0.6rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    padding: 0.5rem 0;
+    border-bottom: 1px dashed #d4e6ea;
+    align-items: flex-start;
+  }
+  .question-item:last-child { border-bottom: none; }
+  .q-num {
+    background: var(--light-teal);
+    color: var(--teal);
+    font-weight: 700;
+    font-size: 0.8rem;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 0.1em;
+  }
+  .question-text { flex: 1; }
+
+  /* Answer key toggle */
+  .answer-key-toggle {
+    margin-top: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .toggle-btn {
+    background: var(--navy);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.2s;
+  }
+  .toggle-btn:hover { background: var(--teal); }
+  .answer-key {
+    display: none;
+    background: var(--light-teal);
+    border-radius: 10px;
+    padding: 1.2rem 1.3rem;
+    margin-top: 0.8rem;
+  }
+  .answer-key.visible { display: block; }
+  .answer-key h4 {
+    font-family: 'Fraunces', serif;
+    font-size: 0.9rem;
+    color: var(--teal);
+    margin-bottom: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .answer-item {
+    display: flex;
+    gap: 0.8rem;
+    margin-bottom: 0.8rem;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    align-items: flex-start;
+  }
+  .answer-item:last-child { margin-bottom: 0; }
+  .a-num {
+    background: var(--teal);
+    color: white;
+    font-weight: 700;
+    font-size: 0.75rem;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 0.15em;
+  }
+  .answer-item p { color: var(--text); line-height: 1.6; }
+  .answer-item strong { color: var(--teal); }
+
+  /* NCLEX tag */
+  .nclex-tag {
+    display: inline-block;
+    background: #f0f4ff;
+    color: var(--navy);
+    border: 1px solid #c0ccee;
+    border-radius: 20px;
+    padding: 0.15rem 0.6rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    margin-left: 0.4rem;
+    vertical-align: middle;
+  }
+
+  footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 1.5rem; border-top: 1px solid #d4e6ea; }
+  @media (max-width: 600px) {
+    header h1 { font-size: 1.5rem; }
+    .case-header { flex-direction: column; gap: 0.6rem; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="label">Breastfeeding Lecture 6 · In-Class Activity</div>
+  <h1>Clinical Case Scenarios</h1>
+  <p>Small group discussion · 4 vignettes with guided questions</p>
+</header>
+
+<div class="instructions">
+  <div class="instr-card">
+    <strong>Instructions:</strong> Divide into small groups (3–4 students). Each group reads the scenario, discusses the questions, and selects a spokesperson to share with the class. <strong>Do not reveal the answer key</strong> until group discussion is complete. NCLEX-style questions are marked <span class="nclex-tag">NCLEX</span>.
+  </div>
+</div>
+
+<main>
+
+  <!-- CASE 1 -->
+  <div class="case">
+    <div class="case-header">
+      <div class="case-num">1</div>
+      <div class="case-title-area">
+        <div class="case-tag">Scenario</div>
+        <h2>"My milk hasn't come in yet" — The Worried New Dad</h2>
+      </div>
+    </div>
+    <div class="case-body">
+      <div class="scenario-box">
+        <strong>Setting:</strong> Postpartum floor, day 2. You are the nurse assigned to a first-time mother, Anika, 28 years old, who delivered vaginally 30 hours ago. Anika's mother-in-law is at the bedside and has told Anika's husband, Deshi, that "Anika has no milk yet" and that the baby "must be starving." Deshi is visibly anxious and is asking you to bring formula because the baby is feeding every 1.5–2 hours and seems fussy between feedings. Anika wants to breastfeed but is beginning to doubt herself.
+      </div>
+      <div class="questions">
+        <h3>Discussion Questions</h3>
+        <div class="question-item">
+          <div class="q-num">1</div>
+          <div class="question-text">Is the mother-in-law's concern clinically valid? What is the normal volume of colostrum on day 2, and how would you explain this to the family? <span class="nclex-tag">NCLEX</span></div>
+        </div>
+        <div class="question-item">
+          <div class="q-num">2</div>
+          <div class="question-text">The baby is feeding every 1.5–2 hours and appears fussy. Is this normal? How do you explain frequent feeding and cluster feeding to a worried family?</div>
+        </div>
+        <div class="question-item">
+          <div class="q-num">3</div>
+          <div class="question-text">What signs would you assess to determine whether the baby is getting adequate intake? What findings would be reassuring?</div>
+        </div>
+        <div class="question-item">
+          <div class="q-num">4</div>
+          <div class="question-text">How do you navigate the family dynamics here — respecting the grandmother's role while also supporting Anika's breastfeeding goal?</div>
+        </div>
+      </div>
+      <div class="answer-key-toggle">
+        <button class="toggle-btn" onclick="toggleKey('key1')">🔑 Reveal Answer Key</button>
+      </div>
+      <div class="answer-key" id="key1">
+        <h4>Answer Key — Instructor Reference</h4>
+        <div class="answer-item">
+          <div class="a-num">1</div>
+          <p><strong>No, this is not a clinical concern.</strong> Colostrum volume of 2–20 mL per feeding is completely normal and physiologically appropriate on days 1–5. The stomach of a newborn is approximately the size of a marble. Colostrum is highly concentrated — rich in antibodies (IgA) and protein. Reassure the family with facts: small volume is by design, not a deficit. Mature milk will come in around days 3–5.</p>
+        </div>
+        <div class="answer-item">
+          <div class="a-num">2</div>
+          <p><strong>Yes, completely normal.</strong> Newborns should feed 8–12 times per 24 hours — approximately every 1.5–3 hours. Cluster feeding (frequent feeds close together, often evenings) is physiologic and helps establish supply through supply-and-demand signaling. Watching the clock creates anxiety; teach the family to watch the baby. Fussiness between feeds is common and doesn't mean inadequate intake.</p>
+        </div>
+        <div class="answer-item">
+          <div class="a-num">3</div>
+          <p><strong>Signs of adequate intake:</strong> wet diapers (1–2 day 1, increasing to 6+ by day 4–5), stool progression from meconium to transitional to mustard-yellow seedy by day 5, audible swallowing during feeds, baby appears content after feeding, weight loss within 7–10% of birth weight (normal), returns to birth weight by 10–14 days.</p>
+        </div>
+        <div class="answer-item">
+          <div class="a-num">4</div>
+          <p><strong>Use inclusive, respectful communication.</strong> Acknowledge the grandmother's concern and experience. Include the family in teaching — "Let me share what the latest research tells us so we can all support Anika." Frame breastfeeding support as a team effort. Avoid dismissing the grandmother, which can create conflict and undermine the mother's confidence further. If conflict persists, consider a private conversation with Anika to reinforce her autonomy and offer an IBCLC consult.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASE 2 -->
+  <div class="case">
+    <div class="case-header">
+      <div class="case-num">2</div>
+      <div class="case-title-area">
+        <div class="case-tag">Scenario</div>
+        <h2>"It hurts every time" — Latch and Nipple Pain</h2>
+      </div>
+    </div>
+    <div class="case-body">
+      <div class="scenario-box">
+        <strong>Setting:</strong> Postpartum, day 3. Maya, 34 years old, G2P2, is breastfeeding her second child. She breastfed her first child for 4 months before stopping due to pain. She reports that every feeding is painful throughout — not just at latch. You observe a feeding and notice the baby appears to have dimpled cheeks, is making clicking sounds, and Maya's nipple comes out creased and compressed after the baby releases.
+      </div>
+      <div class="questions">
+        <h3>Discussion Questions</h3>
+        <div class="question-item">
+          <div class="q-num">1</div>
+          <div class="question-text">Based on your observations, what is your nursing assessment? Is this normal postpartum nipple soreness or is something else going on? <span class="nclex-tag">NCLEX</span></div>
+        </div>
+        <div class="question-item">
+          <div class="q-num">2</div>
+          <div class="question-text">What specific latch findings are you seeing that indicate a poor latch? List at least 3 signs from this scenario.</div>
+        </div>
+        <div class="question-item">
+          <div class="q-num">3</div>
+          <div class="question-text">What immediate nursing interventions would you implement? Walk through the steps of helping Maya re-latch.</div>
+        </div>
+        <div class="question-item">
+          <div class="q-num">4</div>
+          <div class="question-text">Maya mentions her baby's frenulum looked short at birth — the pediatrician didn't say anything. How does this connect to your assessment, and what would you do? <span class="nclex-tag">NCLEX</span></div>
+        </div>
+      </div>
+      <div class="answer-key-toggle">
+        <button class="toggle-btn" onclick="toggleKey('key2')">🔑 Reveal Answer Key</button>
+      </div>
+      <div class="answer-key" id="key2">
+        <h4>Answer Key — Instructor Reference</h4>
+        <div class="answer-item">
+          <div class="a-num">1</div>
+          <p><strong>This is not normal nipple soreness.</strong> While mild initial latch discomfort is common in the first seconds, pain throughout the entire feeding indicates a poor latch. Signs like clicking, dimpled cheeks, and a creased, compressed nipple are all red flags. This pattern also mirrors her previous breastfeeding experience, which is significant history — the same issue may have led to early cessation before.</p>
+        </div>
+        <div class="answer-item">
+          <div class="a-num">2</div>
+          <p><strong>Signs of poor latch observed:</strong> (1) clicking/smacking sounds — air leakage indicates poor seal; (2) dimpled cheeks — baby is sucking but not transferring milk efficiently; (3) nipple comes out creased/compressed — only the nipple tip is in the mouth, not the areola; (4) persistent pain throughout feeding (not just at initial latch). Four documented signs of a shallow latch.</p>
+        </div>
+        <div class="answer-item">
+          <div class="a-num">3</div>
+          <p><strong>Interventions:</strong> Break the suction gently with a clean finger, then re-latch. Unwrap baby. Position mom comfortably. Guide Maya to support the breast and stroke baby's lip to elicit a wide-mouth gape. When mouth is wide open, bring the baby to the breast (not breast to baby), chin touching first, aiming nipple toward roof of mouth. Ensure tummy-to-tummy alignment. Look for flanged lips and audible swallows. Reinforce: it should not hurt after the first seconds.</p>
+        </div>
+        <div class="answer-item">
+          <div class="a-num">4</div>
+          <p><strong>Short frenulum (ankyloglossia/tongue-tie)</strong> restricts tongue mobility, preventing the baby from cupping the breast correctly — this directly causes shallow latch, clicking, poor milk transfer, and nipple pain. The nurse should document the concern, note the history of poor latch in child 1, and make a referral to a lactation consultant (IBCLC) and/or the pediatrician for frenulum assessment. This is not outside the nurse's scope to identify and escalate.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASE 3 -->
+  <div class="case">
+    <div class="case-header">
+      <div class="case-num">3</div>
+      <div class="case-title-area">
+        <div class="case-tag">Scenario</div>
+        <h2>Going Back to Work — The Pumping Plan</h2>
+      </div>
+    </div>
+    <div class="case-body">
+      <div class="scenario-box">
+        <strong>Setting:</strong> Postpartum day 2, discharge teaching. Sofia, 29 years old, delivered via cesarean section yesterday. She is breastfeeding and tells you she plans to return to full-time work at 6 weeks. She wants to breastfeed for at least 6 months but has no experience with pumping and is feeling overwhelmed. She asks: "Can I even keep my milk up if I go back to work? How do I store it? Can my husband give the baby a bottle?"
+      </div>
+      <div class="questions">
+        <h3>Discussion Questions</h3>
+        <div class="question-item">
+          <div class="q-num">1</div>
+          <div class="question-text">How would you reassure Sofia and outline a realistic plan for maintaining milk supply when returning to work?</div>
+        </div>
+        <div class="question-item">
+          <div class="q-num">2</div>
+          <div class="question-text">Review the safe breast milk storage guidelines with Sofia. How long can expressed milk be stored at room temperature? In the refrigerator? In the freezer? <span class="nclex-tag">NCLEX</span></div>
+        </div>
+        <div class="question-item">
+          <div class="q-num">3</div>
+          <div class="question-text">Sofia asks about introducing a bottle. What teaching would you provide about timing and nipple confusion?</div>
+        </div>
+        <div class="question-item">
+          <div class="q-num">4</div>
+          <div class="question-text">Sofia had a cesarean section. She's currently struggling with positioning. Which breastfeeding positions would you recommend and why?</div>
+        </div>
+      </div>
+      <div class="answer-key-toggle">
+        <button class="toggle-btn" onclick="toggleKey('key3')">🔑 Reveal Answer Key</button>
+      </div>
+      <div class="answer-key" id="key3">
+        <h4>Answer Key — Instructor Reference</h4>
+        <div class="answer-item">
+          <div class="a-num">1</div>
+          <p><strong>Yes, breastfeeding while working is achievable.</strong> Milk supply is driven by supply and demand — pumping regularly at work (every 2–3 hours) mimics what the baby would do. Key tips: establish a strong supply before returning (breastfeed on demand for the first 6 weeks), pump or nurse before leaving for work, pump during breaks at work, nurse as soon as home. Federal law protects her right to pump breaks and a private space at work (Break Time for Nursing Mothers Act).</p>
+        </div>
+        <div class="answer-item">
+          <div class="a-num">2</div>
+          <p><strong>Storage guidelines (CDC):</strong> Room temperature (77°F or cooler) — up to <strong>4 hours</strong>; Refrigerator — up to <strong>4 days</strong>; Freezer — <strong>6 months is best</strong>, up to 12 months is acceptable. Additional teaching: use breast milk storage bags or food-grade BPA-free containers; store in small amounts (2–4 oz) to minimize waste; label with date; do not store in refrigerator or freezer door; insulated cooler with ice packs works up to 24 hours for travel.</p>
+        </div>
+        <div class="answer-item">
+          <div class="a-num">3</div>
+          <p><strong>Bottle introduction timing:</strong> Most lactation resources recommend waiting until breastfeeding is well established — typically <strong>3–4 weeks</strong> — before introducing a bottle to reduce risk of nipple preference (sometimes called "nipple confusion"). After 6 weeks is even safer. Teach slow-flow nipple selection, paced bottle feeding technique (hold bottle horizontally, let baby set the pace), and that the husband's participation in bottle feeding can be a positive bonding experience while protecting the breastfeeding relationship.</p>
+        </div>
+        <div class="answer-item">
+          <div class="a-num">4</div>
+          <p><strong>C-section positioning:</strong> Recommend <strong>football hold</strong> (baby tucked under the arm, weight off the abdomen) and <strong>side-lying position</strong> (both lying down facing each other, no weight on the incision). Avoid cradle hold initially as infant weight rests on the abdomen near the incision. Ensure adequate pillow support in all positions. Laid-back nursing may also be comfortable once pain is controlled.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASE 4 -->
+  <div class="case">
+    <div class="case-header">
+      <div class="case-num">4</div>
+      <div class="case-title-area">
+        <div class="case-tag">Scenario</div>
+        <h2>"I don't want to breastfeed" — Supporting the Formula-Feeding Mother</h2>
+      </div>
+    </div>
+    <div class="case-body">
+      <div class="scenario-box">
+        <strong>Setting:</strong> Postpartum floor, 6 hours after a vaginal delivery. Destiny, 24 years old, G1P1, tells you clearly and without hesitation that she does not want to breastfeed. She has decided to formula feed. Her nurse from the previous shift documented "patient refuses breastfeeding education" and did not provide formula feeding instruction. Destiny tells you she feels judged. Her breasts are beginning to feel full and uncomfortable.
+      </div>
+      <div class="questions">
+        <h3>Discussion Questions</h3>
+        <div class="question-item">
+          <div class="q-num">1</div>
+          <div class="question-text">How do you feel about the previous nurse's documentation and approach? What ethical principle is most relevant here? <span class="nclex-tag">NCLEX</span></div>
+        </div>
+        <div class="question-item">
+          <div class="q-num">2</div>
+          <div class="question-text">What teaching does Destiny need that she did not receive? Outline the key content for safe formula preparation and storage.</div>
+        </div>
+        <div class="question-item">
+          <div class="q-num">3</div>
+          <div class="question-text">Destiny's breasts are becoming full and uncomfortable. What is happening physiologically, and what nursing interventions would you provide for lactation suppression?</div>
+        </div>
+        <div class="question-item">
+          <div class="q-num">4</div>
+          <div class="question-text">How do you provide emotional support to a mother who feels judged for her infant feeding choice? What language and approach would you use? <span class="nclex-tag">NCLEX</span></div>
+        </div>
+      </div>
+      <div class="answer-key-toggle">
+        <button class="toggle-btn" onclick="toggleKey('key4')">🔑 Reveal Answer Key</button>
+      </div>
+      <div class="answer-key" id="key4">
+        <h4>Answer Key — Instructor Reference</h4>
+        <div class="answer-item">
+          <div class="a-num">1</div>
+          <p><strong>This was a nursing care failure.</strong> Declining to breastfeed is not the same as refusing education about infant feeding. The ethical principle of <strong>autonomy</strong> — the patient's right to make informed decisions — was violated by withholding relevant teaching. Every patient who feeds a baby has a right to accurate education about their chosen method. Documentation of "refuses education" is also inaccurate and potentially harmful to continuity of care.</p>
+        </div>
+        <div class="answer-item">
+          <div class="a-num">2</div>
+          <p><strong>Formula feeding teaching:</strong> All FDA-approved formulas are nutritionally equivalent — no brand is superior. Hand washing before preparation. Use clean, sanitized bottles. Formula does not need to be warmed — if warmed, use warm water (never microwave). Check temperature on wrist. Follow mixing directions exactly (powdered/concentrated). Do not dilute or over-concentrate. Discard prepared formula after 2 hours at room temperature or 1 hour once feeding starts. Opened containers: use within 1 month, store at room temperature (not refrigerator).</p>
+        </div>
+        <div class="answer-item">
+          <div class="a-num">3</div>
+          <p><strong>Physiologically</strong>, prolactin levels rise whether or not the mother breastfeeds — milk production is initiated by the drop in progesterone after placental delivery, not by the baby's demand. Without stimulation, milk production will decrease over several days. <strong>Lactation suppression measures:</strong> well-fitting (snug but not tight) supportive bra worn 24 hrs/day; avoid breast stimulation; cold compresses or ice packs; cold cabbage leaves (evidence-supported for comfort); mild analgesics (ibuprofen, acetaminophen); adequate fluid intake. Medications for suppression are not used (no longer recommended; serious side effects).</p>
+        </div>
+        <div class="answer-item">
+          <div class="a-num">4</div>
+          <p><strong>Therapeutic communication approach:</strong> Begin by acknowledging her experience directly — "I'm sorry you felt judged. Your decision is yours to make, and my job is to support you and your baby, not to pressure you." Use neutral, non-comparative language (avoid "breast is best" framing). Focus on what she needs: practical information about safe formula feeding and infant care. Validate that she is doing the right thing by asking questions and seeking information. The nurse's role is to empower, not evaluate her choice.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+<footer>NRS 231 · Breastfeeding Lecture 6 · Clinical Case Scenarios with Answer Key</footer>
+<script>
+function toggleKey(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('visible');
+  const btn = el.previousElementSibling.querySelector('button');
+  btn.textContent = el.classList.contains('visible') ? '🔒 Hide Answer Key' : '🔑 Reveal Answer Key';
+}
+</script>
+</body>
+</html>

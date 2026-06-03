@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clinical Case Scenarios — Postpartum Lecture 7</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2a4a; --crimson: #8b1a2a; --teal: #0d7377;
+    --light-teal: #e8f5f4; --soft: #f4f6f9; --text: #1e2d3d;
+    --muted: #5a7080; --accent: #f0a500;
+    --c1: #1a3a5c; --c2: #8b1a2a; --c3: #1a4a3a; --c4: #4a2a5a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--soft); color: var(--text); }
+  header { background: var(--navy); color: white; padding: 2rem 2.5rem 1.5rem; border-bottom: 4px solid var(--crimson); }
+  header .label { font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: #f5a0ac; margin-bottom: 0.4rem; }
+  header h1 { font-family: 'Fraunces', serif; font-size: 2rem; font-weight: 700; }
+  header p { color: #a8c4ce; font-size: 0.9rem; margin-top: 0.4rem; }
+  .instructions { max-width: 900px; margin: 2rem auto 0; padding: 0 1.5rem; }
+  .instr-card { background: white; border-left: 5px solid var(--accent); border-radius: 0 10px 10px 0; padding: 1rem 1.3rem; font-size: 0.9rem; line-height: 1.6; color: var(--muted); }
+  .instr-card strong { color: var(--navy); }
+  main { max-width: 900px; margin: 0 auto; padding: 1.5rem; }
+  .case { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 3px 16px rgba(26,42,74,0.1); margin-bottom: 2rem; }
+  .case-header { padding: 1.2rem 1.5rem; color: white; display: flex; align-items: flex-start; gap: 1rem; }
+  .case:nth-child(1) .case-header { background: var(--c1); }
+  .case:nth-child(2) .case-header { background: var(--c2); }
+  .case:nth-child(3) .case-header { background: var(--c3); }
+  .case:nth-child(4) .case-header { background: var(--c4); }
+  .case-num { background: rgba(255,255,255,0.2); border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-family: 'Fraunces', serif; font-size: 1.2rem; font-weight: 700; flex-shrink: 0; }
+  .case-title-area .case-tag { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.7; margin-bottom: 0.2rem; }
+  .case-title-area h2 { font-family: 'Fraunces', serif; font-size: 1.2rem; font-weight: 700; }
+  .case-body { padding: 1.5rem; }
+  .scenario-box { background: var(--soft); border-radius: 10px; padding: 1.1rem 1.3rem; margin-bottom: 1.3rem; font-size: 0.92rem; line-height: 1.7; border-left: 4px solid #b0c8d0; }
+  .scenario-box strong { color: var(--navy); }
+  .questions h3 { font-family: 'Fraunces', serif; font-size: 0.95rem; color: var(--navy); margin-bottom: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  .question-item { display: flex; gap: 0.8rem; margin-bottom: 0.6rem; font-size: 0.9rem; line-height: 1.5; padding: 0.5rem 0; border-bottom: 1px dashed #d4e6ea; align-items: flex-start; }
+  .question-item:last-child { border-bottom: none; }
+  .q-num { background: var(--light-teal); color: var(--teal); font-weight: 700; font-size: 0.8rem; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 0.1em; }
+  .nclex-tag { display: inline-block; background: #f0f4ff; color: var(--navy); border: 1px solid #c0ccee; border-radius: 20px; padding: 0.15rem 0.6rem; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.05em; margin-left: 0.4rem; vertical-align: middle; }
+  .toggle-btn { margin-top: 1.2rem; background: var(--navy); color: white; border: none; border-radius: 8px; padding: 0.5rem 1rem; font-size: 0.85rem; font-family: 'DM Sans', sans-serif; cursor: pointer; font-weight: 500; transition: background 0.2s; }
+  .toggle-btn:hover { background: var(--teal); }
+  .answer-key { display: none; background: var(--light-teal); border-radius: 10px; padding: 1.2rem 1.3rem; margin-top: 0.8rem; }
+  .answer-key.visible { display: block; }
+  .answer-key h4 { font-family: 'Fraunces', serif; font-size: 0.9rem; color: var(--teal); margin-bottom: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  .answer-item { display: flex; gap: 0.8rem; margin-bottom: 0.8rem; font-size: 0.88rem; line-height: 1.6; align-items: flex-start; }
+  .answer-item:last-child { margin-bottom: 0; }
+  .a-num { background: var(--teal); color: white; font-weight: 700; font-size: 0.75rem; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 0.15em; }
+  .answer-item p { color: var(--text); line-height: 1.6; }
+  .answer-item strong { color: var(--teal); }
+  footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 1.5rem; border-top: 1px solid #d4e6ea; }
+</style>
+</head>
+<body>
+<header>
+  <div class="label">Postpartum Education Lecture 7 · In-Class Activity</div>
+  <h1>Clinical Case Scenarios</h1>
+  <p>Small group discussion · 4 vignettes with guided questions and answer key</p>
+</header>
+<div class="instructions">
+  <div class="instr-card">
+    <strong>Instructions:</strong> Divide into small groups (3–4 students). Read the scenario, discuss all questions, then select a spokesperson. <strong>Do not reveal the answer key until group discussion is complete.</strong> NCLEX-style questions are marked <span class="nclex-tag">NCLEX</span>.
+  </div>
+</div>
+<main>
+
+  <!-- CASE 1 -->
+  <div class="case">
+    <div class="case-header">
+      <div class="case-num">1</div>
+      <div class="case-title-area">
+        <div class="case-tag">Scenario · POST-BIRTH Warning Signs</div>
+        <h2>"My head is killing me" — Day 6 Postpartum Phone Call</h2>
+      </div>
+    </div>
+    <div class="case-body">
+      <div class="scenario-box">
+        <strong>Setting:</strong> You are working in an OB outpatient clinic. You receive a call from Brianna, 31 years old, G1P1, who delivered vaginally 6 days ago. She reports a severe headache that started this morning and has not improved with two doses of Tylenol. She mentions she's been "a little swollen" in her face and hands since yesterday. Her prenatal course was uncomplicated — no history of hypertension. Her husband, who is on the phone with her, asks: "She didn't have high blood pressure during pregnancy, so can't this just wait until her 6-week visit?"
+      </div>
+      <div class="questions">
+        <h3>Discussion Questions</h3>
+        <div class="question-item">
+          <div class="q-num">1</div>
+          <div class="question-text">What is your primary concern based on these findings, and what POST-BIRTH warning sign is being triggered? <span class="nclex-tag">NCLEX</span></div>
+        </div>
+        <div class="question-item">
+          <div class="q-num">2</div>
+          <div class="question-text">How do you respond to the husband's question? Is absence of prenatal hypertension reassuring in this scenario?</div>
+        </div>
+        <div class="question-item">
+          <div class="q-num">3</div>
+          <div class="question-text">What additional symptoms would you ask Brianna about, and what do you instruct her to do right now?</div>
+        </div>
+        <div class="question-item">
+          <div class="q-num">4</div>
+          <div class="question-text">If Brianna arrives at the ED, what should she tell the triage nurse immediately? <span class="nclex-tag">NCLEX</span></div>
+        </div>
+      </div>
+      <button class="toggle-btn" onclick="toggleKey('key1')">🔑 Reveal Answer Key</button>
+      <div class="answer-key" id="key1">
+        <h4>Answer Key — Instructor Reference</h4>
+        <div class="answer-item"><div class="a-num">1</div><p><strong>Primary concern: postpartum preeclampsia.</strong> POST-BIRTH warning sign "H" — headache unrelieved by medication — combined with facial and hand edema are classic signs. Postpartum preeclampsia can present up to 6 weeks after delivery. Systolic BP ≥160 is associated with cerebral hemorrhage and stroke.</p></div>
+        <div class="answer-item"><div class="a-num">2</div><p><strong>No — absence of prenatal hypertension is NOT reassuring here.</strong> 78% of postpartum eclampsia patients had no prior diagnosis of pregnancy-related hypertension. This is a critical teaching point. The husband's reasoning is understandable but incorrect and potentially dangerous. This cannot wait — BP must be assessed immediately.</p></div>
+        <div class="answer-item"><div class="a-num">3</div><p><strong>Ask about:</strong> vision changes (spots, flashing lights, blurry vision), nausea/vomiting, RUQ or epigastric pain, confusion or change in level of consciousness, any seizure activity. <strong>Instruct:</strong> Call 911 or go to the ED immediately — do not drive. If able, take BP with a cuff at home if available and report the number, but do not delay transport to do so.</p></div>
+        <div class="answer-item"><div class="a-num">4</div><p><strong>Tell triage immediately:</strong> "I delivered a baby 6 days ago." This activates postpartum protocols and ensures the team considers obstetric emergencies. Within one year of delivery, any medical visit should begin with disclosure of recent pregnancy. In the ED, postpartum preeclampsia may not be on the differential unless the team knows.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASE 2 -->
+  <div class="case">
+    <div class="case-header">
+      <div class="case-num">2</div>
+      <div class="case-title-area">
+        <div class="case-tag">Scenario · PPD / Mood</div>
+        <h2>"I love my baby, but I'm not okay" — Week 3</h2>
+      </div>
+    </div>
+    <div class="case-body">
+      <div class="scenario-box">
+        <strong>Setting:</strong> Postpartum follow-up clinic, week 3. Nia, 27 years old, G2P2, presents with her baby. Her first child is 2 years old. She was discharged from the hospital in good condition and had an uncomplicated vaginal delivery. Today she appears tearful and says: "I thought it would get easier by now. I cry every day. I'm not sleeping even when the baby sleeps. I feel like I'm failing. I love my baby — I just don't feel like myself." She denies thoughts of harming herself or her baby. Her EPDS score is 14.
+      </div>
+      <div class="questions">
+        <h3>Discussion Questions</h3>
+        <div class="question-item">
+          <div class="q-num">1</div>
+          <div class="question-text">Based on her presentation and EPDS score, how do you differentiate postpartum blues from postpartum depression here? <span class="nclex-tag">NCLEX</span></div>
+        </div>
+        <div class="question-item">
+          <div class="q-num">2</div>
+          <div class="question-text">Nia says "I love my baby" and denies harm ideation. Does this rule out PPD? What misconceptions does this scenario address?</div>
+        </div>
+        <div class="question-item">
+          <div class="q-num">3</div>
+          <div class="question-text">What is your nursing response? What therapeutic communication approach would you use, and what resources would you provide?</div>
+        </div>
+        <div class="question-item">
+          <div class="q-num">4</div>
+          <div class="question-text">Nia mentions her mother told her to "push through it — I did." How do you respond to this cultural/family pressure while honoring Nia's autonomy? <span class="nclex-tag">NCLEX</span></div>
+        </div>
+      </div>
+      <button class="toggle-btn" onclick="toggleKey('key2')">🔑 Reveal Answer Key</button>
+      <div class="answer-key" id="key2">
+        <h4>Answer Key — Instructor Reference</h4>
+        <div class="answer-item"><div class="a-num">1</div><p><strong>This is postpartum depression, not blues.</strong> Postpartum blues resolve within 2 weeks and do not impair function. Nia is at 3 weeks, crying daily, unable to sleep when given the opportunity, and feeling like she is failing — functional impairment is present. EPDS score of 14 confirms high-risk status (threshold ≥12). Referral for mental health evaluation and treatment is indicated.</p></div>
+        <div class="answer-item"><div class="a-num">2</div><p><strong>No — loving the baby does not rule out PPD.</strong> A common misconception is that PPD means the mother doesn't love or want her baby. PPD is a neurobiological and hormonal condition — not a reflection of the quality of the mother-child bond. Absence of harm ideation is noted but does not lower the clinical threshold. PPD exists on a spectrum and can progress.</p></div>
+        <div class="answer-item"><div class="a-num">3</div><p><strong>Nursing response:</strong> Validate without minimizing ("What you're describing sounds really hard — and I'm glad you told me"). Normalize PPD as a medical condition, not a failure. Provide immediate referral to mental health/counseling. Discuss treatment options (therapy, medication if indicated, peer support groups). Provide 988 Suicide & Crisis Lifeline number. Schedule follow-up. Document EPDS and referral. Involve the provider for prescribing if medication is appropriate.</p></div>
+        <div class="answer-item"><div class="a-num">4</div><p><strong>Acknowledge the mother's experience without dismissing Nia's.</strong> "Your mother's experience is real, and I'm glad she got through it. Every woman's postpartum experience is different. What Nia is describing — especially this early and this consistently — is something we can treat, and she doesn't need to just push through." Avoid placing Nia in the middle of a family conflict. Reinforce that seeking help is strength, not weakness, and focus on outcomes for both Nia and her children.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASE 3 -->
+  <div class="case">
+    <div class="case-header">
+      <div class="case-num">3</div>
+      <div class="case-title-area">
+        <div class="case-tag">Scenario · VTE / Physical Recovery</div>
+        <h2>"My leg has been hurting since yesterday" — Day 8 Post C-Section</h2>
+      </div>
+    </div>
+    <div class="case-body">
+      <div class="scenario-box">
+        <strong>Setting:</strong> You are a postpartum nurse making a follow-up phone call on day 8 post-cesarean section to Yolanda, 35 years old, G3P3. She had a scheduled C-section for repeat cesarean. She tells you her left calf has been aching since yesterday — she thought it was from walking more. On questioning, she reports the left leg feels warm and slightly swollen compared to her right. She has been taking her prescribed ibuprofen and is up and moving around the house. She is not short of breath and has no chest pain. She says: "I figured leg pain was just part of recovering from surgery."
+      </div>
+      <div class="questions">
+        <h3>Discussion Questions</h3>
+        <div class="question-item">
+          <div class="q-num">1</div>
+          <div class="question-text">What POST-BIRTH warning sign is this, and what underlying condition are you concerned about? What are her risk factors? <span class="nclex-tag">NCLEX</span></div>
+        </div>
+        <div class="question-item">
+          <div class="q-num">2</div>
+          <div class="question-text">Yolanda says she's been up and moving — doesn't ambulation prevent clots? Address this common misunderstanding.</div>
+        </div>
+        <div class="question-item">
+          <div class="q-num">3</div>
+          <div class="question-text">What do you instruct Yolanda to do right now? What should she NOT do?</div>
+        </div>
+        <div class="question-item">
+          <div class="q-num">4</div>
+          <div class="question-text">What are the signs that this situation has escalated to a pulmonary embolism, and what would the response be? <span class="nclex-tag">NCLEX</span></div>
+        </div>
+      </div>
+      <button class="toggle-btn" onclick="toggleKey('key3')">🔑 Reveal Answer Key</button>
+      <div class="answer-key" id="key3">
+        <h4>Answer Key — Instructor Reference</h4>
+        <div class="answer-item"><div class="a-num">1</div><p><strong>POST-BIRTH sign "R" — Red, swollen, painful leg.</strong> Concern: deep vein thrombosis (DVT). Risk factors present: cesarean delivery (surgical procedure = major VTE risk factor), age 35, G3P3 (multiparity), postpartum state itself (hypercoagulable). VTE accounts for 9% of maternal deaths, and at least half are considered preventable. Ambulation alone does not eliminate risk in high-risk patients.</p></div>
+        <div class="answer-item"><div class="a-num">2</div><p><strong>Ambulation reduces risk but does not eliminate it</strong>, especially after cesarean section. Surgical trauma, prolonged immobility in the OR, and the hypercoagulable state of pregnancy all create significant thrombotic risk that persists postpartum. Ambulation is beneficial but not protective enough on its own in high-risk patients — some receive pharmacologic prophylaxis (LMWH) for this reason.</p></div>
+        <div class="answer-item"><div class="a-num">3</div><p><strong>Instruct:</strong> Go to the ED immediately — do not delay. Call the OB provider to notify them. <strong>Do NOT:</strong> massage the leg (risk of dislodging the clot → PE), apply heat, or "walk it off." She should go directly for evaluation — ultrasound (duplex Doppler) is the diagnostic test. Instruct her not to drive herself if the clot is confirmed — have someone bring her.</p></div>
+        <div class="answer-item"><div class="a-num">4</div><p><strong>Signs of PE:</strong> sudden onset shortness of breath, chest pain (especially with cough), tachycardia, anxiety, decreased O2 saturation, coughing up blood (hemoptysis), loss of consciousness. POST-BIRTH signs "P" and "O" — chest pain and obstructed breathing. <strong>Response: Call 911 immediately.</strong> PE is a leading cause of preventable maternal death. 30% of PE patients have no prior evidence of DVT, and SOB was historically not evaluated early enough in postpartum patients.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASE 4 -->
+  <div class="case">
+    <div class="case-header">
+      <div class="case-num">4</div>
+      <div class="case-title-area">
+        <div class="case-tag">Scenario · Safe Sleep / Newborn Safety</div>
+        <h2>"We all slept together — it's what my family does"</h2>
+      </div>
+    </div>
+    <div class="case-body">
+      <div class="scenario-box">
+        <strong>Setting:</strong> Postpartum floor, day 2. You enter the room of Daniela, 22 years old, G1P1, and find the newborn sleeping in the bed between Daniela and her husband, Marco. Daniela explains that bed-sharing is the norm in her family and that her mother said it promotes bonding. Marco says: "In our culture, this is how babies sleep — they feel safe with us." The baby is 2 days old and they are planning to continue bed-sharing at home. They have heard that breastfeeding and bed-sharing go together.
+      </div>
+      <div class="questions">
+        <h3>Discussion Questions</h3>
+        <div class="question-item">
+          <div class="q-num">1</div>
+          <div class="question-text">What is the immediate safety concern, and how serious is it? What does the evidence say about bed-sharing in infants under 3 months? <span class="nclex-tag">NCLEX</span></div>
+        </div>
+        <div class="question-item">
+          <div class="q-num">2</div>
+          <div class="question-text">How do you approach this conversation without being dismissive of their cultural values or making the family feel judged?</div>
+        </div>
+        <div class="question-item">
+          <div class="q-num">3</div>
+          <div class="question-text">Daniela says she has read that breastfeeding mothers who bed-share are safer because they sleep more lightly. How do you address this?</div>
+        </div>
+        <div class="question-item">
+          <div class="q-num">4</div>
+          <div class="question-text">What is your nursing action right now, and what safe alternatives to bed-sharing would you offer that may still address their goal of closeness? <span class="nclex-tag">NCLEX</span></div>
+        </div>
+      </div>
+      <button class="toggle-btn" onclick="toggleKey('key4')">🔑 Reveal Answer Key</button>
+      <div class="answer-key" id="key4">
+        <h4>Answer Key — Instructor Reference</h4>
+        <div class="answer-item"><div class="a-num">1</div><p><strong>Bed-sharing is the most common cause of death in infants under 3 months old.</strong> The AAP recommends room-sharing but not bed-sharing for the first 6–12 months. Risks include overlying (suffocation), entrapment between mattress and wall, and positional asphyxia. The risk is highest in newborns who lack the motor strength to reposition themselves if their airway is obstructed.</p></div>
+        <div class="answer-item"><div class="a-num">2</div><p><strong>Approach with cultural humility and curiosity, not judgment.</strong> Acknowledge that bed-sharing is a meaningful cultural practice in many families, and that the intention — closeness and bonding — is healthy. Do not lecture or shame. Frame the conversation around the baby's safety: "I can see how important it is for your family to be close to your baby. I want to share some safety information that might help protect that." Then present the evidence clearly and collaboratively.</p></div>
+        <div class="answer-item"><div class="a-num">3</div><p><strong>Address directly but respectfully.</strong> While some research suggests breastfeeding mothers have lighter sleep, the AAP's position is that this does not reduce the risk to a safe level, particularly for newborns. The softness of adult mattresses, pillows, and bedding — regardless of parental awareness — creates suffocation risk the infant cannot escape. Acknowledge the intention behind the claim while holding the safety recommendation firmly.</p></div>
+        <div class="answer-item"><div class="a-num">4</div><p><strong>Nursing action now:</strong> Move the newborn to the bedside bassinet — do not leave without ensuring the baby is in a safe sleep environment. Document the teaching and the family's response. Escalate to the charge nurse or provider if the family refuses. <strong>Safe alternatives to offer:</strong> bedside bassinet or co-sleeper that attaches to the adult bed (proximity without sharing surface); nursing in bed and returning baby to bassinet after feeding; skin-to-skin during waking hours to meet closeness goals. These honor the family's values while meeting the safety standard.</p></div>
+      </div>
+    </div>
+  </div>
+
+</main>
+<footer>NRS 231 · Postpartum Education Lecture 7 · Clinical Case Scenarios with Answer Key</footer>
+<script>
+function toggleKey(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('visible');
+  const btn = el.previousElementSibling;
+  btn.textContent = el.classList.contains('visible') ? '🔒 Hide Answer Key' : '🔑 Reveal Answer Key';
+}
+</script>
+</body>
+</html>
